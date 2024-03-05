@@ -1,0 +1,318 @@
+<div data-section-type="footer">
+  {% if section.blocks != blank %}
+    <div class="wide-container section-footer__row-container" role="navigation" aria-label="{{ 'layout.footer.navigation_aria_label' | t | escape }}">
+      <div class="section-footer__row section-footer__row--blocks" data-num-blocks="{{ section.blocks.size }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'menu' %}
+            <div class="section-footer__row__col section-footer__menu-block" {{ block.shopify_attributes }}>
+              {% if block.settings.title != blank %}
+                {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+                <h6 class="section-footer__title{% if title_word_count < 4 %} no-wrap{% endif %}">
+                  {{- block.settings.title | escape -}}
+                </h6>
+              {% endif %}
+
+              {% if block.settings.menu != blank %}
+                <ul class="section-footer__menu-block__menu">
+                  {% for link in linklists[block.settings.menu].links %}
+                    <li>
+                      <a data-cc-animate-click href="{{ link.url }}" {% if link.title.size < 25 %}class="no-wrap"{% endif %}>
+                        {{- link.title -}}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+
+          {% elsif block.type == 'text' %}
+            <div class="section-footer__row__col section-footer__text-block {% if block.settings.text != blank %}section-footer__text-block--with-text{% endif %}">
+              {% if block.settings.title != blank %}
+                {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+                <h6 class="section-footer__title{% if title_word_count < 4 %} no-wrap{% endif %}">
+                  {{- block.settings.title | escape -}}
+                </h6>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="section-footer__text">
+                  {{- block.settings.text -}}
+                </div>
+              {% endif %}
+
+              {% if block.settings.image != blank %}
+                <div class="section-footer__text-block__image">
+                  {%- capture double_image_width -%}{{ block.settings.image_width | times: 2 }}x{%- endcapture -%}
+                  <div class="rimage-outer-wrapper" style="width: {{ block.settings.image_width }}px">
+                    <div class="rimage-wrapper lazyload--placeholder" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%">
+                      <img class="rimage__image lazyload fade-in" data-src="{{ block.settings.image | img_url: double_image_width }}" alt="{{ shop.name | escape }}" />
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if block.settings.show_social_icons != blank %}
+                <div class="section-footer__text-block__social">
+                  {% capture icon_size %}{% if settings.soc_icons_double %}x46{% else %}x30{% endif %}{% endcapture %}
+                  {% render 'social-icons', icon_setting: settings.social_custom_icon, icon_size: icon_size %}
+                </div>
+              {% endif %}
+            </div>
+
+          {% elsif block.type == 'newsletter' %}
+            <div class="section-footer__row__col section-footer__newsletter-block">
+              {% if block.settings.title != blank %}
+                {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+                <h6 class="section-footer__title{% if title_word_count < 4 %} no-wrap{% endif %}">
+                  {{- block.settings.title | escape -}}
+                </h6>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="section-footer__text">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+
+              <div class="signup-form">
+                {% form 'customer', id: 'footer_newsletter_signup' %}
+                  {% if form.posted_successfully? %}
+                    <p class="section-footer__newsletter-block__message signup-form__response">{{ 'layout.signup.post_success' | t }}</p>
+                  {% else %}
+                    {% if form.errors %}
+                      {% for field in form.errors %}
+                        <p class="section-footer__newsletter-block__message--error signup-form__response">
+                          {{ field | capitalize }} - {{ form.errors.messages[field] }}
+                        </p>
+                      {% endfor %}
+                    {% endif %}
+                    <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+                    <p>
+                      <input type="email"
+                        placeholder="{{ 'layout.signup.placeholder' | t }}"
+                        class="signup-form__email"
+                        value=""
+                        name="contact[email]"
+                        aria-label="{{ 'layout.signup.input_label' | t | escape }}" />
+                    </p>
+                    <button class="button no-hover signup-form__button" type="submit" aria-label="{{ 'layout.signup.submit' | t }}">
+                      {% render 'svg-rarrow-long' %}
+                    </button>
+                  {% endif %}
+                {% endform %}
+              </div>
+              {% if block.settings.show_social_icons_newsletter != blank %}
+                <div class="section-footer__text-block__social">
+                  {% capture icon_size %}{% if settings.soc_icons_double %}x46{% else %}x30{% endif %}{% endcapture %}
+                  {% render 'social-icons', icon_setting: settings.social_custom_icon, icon_size: icon_size %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  {%- assign showing_localization = false -%}
+  {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}{%- assign showing_localization = true -%}{%- endif -%}
+  {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}{%- assign showing_localization = true -%}{%- endif -%}
+  <div class="wide-container section-footer__row-container {% if showing_localization %}section-footer__row-container--with-localization{% endif %}">
+    <div class="section-footer__row section-footer__row-lower">
+      <div class="section-footer__row__col">
+        Producerad av <a href="https://www.searchminds.se/">Searchminds</a>
+        {% if section.settings.show_payment_icons %}
+          <div class="section-footer__payment-icons"> 
+            {% for type in shop.enabled_payment_types %}
+              {{ type | payment_type_svg_tag: class: 'section-footer__payment-icon' }}
+            {% endfor %}
+
+            {% if section.settings.custom_payment_icon %}
+              <img class="section-footer__payment-icon payment-icon--custom"
+                   src="{{ section.settings.custom_payment_icon | img_url: '120x' }}"
+                   alt="{{ section.settings.custom_payment_icon.alt }}"
+                   width="{{ section.settings.custom_payment_icon.width }}"
+                   height="{{ section.settings.custom_payment_icon.height }}"
+              />
+            {% endif %}
+          </div>
+
+        {% endif %}
+        {% if section.settings.lower_menu != blank %}
+          <div class="section-footer__lower-menu">
+            <ul class="section-footer__lower-menu__list">
+              {% for link in linklists[section.settings.lower_menu].links %}
+                <li>
+                  <a data-cc-animate-click href="{{ link.url }}">
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+      <div class="section-footer__row__col">
+        {% if section.settings.show_language_selector or section.settings.show_country_selector %}
+          <div class="section-footer__localization">
+            {% render 'localization', input_prefix: 'footer' %}
+          </div>
+        {% endif %}
+
+        <div class="copyright">
+          <span class="copy">&copy; {{ "now" | date: "%Y" }} <a data-cc-animate-click href="{{ routes.root_url }}">{{ shop.name }}</a>.</span>
+
+          {{ powered_by_link }}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Footer",
+    "class": "section-footer",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "lower_menu",
+        "label": "Lower footer menu"
+      },
+      {
+        "type": "header",
+        "content": "Payment methods"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": true,
+        "info": "Payment icons are pulled directly from Shopify based on your [payment settings](https://help.shopify.com/manual/payments)"
+      },
+      {
+        "type": "image_picker",
+        "id": "custom_payment_icon",
+        "label": "Custom payment icon",
+        "info": "40 x 25px recommended"
+      },
+      {
+        "type": "header",
+        "content": "Country/Region Selector",
+        "info": "To add a country/region, go to your [payment settings.](/admin/settings/payments)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_country_selector",
+        "label": "Enable country/region selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Language Selector",
+        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language_selector",
+        "label": "Enable language selector",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "menu",
+        "name": "Links",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Quick links"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu",
+            "info": "This menu won't show dropdown items",
+            "default": "footer"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text/Social",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your store"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme editor.</p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "image_width",
+            "min": 30,
+            "max": 200,
+            "step": 5,
+            "unit": "px",
+            "label": "Footer image width",
+            "default": 100
+          },
+          {
+            "type": "checkbox",
+            "id": "show_social_icons",
+            "label": "Show social media links",
+            "default": true,
+            "info": "Add your social media links in Theme Settings > Social media"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "limit": 1,
+        "name": "Newsletter",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Newsletter"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>A short sentence describing what someone will receive when signing up to newsletters.</p>"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_social_icons_newsletter",
+            "label": "Show social media links",
+            "default": false,
+            "info": "Add your social media links in Theme Settings > Social media"
+          },
+          {
+            "type": "paragraph",
+            "content": "Customers who subscribe will have their email address added to the 'accepts marketing' [customer list](/admin/customers?query=&accepts_marketing=1)"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

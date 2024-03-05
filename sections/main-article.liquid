@@ -1,0 +1,265 @@
+<div class="article-container {% unless article.image and section.settings.featured_image == "wide" %}central content{% else %}header-overlap-section{% endunless %} {% if article.image and section.settings.featured_image == "narrow" %}with-featured-image{% endif %}" data-section-type="article-template">
+  {% paginate article.comments by 50 %}
+
+  {% if article.image and section.settings.featured_image == "wide" %}
+    <div class="article-header image-overlay image-overlay--bg-full needs-alt-logo" data-cc-animate>
+      <div class="rimage-outer-wrapper rimage-background lazyload fade-in"
+           data-cc-animate="cc-fade-in-zoom-out"
+           data-bgset="{% render 'bgset', image: article.image %}"
+           data-sizes="auto"
+           data-parent-fit="cover">
+        <noscript>
+          <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%">
+            <img src="{{ article.image | img_url: '1024x1024' }}" alt="{{ article.image.alt | escape }}" class="rimage__image">
+          </div>
+        </noscript>
+      </div>
+
+      <div class="overlay-type overlay" data-cc-animate="cc-fade-in-zoom-out">
+        <div class="overlay__content">
+          <div class="content central transparent">
+            {%- if section.settings.blog_show_date -%}
+              <div class="feature-subheader" data-cc-animate data-cc-animate-delay=".4s">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_date_year' }}</time>
+              </div>
+            {%- endif -%}
+
+            <h1 class="line-1 h1" data-cc-animate data-cc-animate-delay=".2s">
+              {{ article.title }}
+            </h1>
+
+            {% if section.settings.blog_show_author %}
+              <div class="feature-subheader" data-cc-animate data-cc-animate-delay=".6s">
+                <span class="author">{{ article.author }}</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if article.image and section.settings.featured_image == "wide" %}
+    <div class="central content">
+  {% endif %}
+
+  {% comment %}
+  When a comment has just been submitted, it's not shown right away.
+  Shopify needs to wait until it knows for sure that it is not spam to publish it.
+  We can still show right away *to its author* the comment he just submitted
+  — although that comment may not have been published yet.
+  When a comment is submitted, the browser is redirected to a page that
+  includes the new comment id in its URL. Example:
+  http://shopname.myshopify.com/blogs/news/2022072-my-post?comment=3721372
+  When a comment ID is specified in an article URL, that comment is accessible in the
+  template through a Liquid object called comment.
+  That comment is a full-fledged comment variable that has all the regular comment properties:
+  http://docs.shopify.com/themes/liquid-variables/comment.
+  Note that comment.created_at will only be defined if the comment did not have any blank field
+  — was posted without error.
+  {% endcomment %}
+
+  {% assign number_of_comments = article.comments_count %}
+
+  {% comment %}If a comment was just submitted, and it has no blank fields.{% endcomment %}
+  {% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+  {% endif %}
+
+  <div class="article">
+    {% if article.image and section.settings.featured_image == "narrow" %}
+      <div class="article-image">
+        {% render 'responsive-image', image: article.image, animateZoom: true %}
+      </div>
+    {% endif %}
+
+    {% unless article.image and section.settings.featured_image == "wide" %}
+      <h1 class="feature-header" data-cc-animate data-cc-animate-delay=".4s">
+        {{ article.title }}
+      </h1>
+
+      {% if section.settings.blog_show_date or section.settings.blog_show_author %}
+        <div class="feature-subheader" data-cc-animate data-cc-animate-delay=".6s">
+          {%- if section.settings.blog_show_date -%}
+            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_date_year' }}</time>
+          {%- endif -%}
+
+          {%- if section.settings.blog_show_author -%}
+            {%- if section.settings.blog_show_date -%},&nbsp;{%- endif -%}
+            <span class="author">{{ article.author }}</span>
+          {%- endif -%}
+        </div>
+      {% endif %}
+    {% endunless %}
+
+    <div class="rte rte--allow-full-width-images {% if article.image and section.settings.featured_image == "wide" %}wide-image{% endif %}"
+         data-cc-animate {% if article.image and section.settings.featured_image == "wide" %}data-cc-animate-delay="0.8s"{% else %}data-cc-animate-delay="0.2s"{% endif %}>
+      {{ article.content }}
+    </div>
+
+    {% if section.settings.blog_show_social %}
+      <div data-cc-animate data-cc-animate-delay=".5s">
+        {% render 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if blog.comments_enabled? %}
+    {% if article.comments != blank %}
+      <div id="comments" class="content-row" data-cc-animate data-cc-animate-delay=".5s">
+        <h2 class="align-left">{{ 'blogs.comments.title' | t }}</h2>
+
+        {% comment %} Show a comment that was *just* submitted {% endcomment %}
+        {% if comment and comment.status != 'published' %}
+          <p class="success feedback">
+            {% if blog.moderated? %}
+              {{ 'blogs.comments.success_moderated' | t }}
+            {% else %}
+              {{ 'blogs.comments.success' | t }}
+            {% endif %}
+          </p>
+        {% endif %}
+
+        {% comment %} Loop through approved comments: {% endcomment %}
+        {% if number_of_comments > 0 %}
+          <ul>
+            {% for comment in article.comments %}
+              <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                <h4 class="comment-author">{{ 'blogs.comments.author_meta_said' | t: author: comment.author }}</h4>
+                <div class="comment-content">
+                  {{ comment.content }}
+                </div>
+                <p class="comment-date">
+                  {% assign comment_date = comment.created_at | date: format: 'month_date_year' %}
+                  {{ 'blogs.comments.date_meta' | t: comment_date: comment_date }}
+                </p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% comment %}Comments are paginated.{% endcomment %}
+        {% if paginate.pages > 1 %}
+          <div id="pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %}Comment submission form.{% endcomment %}
+
+    <div data-cc-animate data-cc-animate-delay=".5s">
+      {% form article %}
+        <hr>
+        <h3 id="add-comment-title">{{ 'blogs.comments.form_title' | t }}</h3>
+
+        {% if form.errors %}
+          <div class="feedback error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="form">
+          <div class="input-row">
+            <input aria-label="{{ 'blogs.comments.name' | t }}" placeholder="{{ 'blogs.comments.name' | t }}" required{% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" id="comment-author" value="{{ form.author }}" />
+          </div>
+
+          <div class="input-row">
+            <input aria-label="{{ 'blogs.comments.email' | t }}" placeholder="{{ 'blogs.comments.email' | t }}" required{% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" id="comment-email" value="{{ form.email }}" />
+          </div>
+
+          <div class="input-row">
+            <textarea aria-label="{{ 'blogs.comments.message' | t }}" placeholder="{{ 'blogs.comments.message' | t }}" required{% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="comment-body">{{ form.body }}</textarea>
+          </div>
+
+          <div class="wide-action">
+            <input type="submit" value="{{ 'blogs.comments.post' | t }}" />
+          </div>
+        </div>
+      {% endform %}
+    </div>
+  {% endif %}
+
+
+  {% if blog.next_article or blog.previous_article %}
+    <div class="other-products other-products--articles" data-cc-animate data-cc-animate-delay=".5s">
+      <div class="other-products__label">
+        <a data-cc-animate-click href="{{ blog.url }}">{{ 'blogs.article.back_to_blog_html' | t: blog: blog.title }}</a>
+      </div>
+      <div class="other-products__products">
+        {% if blog.previous_article %}
+        <span class="other-products__product previous">
+          <a data-cc-animate-click href="{{ blog.previous_article }}">
+            <div class="other-products__product__arrow"><span class="arr">{% render 'svg-chevron-left' %}</span></div>
+            <div class="other-products__product__title h5">{{ 'blogs.article.older_post' | t }}</div>
+          </a>
+        </span>
+        {% endif %}
+        {% if blog.next_article %}
+        <span class="other-products__product next">
+          <a data-cc-animate-click href="{{ blog.next_article }}" >
+            <div class="other-products__product__title h5">{{ 'blogs.article.newer_post' | t }}</div>
+            <div class="other-products__product__arrow"><span class="arr">{% render 'svg-chevron-right' %}</span></div>
+          </a>
+        </span>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if article.image and section.settings.featured_image == "wide" %}
+    </div>
+  {% endif %}
+
+  {% endpaginate %}
+</div>
+
+{% render 'structured-data-article', article: article %}
+
+
+{% schema %}
+  {
+    "name": "Article pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "featured_image",
+        "label": "Featured image",
+        "default": "wide",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "narrow",
+            "label": "Narrow"
+          },
+          {
+            "value": "wide",
+            "label": "Wide"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_social",
+        "label": "Show social icons",
+        "default": true
+      }
+	  ]
+  }
+{% endschema %}

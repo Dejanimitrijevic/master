@@ -1,0 +1,73 @@
+{% if section.settings.show_product_recommendations %}
+  <div class="product-recommendations"
+       data-section-type="product-recommendations"
+       data-components="product-block"
+       data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=12">
+
+    {% if recommendations.performed and recommendations.products_count > 0 %}
+      <div class="product-recommendations-container product-slider">
+        <div class="wide-container section-spacing">
+          <div class="product-list swiper-container" data-products-in-view="{{ section.settings.grid }}">
+            <h2 class="h2 section-heading" data-cc-animate>
+              {{ section.settings.title }}
+            </h2>
+
+            <div class="swiper-wrapper" data-normheights=".image" data-normheights-inner="img">
+              {%- for product in recommendations.products -%}
+                <div class="swiper-slide">
+                  {% render 'product-block', product: product, product_class: product_class, i: forloop.index, animate: forloop.index, show_vendor: section.settings.show_vendor, hide_swatches: section.settings.hide_swatches %}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="swiper-scrollbar"></div>
+            <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
+            <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Product recommendations",
+    "class": "section-product-recommendations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_product_recommendations",
+        "label": "Show recommendations",
+        "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "You may also like"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_swatches",
+        "label": "Hide color swatches",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendor",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Products per row",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 3
+      }
+    ]
+  }
+{% endschema %}

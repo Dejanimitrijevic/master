@@ -1,0 +1,116 @@
+{%- assign globo_search = true -%}
+{%- assign home_filter = false -%}
+{%- assign has_form = false -%}
+{%- if request.page_type != 'index' -%}{%- assign home_filter = false -%}{%- endif -%}
+{%- if globo_search or request.page_type == 'collection' or request.page_type == 'search' or home_filter -%}
+{%- assign assets_url = 'product-1.png' | asset_img_url: '50x' | split: 'product-1_50x.png' -%}
+{%- assign files_url  = 'product-1.png' | file_img_url: '50x' | split: 'product-1_50x.png' -%}
+{%- assign primary_locale = 'null' -%}
+{%- for locale in shop.published_locales -%}{%- if locale.primary -%}{%- assign primary_locale = locale.iso_code | json -%}{%- endif -%}{%- endfor -%}
+<style>.spf-filter-loading #gf-products > *:not(.spf-product--skeleton){visibility: hidden; opacity: 0}</style>
+<script>
+  document.getElementsByTagName('html')[0].classList.add('spf-filter-loading');
+  window.addEventListener("globoFilterRenderCompleted",function(e){document.getElementsByTagName('html')[0].classList.remove('spf-filter-loading')})
+  window.sortByRelevance = false;
+  window.moneyFormat = "{{ shop.money_format | replace: '"', "'" }}";
+  window.GloboMoneyFormat = "{{ shop.money_format | replace: '"', "'" }}";
+  window.GloboMoneyWithCurrencyFormat = "{{ shop.money_with_currency_format | replace: '"', "'" }}";
+  window.filterPriceRate = 1;
+  window.filterPriceAdjustment = 1;
+
+  window.shopCurrency = {{shop.currency | json}};
+  window.currentCurrency = {{cart.currency.iso_code | json}};
+
+  window.isMultiCurrency = {% assign enabled_currencies_size = shop.enabled_currencies | size %}{% if enabled_currencies_size > 1 and false %}true{% else %}false{% endif %};
+  window.assetsUrl = '{{ assets_url[0] }}';
+  window.filesUrl = '{{ files_url[0] }}';
+  var page_id = {% if request.page_type contains 'collection' %}{% if collection.id %}{{collection.id | default: 1}}{% else %}1{% endif %}{% elsif request.page_type contains 'search' %}2{% else %}0{% endif %};
+  var GloboFilterConfig = {
+    api: {
+      filterUrl: "https://filter-eu.globosoftware.net/filter",
+      searchUrl: "https://filter-eu.globosoftware.net/search",
+      url: "https://filter-eu.globosoftware.net",
+    },
+    shop: {
+      name: "{{ shop.name | escape }}",
+      url: "{{ shop.url }}",
+      domain: "{{ shop.permanent_domain }}",
+      is_multicurrency: {% assign is_multicurrency = shop.enabled_currencies | size %}{% if is_multicurrency > 1 and false and false %}true{% else %}false{% endif %},
+      currency: {{shop.currency | json}},
+      cur_currency: {{cart.currency.iso_code | json}},
+      cur_locale: {{request.locale.iso_code | json}},
+      locale: {{primary_locale}},
+      root_url: "{%- if routes.root_url != "/" -%}{{ routes.root_url }}{%- endif -%}",
+      country_code: {{shop.address.country_code | json}},
+      product_image: {width: 472, height: 472},
+      no_image_url: "https://cdn.shopify.com/s/images/themes/product-1.png",
+      themeStoreId: 677,
+      swatches:  {{ shop.metafields.globo.swatches | json }},
+      newUrlStruct: true,
+      translation: {"default":{"search":{"suggestions":"F\u00f6rslag","collections":"Kollektioner","pages":"Sidor","product":"Produkt","products":"Produkter","view_all":"S\u00f6k efter","view_all_products":"Visa alla produkter","not_found":"Tyv\u00e4rr, inget hittat f\u00f6r","product_not_found":"Inga produkter hittades","no_result_keywords_suggestions_title":"Popul\u00e4ra s\u00f6kningar","no_result_products_suggestions_title":"Men du kanske gillar","zero_character_keywords_suggestions_title":"F\u00f6rslag","zero_character_popular_searches_title":"Popul\u00e4ra s\u00f6kningar","zero_character_products_suggestions_title":"Popul\u00e4ra produkter"},"form":{"title":"S\u00f6k produkter","submit":"S\u00f6k"},"filter":{"filter_by":"Filtrera efter","clear_all":"Rensa alla","view":"Visa","clear":"Rensa","in_stock":"I lager","out_of_stock":"Tillf\u00e4lligt slut","ready_to_ship":"F\u00e4rdig att skicka","search":"S\u00f6km\u00f6jligheter"},"sort":{"sort_by":"Sortera efter","manually":"Utvalda","availability_in_stock_first":"Tillg\u00e4nglighet","relevance":"Relevans","best_selling":"B\u00e4st s\u00e4ljare","alphabetically_a_z":"Alfabetiskt, A-\u00d6","alphabetically_z_a":"Alfabetiskt, \u00d6-A","price_low_to_high":"Pris, l\u00e5gt till h\u00f6gt","price_high_to_low":"Pris, h\u00f6gt till l\u00e5gt","date_new_to_old":"Datum, nytt till gammalt","date_old_to_new":"Datum, gammalt till nytt","sale_off":"% Rea","mf-my_fields-antal_plattor_per_kvm-ascending":"Antal plattor per kvm stigande","mf-my_fields-antal_plattor_per_kvm-descending":"Antal plattor per kvm fallande"},"product":{"add_to_cart":"L\u00e4gg i kundvagn","unavailable":"Inte tillg\u00e4nglig","sold_out":"Uts\u00e5ld","sale":"Rea","load_more":"L\u00e4s in fler","limit":"Visa","search":"S\u00f6k produkter","no_results":"Det finns inga produkter i denna kollektion"},"labels":{"483110":"Kollektion","483111":"Vendor","483112":"Product Type","483113":"Pris","483114":"Percent Sale","483115":"Availability","483116":"Tag","483117":"Ready To Ship","483118":"Title","483577":"F\u00e4rg","483578":"Pris","483592":"Tillg\u00e4nglighet","483665":"F\u00e4rg","483666":"Antal plattor per kvm"}}},
+      redirects: {{ shop.metafields.globo.redirects | json }},
+      images: ["cbox_border1.png","cbox_border2.png","ico-checkout-lock-contrasty.png"],
+      settings: {{ settings | json }},
+      home_filter: {{home_filter}},
+      page: {{request.page_type | json}},
+      layout: "theme"
+    },
+    taxes: null,
+    special_countries: null,
+    adjustments: null,
+
+    year_make_model: {
+      id: null
+    },
+    filter: {
+      id: {"default":0}[page_id] || {"default":0}['default'] || 0,
+      layout: 1,
+      showCount: 1,
+      isLoadMore: 1,
+      filter_on_search_page: true
+    },
+    search:{
+      enable: {{globo_search}},
+      zero_character_suggestion: false,
+      layout: 1,
+    },
+    collection: {
+      id: {%- if request.page_type == 'collection' -%}{{ collection.id | default: 0 }}{%- else -%}0{%- endif -%},
+      handle: {%- if request.page_type == 'collection' -%}'{{ collection.handle }}'{%- else -%}''{%- endif -%},
+      sort: {% if request.page_type contains 'collection' %}"{{ collection.default_sort_by | default: 'best-selling' }}"{% elsif request.page_type contains 'search' %}'relevance'{% else %}'best-selling'{% endif %},
+      tags: {% if current_tags %}[{% for tag in current_tags %}{{ tag | json }},{{ tag | handle | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]{% else %}null{% endif %},
+      vendor: {{ collection.current_vendor | json }},
+      type: {{ collection.current_type | json }},
+      term: {{ search.terms | escape | json }},
+      limit: 12,
+      products_count: {{collection.products_count | default: 0}},
+      excludeTags: null
+    },
+    customer: {% if customer %}{id: {{customer.id}}, tags: {{customer.tags | json}}}{% else %}false{% endif %},
+    selector: {
+      sortBy: '.collection-sorting',
+      pagination: '.pagination:first, .paginate:first, .pagination-custom:first, #pagination:first, #gf_pagination_wrap',
+      products: '.grid.grid-collage'
+    }
+  };
+
+</script>
+<script defer src="{{ 'v5.globo.filter.lib.js' | asset_url }}"></script>
+{% if request.page_type == 'collection' or request.page_type == 'search' or home_filter or has_form %}<link rel="preload stylesheet" href="{{ 'v5.globo.filter.css' | asset_url }}" as="style">
+{% endif %}
+{% if globo_search %}<link rel="preload stylesheet" href="{{ 'v5.globo.search.css' | asset_url }}" as="style">
+{% endif %}
+{% endif %}
+
+
+  <script>
+    window.addEventListener('globoFilterRenderSearchCompleted', function () {
+      if (document.querySelector('#search-modal [data-modal-close]') !== null) {
+        document.querySelector('#search-modal [data-modal-close]').click();
+      }
+      setTimeout(function(){
+        document.querySelector('.gl-d-searchbox-input').focus();
+      }, 600);
+    });
+  </script>
+

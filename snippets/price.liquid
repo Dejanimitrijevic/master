@@ -1,0 +1,42 @@
+{%- liquid
+  assign show_currency_code = settings.currency_code_enabled
+
+  if disable_currency_code
+    assign show_currency_code = false
+  elsif is_total_price
+    assign show_currency_code = settings.cart_currency_code_enabled
+  endif
+
+  unless product == blank
+    assign disable_alternative_pricing = disable_alternative_pricing | default: false
+    assign alternative_pricing = ""
+    unless disable_alternative_pricing
+      assign metafield_list = settings.alternative_pricing_field_list
+      assign alternative_price = ""
+      assign given_metafields = metafield_list | newline_to_br | split: '<br />'
+      unless given_metafields.size < 1
+        for metafield_string in given_metafields
+          assign metafield_parts = metafield_string | split: '.'
+          assign metafield_namespace = metafield_parts | first | strip
+          assign parsed_metafield_namespace = product.metafields[metafield_namespace]
+          assign metafield_key = metafield_parts | last | strip
+          assign parsed_metafield = parsed_metafield_namespace[metafield_key]
+          if parsed_metafield.value != blank
+            assign alternative_price = parsed_metafield.value
+            break
+          endif
+        endfor
+      endunless
+    endunless
+  endunless
+-%}
+
+{% if alternative_price != blank %}
+  {{ alternative_price }}
+{% else %}
+  {%- if show_currency_code -%}
+    {{- price | money_with_currency -}}
+  {%- else -%}
+    {{- price | money -}}
+  {%- endif -%}
+{% endif %}

@@ -1,0 +1,469 @@
+<div id="section-id-{{ section.id }}" class=" {% if section.settings.alternate_bg_color %}use-alt-bg {% endif %}" data-section-type="gallery" data-cc-animate>
+  {% style %}
+    #section-id-{{ section.id }} .gallery__item {
+      height: {{ section.settings.mobile_image_height }}px;
+    }
+
+    {% for block in section.blocks %}
+      {% if block.settings.video == blank %}
+        #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} .gallery__image {
+          background-position: {{ block.settings.mobile_image_position }};
+        }
+      {% else %}
+        #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} .video-container__fallback {
+          background-position: {{ block.settings.mobile_image_position }};
+        }
+
+        #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} video {
+          object-position: {{ block.settings.mobile_image_position }};
+        }
+      {% endif %}
+    {% endfor %}
+
+    @media (min-width: 768px) {
+      #section-id-{{ section.id }} .gallery__item {
+        height: {{ section.settings.desktop_image_height }}px;
+      }
+
+      {% for block in section.blocks %}
+        {% if block.settings.video == blank %}
+          #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} .gallery__image {
+            background-position: {{ block.settings.desktop_image_position }};
+          }
+        {% else %}
+          #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} .video-container__fallback {
+            background-position: {{ block.settings.desktop_image_position }};
+          }
+
+          #section-id-{{ section.id }} .gallery__item-{{ forloop.index }} video {
+            object-position: {{ block.settings.desktop_image_position }};
+          }
+        {% endif %}
+      {% endfor %}
+
+      #section-id-{{ section.id }} .line-1 {
+        {%- assign title_size_medium = section.settings.title_size | times: 0.7 -%}
+        font-size: {{ title_size_medium }}px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      #section-id-{{ section.id }} .line-1 {
+        font-size: {{ section.settings.title_size }}px;
+      }
+    }
+  {% endstyle %}
+
+  {%- unless section.settings.full_width -%}<div class="wide-container half-gutter section-spacing">{%- endunless -%}
+
+    {% if section.settings.title != blank %}
+      <div class="section-heading wide-container section-spacing section-spacing--top-only" data-cc-animate>
+        <h2 class="h2">{{ section.settings.title | escape }}</h2>
+      </div>
+    {% endif %}
+
+    <div class="cc-gallery
+      gallery--grid-{{ section.settings.grid }}
+      {% if section.settings.full_width and section.settings.enable_margin == false %}needs-alt-logo{% endif %}
+      {% if section.settings.enable_margin %} gallery--with-margins{% endif %}
+      {% if section.settings.enable_carousel %} gallery--mobile-carousel slick-slider-overlay-dots{% endif %}
+      {% if section.settings.full_width and section.settings.enable_margin %} gallery--with-vertical-outer-padding{% endif %}
+      {% if section.settings.full_width == false %} gallery--not-full-width{% endif %}
+      {% if section.settings.title != blank %} gallery--with-title{% endif %}"
+      data-grid="{{ section.settings.grid }}">
+
+      <div class="gallery__row">
+        {%- for block in section.blocks -%}
+
+          {%- liquid
+            assign forloop_mod_grid = forloop.index0 | modulo: section.settings.grid
+
+            assign heading_tag = "h2"
+            if block.settings.heading_h1
+              assign heading_tag = "h1"
+            endif
+          -%}
+
+          {%- if forloop.index0 > 0 and forloop_mod_grid == 0 -%}
+            </div><div class="gallery__row gallery__row--{{ forloop.index }}" {{ block.shopify_attributes }}>
+          {%- endif -%}
+          {%- assign show_overlay_text = false -%}
+          {%- if block.settings.title != blank or block.settings.subheading != blank or block.settings.button_label != blank -%}
+            {%- assign show_overlay_text = true -%}
+          {%- endif -%}
+
+          <div
+            data-cc-animate
+            class="gallery__item
+              gallery__item-{{ forloop.index }}
+              {% if block.settings.enlarge_image %}gallery__item--enlarged{% endif %}
+              image-overlay
+              {% if section.settings.overlay_style_tint %}image-overlay--bg-full{% endif %}
+              image-overlay--edge-boxes
+              lazyload--placeholder
+              {% unless section.settings.full_width and section.settings.enable_margin == false %}image-overlay--edge-boxes--pad-to-corner{% endunless %}
+              " {{ block.shopify_attributes }}>
+
+            {%- unless block.settings.link == blank or block.settings.text contains '</a>' -%}<a class="image-overlay__image-link" href="{{ block.settings.link }}">{%- endunless -%}
+
+            {%- if block.settings.image == blank and block.settings.video == blank -%}
+              <div class="gallery__image placeholder-image {% if show_overlay_text %}dark{% endif %}">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- elsif block.settings.video == blank -%}
+              <div class="gallery__image rimage-outer-wrapper rimage-background lazyload{% if section.settings.enable_carousel %}--manual{% endif %} fade-in"
+                  data-cc-animate="cc-zoom-out"
+                  data-bgset="{% render 'bgset', image: block.settings.image %}"
+                  data-sizes="auto"
+                  data-parent-fit="cover">
+                <noscript>
+                  <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%">
+                    <img src="{{ block.settings.image | img_url: '1024x1024' }}" alt="{{ block.settings.image.alt | escape }}" class="rimage__image">
+                  </div>
+                </noscript>
+              </div>
+            {%- else -%}
+              {% render 'inline-video', video: block.settings.video, image: block.settings.image %}
+            {%- endif -%}
+
+            {%- if show_overlay_text -%}
+            <div class="overlay-type overlay {{ block.settings.text_alignment }}" data-cc-animate>
+              <div class="inner">
+                <div>
+                  <div class="overlay__content {% if block.settings.button_label != blank %}has-button{% endif %}">
+                    {%- if block.settings.subheading != blank -%}
+                      <div class="feature-subheader">
+                        {{ block.settings.subheading | escape }}
+                      </div>
+                    {% endif %}
+
+                    {%- if block.settings.title != blank -%}
+                      <{{ heading_tag }} class="line-1 {% if section.settings.title_size >= 86 %}line-1--large{% endif %}">
+                        {{ block.settings.title | newline_to_br }}
+                      </{{ heading_tag }}>
+                    {%- endif -%}
+
+                    {%- if block.settings.text != blank -%}
+                      <div class="rte line-2 {% if block.settings.enlarge_text %}large-text{% endif %}">
+                        {{ block.settings.text }}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.button_label != blank -%}
+                      <div class="line-3">
+                        <span class="{% if section.settings.enlarge_text %}type-2{% endif %} button alt">
+                          {{ block.settings.button_label | escape }}
+                        </span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- unless block.settings.link == blank or block.settings.text contains '</a>' -%}</a>{%- endunless -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- unless section.settings.full_width -%}</div>{%- endunless -%}
+</div>
+
+
+{% schema %}
+{
+  "name": "Gallery",
+  "class": "section-gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Maximum columns per row",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop row heights",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 100,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile row heights",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 22,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Image/video heading text size",
+      "default": 44
+    },
+    {
+      "id": "enable_margin",
+      "type": "checkbox",
+      "label": "Add spacing",
+      "default": true
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": false
+    },
+    {
+      "id": "enable_carousel",
+      "type": "checkbox",
+      "label": "Enable mobile slideshow",
+      "default": true
+    },
+    {
+      "id": "overlay_style_tint",
+      "type": "checkbox",
+      "label": "Show overlay tint",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_bg_color",
+      "label": "Use alternate section color",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "If you're using an mp4 video, it's recommended to also add an image, which will be shown while the video loads"
+        },
+        {
+          "id": "video",
+          "type": "text",
+          "label": "MP4 video URL",
+          "info": "E.g. https://example.com/video.mp4 - will not work with YouTube or Vimeo. [Learn more](https://cleancanvas.co.uk/support/showcase/sections/#inner-anchor-5)"
+        },
+        {
+          "type": "select",
+          "id": "desktop_image_position",
+          "label": "Desktop alignment",
+          "info": "Used to keep the subject of your image/video in view",
+          "default": "center center",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top left"
+            },
+            {
+              "value": "top center",
+              "label": "Top center"
+            },
+            {
+              "value": "top right",
+              "label": "Top right"
+            },
+            {
+              "value": "center left",
+              "label": "Middle left"
+            },
+            {
+              "value": "center center",
+              "label": "Middle center"
+            },
+            {
+              "value": "center right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_position",
+          "label": "Mobile alignment",
+          "default": "center center",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top left"
+            },
+            {
+              "value": "top center",
+              "label": "Top center"
+            },
+            {
+              "value": "top right",
+              "label": "Top right"
+            },
+            {
+              "value": "center left",
+              "label": "Middle left"
+            },
+            {
+              "value": "center center",
+              "label": "Middle center"
+            },
+            {
+              "value": "center right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom right"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_image",
+          "label": "Enlarge image/video",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Gallery"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Heading",
+          "default": "Tell your story"
+        },
+        {
+          "type": "checkbox",
+          "id": "heading_h1",
+          "label": "Set as primary page heading",
+          "info": "Uses <h1> tag. One per page recommended. [Learn more](https://cleancanvas.co.uk/support/showcase/seo#inner-anchor-0)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button",
+          "default": "Shop this"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "position--left position--top",
+              "label": "Top left"
+            },
+            {
+              "value": "position--hcenter position--top",
+              "label": "Top center"
+            },
+            {
+              "value": "position--right position--top",
+              "label": "Top right"
+            },
+            {
+              "value": "position--left position--vcenter",
+              "label": "Middle left"
+            },
+            {
+              "value": "position--hcenter position--vcenter",
+              "label": "Middle center"
+            },
+            {
+              "value": "position--right position--vcenter",
+              "label": "Middle right"
+            },
+            {
+              "value": "position--left position--bottom",
+              "label": "Bottom left"
+            },
+            {
+              "value": "position--hcenter position--bottom",
+              "label": "Bottom center"
+            },
+            {
+              "value": "position--right position--bottom",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "position--left position--bottom"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "settings": {
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

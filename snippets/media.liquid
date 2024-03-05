@@ -1,0 +1,111 @@
+{%- unless animation_type -%}
+  {%- assign animation_type = "cc-zoom-out" -%}
+{%- endunless -%}
+{% case media.media_type %}
+  {% when 'image' %}
+    <div class="product-media product-media--image"
+         data-media-id="{{ media.id }}"
+         data-media-type="{{ media.media_type }}">
+
+      <div class="rimage-wrapper lazyload--placeholder"
+           style="padding-top:{{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 | minus: 0.1 | round: 1 }}%">
+        {% assign img_url = media.preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+        <img class="rimage__image lazyload--manual {% unless prevent_lazyload %}fade-in{% endunless %}"
+             {% if prevent_lazyload %}
+               src="{{ media.preview_image | img_url: '360x' }}"
+             {% endif %}
+             data-src="{{ img_url }}"
+             data-widths="[460, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+             data-aspectratio="{{ media.preview_image.aspect_ratio }}"
+             data-sizes="auto"
+             height="{{ media.preview_image.height }}"
+             width="{{ media.preview_image.width }}"
+             alt="{{ media.preview_image.alt | escape }}"
+             {% if animate %}
+                data-cc-animate="{{ animation_type }}"
+                data-cc-animate-delay="{{ animate }}s"
+             {% endif %}
+        >
+        <noscript>
+          <img data-src="{{ media.preview_image | img_url: '1024x1024' }}" alt="{{ media.preview_image.alt | escape }}">
+        </noscript>
+      </div>
+
+    </div>
+
+  {% when 'video' %}
+
+    <div class="product-media product-media--video product-media--{{ media.id }} product-media--frame"
+         data-video-type="shopify"
+         data-media-id="{{ media.id }}"
+         data-media-type="{{ media.media_type }}"
+         data-enable-video-looping="{{ section.settings.enable_video_looping }}">
+
+      {%- comment -%}
+        Load different image sizes depending on the breakpoint for background image overlay
+      {%- endcomment -%}
+      {% style %}
+        @media screen and (max-width: 320px) {
+          .product-media--{{ media.id }} .plyr__poster {
+            background-image: url({{ media.preview_image | img_url: '360x' }}) !important;
+          }
+        }
+
+        @media screen and (min-width: 321px) and (max-width: 780px) {
+          .product-media--{{ media.id }} .plyr__poster {
+            background-image: url({{ media.preview_image | img_url: '900x' }}) !important;
+          }
+        }
+
+        @media screen and (min-width: 781px) and (max-width: 1080px) {
+          .product-media--{{ media.id }} .plyr__poster {
+            background-image: url({{ media.preview_image | img_url: '1080x' }}) !important;
+          }
+        }
+
+        @media screen and (min-width: 1081px) {
+          .product-media--{{ media.id }} .plyr__poster {
+            background-image: url({{ media.preview_image | img_url: '2048x' }}) !important;
+          }
+        }
+      {% endstyle %}
+
+      {{ media | video_tag: controls: true, class: 'media-video', image_size: '360x360' }}
+    </div>
+
+  {% when 'external_video' %}
+    <div class="product-media product-media--video product-media--external-video product-media--frame product-media--host-{{ media.host }}"
+         data-media-type="{{ media.media_type }}"
+         data-video-type="external"
+         data-media-id="{{ media.id }}"
+         data-video-id="{{ media.external_id }}"
+         data-enable-video-looping="{{ section.settings.enable_video_looping }}"
+         data-aspectratio="{{ media.aspect_ratio }}"
+         style="padding-bottom: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%">
+      <div class="product-media--video-mask product-media--video-mask-left"></div>
+      <div class="product-media--video-mask product-media--video-mask-right"></div>
+      <div class="product-media--video-mask product-media--video-mask-top"></div>
+      <div class="product-media--video-mask product-media--video-mask-bottom"></div>
+      {{ media | external_video_tag }}
+    </div>
+
+  {% when 'model' %}
+    <div class="product-media product-media--model product-media--frame"
+         data-media-type="{{ media.media_type }}"
+         data-media-id="{{ media.id }}"
+         data-model="{{ media.model | json }}">
+      <div class="product-media--model-mask product-media--model-mask-top"></div>
+      <div class="product-media--model-mask product-media--model-mask-bottom"></div>
+      <div class="product-media--model-mask product-media--model-mask-left"></div>
+      <div class="product-media--model-mask product-media--model-mask-right"></div>
+        {{ media | model_viewer_tag: image_size: '700x700', reveal: 'interaction', toggleable: true, data-model-id: media.id}}
+    </div>
+
+  {% else %}
+      <div class="product-media product-media--frame"
+           data-media-type="{{ media.media_type }}"
+           data-media-id="{{ media.id }}">
+          {{ media | media_tag: class: 'media-item', image_size: '360x360' }}
+      </div>
+
+{% endcase %}

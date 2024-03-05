@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor_and_type": {
+          "type": "vendor_and_type",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "tabs": {
+          "type": "tabs",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor_and_type",
+        "title",
+        "price",
+        "rating",
+        "variant_picker",
+        "buy_buttons",
+        "tabs"
+      ],
+      "settings": {}
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations"
+  ]
+}

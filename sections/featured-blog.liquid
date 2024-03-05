@@ -1,0 +1,479 @@
+<div id="section-id-{{ section.id }}" class="blog-section {% if section.settings.layout == 'slideshow' %}header-overlap-section needs-alt-logo{% endif %}" data-section-type="featured-blog" data-cc-animate>
+  {% assign blog = blogs[section.settings.blog] %}
+
+  {% if section.settings.layout == 'slideshow' %}
+    {% assign limit = section.settings.post_limit %}
+
+    {% if limit > 7 %}
+      {% assign limit = 7 %}
+    {% endif %}
+
+
+    {% style %}
+      {%- if section.settings.height == 'fixed' -%}
+        #section-id-{{ section.id }} .rimage-outer-wrapper,
+        #section-id-{{ section.id }} .placeholder-image {
+          height: {{ section.settings.height_mobile }}px;
+        }
+      {%- endif -%}
+
+      @media (min-width: 768px) {
+        {%- if section.settings.height == 'fixed' -%}
+          #section-id-{{ section.id }} .rimage-outer-wrapper ,
+          #section-id-{{ section.id }} .placeholder-image {
+            height: {{ section.settings.height_desktop }}px;
+          }
+        {%- endif -%}
+      }
+    {% endstyle %}
+
+    {%- unless section.settings.full_width -%}<div class="wide-container half-gutter section-spacing">{%- endunless -%}
+
+    <div class="slideshow-blog">
+      {% if section.settings.title != blank %}
+        <h2 class="slideshow-blog__title feature-subheader overlay-type" data-cc-animate data-cc-animate-delay="0.2s">
+          {{ section.settings.title | escape }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.show_view_all != blank %}
+        <a data-cc-animate-click class="slideshow-blog__view-all feature-subheader overlay-type"
+           href="{{ blog.url }}" data-cc-animate data-cc-animate-delay="0.3s">
+          {{ 'blogs.general.view_all' | t }}
+        </a>
+      {% endif %}
+
+      <div class="slideshow
+            slideshow--navigation-{{ section.settings.slide_navigation }}
+            slick-slider-overlay-dots-desktop
+            slick-slider-overlay-dots"
+           data-transition="{{ section.settings.slide_transition }}"
+           data-cc-animate="cc-fade-in-zoom-out"
+           data-autoplay="{{ section.settings.autoplay }}"
+           data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+           data-navigation="dots"
+           data-title-navigation="true"
+      >
+
+        {% unless section.settings.blog == blank %}
+
+          {% for article in blog.articles limit: limit %}
+            <div class="slide slide-{{ forloop.index }} height--{{ section.settings.height }} image-overlay {% if section.settings.overlay_style_tint %}image-overlay--bg-full{% endif %}" {{ block.shopify_attributes }}>
+              {% if article.image != blank %}
+                <div class="rimage-outer-wrapper lazyload--manual fade-in {% if section.settings.height == 'full' %}fill-viewport{% endif %}"
+                    data-bgset="{% render 'bgset', image: article.image %}"
+                    data-sizes="auto"
+                    data-parent-fit="cover">
+
+                  {%- if section.settings.height == 'adapt' -%}
+                    {%- assign aspect_ratio = blog.articles.first.image.aspect_ratio | default: 2.0 -%}
+                    <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: aspect_ratio | times: 100 }}%"></div>
+                  {%- endif -%}
+
+                  <noscript>
+                    <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%">
+                      <img src="{{ article.image | img_url: '1024x1024' }}" alt="{{ article.image.alt | escape }}" class="rimage__image"/>
+                    </div>
+                  </noscript>
+                </div>
+              {% else %}
+                <div class="placeholder-image placeholder--banner
+                  {% if block.settings.title != blank or block.settings.subheading != blank %}dark{% endif %}"
+                  {% if section.settings.height == 'adapt' %}style="padding-top: 50%"{% endif %}
+                >
+                  {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                  {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {% endif %}
+
+              <div class="overlay-type overlay position--left position--bottom">
+                <div class="inner">
+                  <div>
+                    <div class="overlay__content">
+                      {% if section.settings.blog_show_date or section.settings.blog_show_author %}
+                        <div class="feature-subheader" data-cc-animate data-cc-animate-delay="0.2s">
+                          {%- if section.settings.blog_show_date -%}
+                            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_date_year' }}</time>
+                          {%- endif -%}
+
+                          {%- if section.settings.blog_show_author -%}
+                            {%- if section.settings.blog_show_date -%},&nbsp;{%- endif -%}
+                            <span class="author">{{ article.author }}</span>
+                          {%- endif -%}
+                        </div>
+                      {% endif %}
+
+                      {%- if article.title != blank -%}
+                        <h3 class="line-1">
+                          <a data-cc-animate-click href="{{ article.url }}">{{ article.title }}</a>
+                        </h3>
+                      {%- endif -%}
+
+                      <div class="line-3">
+                        <a data-cc-animate-click class="button alt hover-grow" href="{{ article.url }}">
+                          {{ 'blogs.article.read_more' | t }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {% else %}
+
+            <div class="wide-container half-gutter section-spacing">
+              <p class="align-center">{{ 'onboarding.blog.empty' | t }}</p>
+            </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          {% for i in (1..5) %}
+            <div class="slide slide-{{ forloop.index }} height--{{ section.settings.height }} image-overlay {% if section.settings.overlay_style_tint %}image-overlay--bg-full{% endif %}">
+
+              <div class="placeholder-image placeholder--banner dark"
+                   {% if section.settings.height == 'adapt' %}style="padding-top: 50%"{% endif %}
+              >
+                {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+
+              <div class="overlay-type overlay position--left position--bottom">
+                <div class="inner">
+                  <div>
+                    <div class="overlay__content">
+                      {% if section.settings.blog_show_date or section.settings.blog_show_author %}
+                        <div class="feature-subheader" data-cc-animate data-cc-animate-delay="0.2s">
+                          {%- if section.settings.blog_show_date -%}
+                            <time datetime="{{ 'now' | date: '%Y-%m-%d' }}">
+                              {{ 'now' | date: format: 'month_date_year' }}
+                            </time>
+                          {%- endif -%}
+
+                          {%- if section.settings.blog_show_author -%}
+                            {%- if section.settings.blog_show_date -%},&nbsp;{%- endif -%}
+                            <span class="author">{{ 'onboarding.article.author' | t }}</span>
+                          {%- endif -%}
+                        </div>
+                      {% endif %}
+
+                      <h3 class="line-1">
+                        <span href="{{ article.url }}">{{ 'onboarding.article.title' | t }}</span>
+                      </h3>
+
+                      <div class="line-3">
+                        <span class="button alt hover-grow">
+                          {{ 'blogs.article.read_more' | t }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {% else %}
+
+            <div class="wide-container half-gutter section-spacing">
+              <p class="align-center">{{ 'onboarding.blog.empty' | t }}</p>
+            </div>
+
+          {% endfor %}
+
+        {% endunless %}
+      </div>
+
+      {% if limit > 1 %}
+        <ol class="overlay-type slideshow-blog__titles" data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.3s">
+          {% unless section.settings.blog == blank %}
+            {% for article in blog.articles limit: limit %}
+              <li>
+                <span class="slideshow-blog__titles__progress" style="transition-duration: {{ section.settings.autoplay_speed }}s"></span>
+                <a href="#" data-go-to-slide="{{ forloop.index | minus: 1 }}">
+                  {{ article.title }}
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..5) %}
+              <li>
+                <span class="slideshow-blog__titles__progress" style="transition-duration: {{ section.settings.autoplay_speed }}s"></span>
+                <a href="#" data-go-to-slide="{{ forloop.index | minus: 1 }}">
+                  {{ 'onboarding.article.title' | t }}
+                </a>
+              </li>
+            {% endfor %}
+          {% endunless %}
+        </ol>
+      {% endif %}
+    </div>
+
+    {%- unless section.settings.full_width -%}</div>{%- endunless -%}
+
+  {% elsif section.settings.layout == 'carousel' %}
+
+    <div class="carousel-blog product-slider">
+      <div class="wide-container half-gutter section-spacing {% if section.settings.alternate_bg_color %}use-alt-bg {% endif %}">
+        {% if section.settings.title != blank or section.settings.show_view_all %}
+          <div class="section-heading" data-cc-animate>
+            {% if section.settings.title != blank %}
+              <h2 class=" h2">{{ section.settings.title | escape }}</h2>
+            {% else %}
+              <div></div>
+            {% endif %}
+
+            {% if section.settings.show_view_all %}
+              <a data-cc-animate-click class="view-all-link" href="{{ blog.url }}">
+                {{ 'blogs.general.view_all' | t }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="swiper-container product-list" data-products-in-view="3" data-first-post-big="{{ section.settings.blog_first_post_big }}">
+
+          <div class="swiper-wrapper" data-normheights=".image" data-normheights-inner="img">
+            {% if section.settings.blog != blank %}
+              {% for article in blog.articles limit: section.settings.post_limit %}
+                <div class="swiper-slide">
+                  {% render 'article-block',
+                      article: article,
+                      show_date: section.settings.blog_show_date,
+                      show_author: section.settings.blog_show_author,
+                      image_shape: settings.blog_image_shape,
+                      blog_excerpt: settings.blog_excerpt
+                  %}
+                </div>
+              {% endfor %}
+
+            {% else %}
+              {% for i in (1..8) %}
+                <div class="swiper-slide">
+                  <span class="article-block third {% if settings.blog_excerpt == "below" %}article-block--excerpt-below{% endif %}"
+                    data-loop-index="{{ forloop.index }}"
+                    data-cc-animate="cc-fade-in-up"
+                    data-cc-animate-delay="{{ forloop.index | times: 0.15 }}s">
+
+                    <div class="article-block__inner">
+                      <div class="article-block__image">
+                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                        {% capture placeholder_svg_name %}collection-{{ current }}{% endcapture %}
+                        <div class="placeholder-image dark">{{ placeholder_svg_name | placeholder_svg_tag }}</div>
+                      </div>
+
+                      <div class="article-block__content">
+                        {% if section.settings.blog_show_date or section.settings.blog_show_author %}
+                          <div class="article-block__meta">
+                            {%- if section.settings.blog_show_date -%}
+                              <time datetime="{{ 'now' | date: '%Y-%m-%d' }}" class="feature-subheader">
+                                {{ 'now' | date: format: 'month_date_year' }}{%- if section.settings.blog_show_author -%},&nbsp;{%- endif -%}
+                              </time>
+                            {%- endif -%}
+                            {%- if section.settings.blog_show_author -%}
+                              <span class="author feature-subheader">{{ 'onboarding.article.author' | t }}</span>
+                            {%- endif -%}
+                          </div>
+                        {% endif %}
+
+                        <h3 class="article-block__title align-left">{{ 'onboarding.article.title' | t }}</h3>
+
+                        {% if settings.blog_excerpt == "below" %}
+                          <div class="article-block__excerpt rte">
+                            {{ 'onboarding.article.excerpt' | t | truncate: 150 }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <div class="swiper-scrollbar"></div>
+          <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
+          <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Blog posts",
+    "class": "section-featured-blog",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Blog posts"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+      },
+      {
+        "type": "range",
+        "id": "post_limit",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "label": "Posts",
+        "default": 3,
+        "info": "The slideshow will only show a maximum of 7 posts"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' link",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "radio",
+        "id": "layout",
+        "label": "Layout",
+        "default": "slideshow",
+        "options": [
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          },
+          {
+            "value": "slideshow",
+            "label": "Slideshow"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Carousel settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_first_post_big",
+        "label": "Enlarge first blog post",
+        "info": "If selected, the 'Image shape' settings will be ignored",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "alternate_bg_color",
+        "label": "Use alternate section color",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Slideshow settings"
+      },
+      {
+        "type": "radio",
+        "id": "height",
+        "label": "Slide height",
+        "options": [
+          {
+            "value": "full",
+            "label": "Full screen"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed height"
+          }
+        ],
+        "default": "full"
+      },
+      {
+        "type": "range",
+        "id": "height_desktop",
+        "min": 600,
+        "max": 1000,
+        "step": 20,
+        "unit": "px",
+        "label": "Desktop fixed height",
+        "default": 700
+      },
+      {
+        "type": "range",
+        "id": "height_mobile",
+        "min": 360,
+        "max": 1000,
+        "step": 20,
+        "unit": "px",
+        "label": "Mobile fixed height",
+        "default": 500
+      },
+      {
+        "id": "full_width",
+        "type": "checkbox",
+        "label": "Full page width",
+        "default": true
+      },
+      {
+        "id": "overlay_style_tint",
+        "type": "checkbox",
+        "label": "Show overlay tint",
+        "default": true
+      },
+      {
+        "id": "autoplay",
+        "type": "checkbox",
+        "label": "Auto-rotate slides",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "autoplay_speed",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "unit": "s",
+        "label": "Change slides every",
+        "default": 7
+      },
+      {
+        "type": "select",
+        "id": "slide_transition",
+        "label": "Transition",
+        "options": [
+          {
+            "value": "zoom",
+            "label": "Zoom"
+          },
+          {
+            "value": "slide",
+            "label": "Slide"
+          },
+          {
+            "value": "fade",
+            "label": "Fade"
+          }
+        ],
+        "default": "slide"
+      }
+  ],
+    "presets": [
+      {
+        "name": "Blog posts",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

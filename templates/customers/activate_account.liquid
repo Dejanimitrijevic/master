@@ -1,0 +1,26 @@
+<div class="central py-medium" id="template">
+  <div class="template_header">
+    <h1 class="h2 feature-header" data-cc-animate>{{ 'customer.activate_account.title' | t }}</h1>
+    <p class="note" data-cc-animate data-cc-animate-delay="0.1s">{{ 'customer.activate_account.subtext' | t }}</p>
+  </div>
+
+  {% form 'activate_customer_password' %}
+  {{ form.errors | default_errors }}
+  <div class="form">
+
+    <div id="password" class="input-row" data-cc-animate data-cc-animate-delay="0.2s">
+      <input aria-label="{{ 'customer.activate_account.password' | t }}" placeholder="{{ 'customer.activate_account.password' | t }}" type="password" value="" name="customer[password]" id="customer_password" class="large password" size="16" />
+    </div>
+
+    <div id="password_confirm" class="input-row" data-cc-animate data-cc-animate-delay="0.4s">
+      <input aria-label="{{ 'customer.activate_account.password_confirm' | t }}" placeholder="{{ 'customer.activate_account.password_confirm' | t }}" type="password" value="" name="customer[password_confirmation]" id="customer_password_confirmation" class="large password" size="16" />
+    </div>
+
+    <div class="wide-action">
+      <input type="submit" value="{{ 'customer.activate_account.submit' | t }}"  data-cc-animate data-cc-animate-delay="0.6s"/>
+      <input type="submit" class="cancel" name="decline" id="customer_decline" value="{{ 'customer.activate_account.cancel' | t }}"  data-cc-animate data-cc-animate-delay="0.8s"/>
+    </div>
+
+  </div>
+  {% endform %}
+</div>

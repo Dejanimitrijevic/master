@@ -1,0 +1,29 @@
+<div class="section-spacing {% unless section.settings.skip_container %}container{% endunless %}" data-cc-animate>
+  {%- for block in section.blocks -%}
+    {% render block %}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Apps",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "skip_container",
+      "label": "Full page width",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apps"
+    }
+  ]
+}
+{% endschema %}

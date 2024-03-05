@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "cart_show_title": true,
+        "cart_terms_show": false,
+        "cart_terms_page": "",
+        "continue_shopping_page": "",
+        "cart_note_show": true,
+        "show_tax_and_shipping": true,
+        "show_additional_checkout_buttons": true,
+        "show_backorder_text": true,
+        "show_alternative_pricing": true,
+        "show_alternative_pricing_over_price": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

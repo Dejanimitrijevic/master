@@ -1,0 +1,135 @@
+{% unless section.settings.title == blank %}
+  <div class="central">
+    <div class="content {% unless settings.coll_content_bg_show %}transparent{% endunless %}">
+      <h1 class="feature-header feature-header__no-gap" data-cc-animate>
+        {{ section.settings.title | escape }}
+      </h1>
+    </div>
+  </div>
+{% endunless %}
+
+<div class="wide-container half-gutter" data-section-type="list-collections" data-cc-animate data-cc-animate-delay="0.2s">
+  {%- if section.settings.layout == 'rows' -%}
+    {%- if section.settings.grid == 2 -%}
+      {%- assign product_class = 'column half' -%}
+    {%- elsif section.settings.grid == 3 -%}
+      {%- assign product_class = 'column third' -%}
+    {%- else -%}
+      {%- assign product_class = 'column quarter' -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {% if section.settings.display_type == 'all' %}
+
+    {%- paginate collections by section.settings.collections_per_page -%}
+      <div data-cc-animate class="product-list product-list--{{ section.settings.layout }} {% if section.settings.layout == 'columns' %}jiggly-split dynamic-col-{{ section.settings.grid }}{% else %}grid--uniform{% endif %}">
+        {%- for collection in collections -%}
+          {%- render 'collection-block', collection: collection, product_class: product_class, i: forloop.index -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div data-cc-animate class="pagination">
+          {{ paginate | default_pagination }}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+
+  {% else %}
+
+      <div data-cc-animate class="product-list product-list--{{ section.settings.layout }} {% if section.settings.layout == 'columns' %}jiggly-split dynamic-col-{{ section.settings.grid }}{% else %}grid--uniform{% endif %}">
+        {% for block in section.blocks %}
+          {%- assign collection = collections[block.settings.collection] -%}
+          {%- if collection == blank -%}
+            {%- render 'onboarding-collection-block', product_class: product_class, i: forloop.index -%}
+          {% else %}
+            {%- render 'collection-block', collection: collection, product_class: product_class, i: forloop.index -%}
+          {% endif %}
+        {%- endfor -%}
+      </div>
+
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "py-medium",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collections"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Collection layout",
+        "options": [
+          {
+            "value": "columns",
+            "label": "Collage"
+          },
+          {
+            "value": "rows",
+            "label": "Grid"
+          }
+        ],
+        "default": "rows",
+        "info": "Collage will only work when the 'Image shape'  is set to Natural - in Collections / Image shape"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Collections per row",
+        "min": 2,
+        "max": 4,
+        "default": 3
+      },
+      {
+        "type": "range",
+        "id": "collections_per_page",
+        "label": "Collections per page",
+        "min": 12,
+        "max": 48,
+        "step": 2,
+        "default": 24
+      },
+      {
+        "type": "radio",
+        "id": "display_type",
+        "label": "Select collections to show",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "selected",
+            "label": "Selected"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

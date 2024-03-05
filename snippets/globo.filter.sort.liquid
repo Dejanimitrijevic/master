@@ -1,0 +1,444 @@
+{% raw %}
+{% assign root_url = {% endraw %}"{%- if routes.root_url != "/" -%}{{ routes.root_url }}{%- endif -%}"{% raw %} %}
+{% assign page = {% endraw %}"{{ request.page_type }}"{% raw %} %}
+<div id="gf-controls-container">
+    {% if page != 'search' %}
+  <form class="gf-controls-search-form">
+    <input value="{{terms | escape}}" onkeyup="this.setAttribute('value', this.value); searchProducts(this.value);" name="q" placeholder="{{translation.product.search | default: "Search products"}}" aria-label="{{translation.product.search | default: "Search products"}}" autocomplete="off" class="gf-controls-search-input"/>
+    <button onclick="clearSearchProducts()" type="button" class="gf-controls-clear-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11.414 10l6.293-6.293a1 1 0 10-1.414-1.414L10 8.586 3.707 2.293a1 1 0 00-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 101.414 1.414L10 11.414l6.293 6.293A.998.998 0 0018 17a.999.999 0 00-.293-.707L11.414 10z" fill="#5C5F62"/></svg>
+    </button>
+    <button type="button" class="gf-controls-search-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2 8c0-3.309 2.691-6 6-6s6 2.691 6 6-2.691 6-6 6-6-2.691-6-6zm17.707 10.293l-5.395-5.396A7.946 7.946 0 0016 8c0-4.411-3.589-8-8-8S0 3.589 0 8s3.589 8 8 8a7.954 7.954 0 004.897-1.688l5.396 5.395A.998.998 0 0020 19a1 1 0 00-.293-.707z" fill="#3d4246"/></svg>
+    </button>
+  </form>
+  {% endif %}
+    {% if pagination.total > 0 %}
+  <div class="gf-actions">
+    <div class="gf-filter-trigger">
+      <h3 class="gf-refine-toggle-mobile" tabindex="0">
+        <span onclick="globofilter.toggleCanvas()"><i class="fa fa-tasks" aria-hidden="true"></i> {{translation.filter.filter_by | default: "Filter by"}}</span>
+      </h3>
+    </div>
+
+    <span class="gf-summary">
+            {% assign plurality = translation.search.products | default: "Products" %}
+      {% assign singular = translation.search.product | default: "Product" %}
+      <b>{{pagination.total}}</b> {{pagination.total | pluralize: singular, plurality}}
+          </span>
+
+    <div class="gf-filter-selection">
+
+                        <div class="sort-by limit-by hidden-xs">
+        <label for="setLimit">{{translation.product.limit | default: "Show"}}</label>
+        <select id="setLimit" class="sortby-select" onchange="setLimit(this.value); return false;">
+          <option selected value="12">12</option><option  value="24">24</option><option  value="48">48</option>        </select>
+      </div>
+            
+            {% assign relevance = '' %}
+      {% endraw %}{% if request.page_type == 'search' %}{% raw %}
+      {% assign relevance = 'relevance,' %}
+      {% endraw %}{% endif %}{% raw %}
+      
+      {% assign available_sort = relevance | append: 'best-selling,title-ascending,title-descending,price-ascending,price-descending,mf-my_fields-antal_plattor_per_kvm-ascending,mf-my_fields-antal_plattor_per_kvm-descending,' | append: sort_by | append: ',{% endraw %}{{collection.default_sort_by}}{% raw %}' | replace: "featured", "manual" | split: "," | uniq %}
+      {% capture sort_by_text %}
+        {% if sort_by =='best-selling' %}
+          {{translation.sort.best_selling | default: "Best Selling"}}
+        {% elsif sort_by == 'manual' %}
+          {{translation.sort.manually | default: "Featured"}}
+        {% elsif sort_by == 'relevance' %}
+          {{translation.sort.relevance | default: "Relevance"}}
+        {% elsif sort_by == 'featured' %}
+          {{translation.sort.manually | default: "Featured"}}
+        {% elsif sort_by == 'stock-descending' %}
+          {{translation.sort.availability_in_stock_first | default: "Availability"}}
+        {% elsif sort_by == 'title-ascending' %}
+          {{translation.sort.alphabetically_a_z | default: "Alphabetically, A-Z"}}
+        {% elsif sort_by == 'title-descending' %}
+          {{translation.sort.alphabetically_z_a | default: "Alphabetically, Z-A"}}
+        {% elsif sort_by == 'price-ascending' %}
+          {{translation.sort.price_low_to_high | default: "Price, low to high"}}
+        {% elsif sort_by == 'price-descending' %}
+          {{translation.sort.price_high_to_low | default: "Price, high to low"}}
+        {% elsif sort_by == 'created-descending' %}
+          {{translation.sort.date_new_to_old | default: "Date, new to old"}}
+        {% elsif sort_by == 'created-ascending' %}
+          {{translation.sort.date_old_to_new | default: "Date, old to new"}}
+        {% elsif sort_by == 'sale-descending' %}
+          {{translation.sort.sale_off | default: "% Sale off"}}
+                {% elsif sort_by == 'mf-my_fields-farg-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Färg ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-farg-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Färg descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-antal_kvm_per_pall-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal kvm per pall ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-antal_kvm_per_pall-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal kvm per pall descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-anv_ndningsomr_de-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Användningsområde ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-anv_ndningsomr_de-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Användningsområde descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-frostbest_ndig-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Frostbeständig ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-frostbest_ndig-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Frostbeständig descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-fogbredd-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Fogbredd ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-fogbredd-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Fogbredd descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-stensort-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Stensort ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-stensort-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Stensort descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-bearbetning-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Bearbetning ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-bearbetning-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Bearbetning descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-vikt_per_platta-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per platta ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-vikt_per_platta-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per platta descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-leveranstid-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Leveranstid ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-leveranstid-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Leveranstid descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-ce_standard-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}CE / Standard ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-ce_standard-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}CE / Standard descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-lagerort-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Lagerort ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-lagerort-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Lagerort descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-ursprungsland-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Ursprungsland ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-ursprungsland-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Ursprungsland descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-storlek-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Storlek ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-storlek-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Storlek descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-antal_plattor_per_kvm-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal plattor per kvm ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-antal_plattor_per_kvm-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal plattor per kvm descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-vikt_per_stolpe-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per stolpe ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-vikt_per_stolpe-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per stolpe descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-pris_per_kvm-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Pris per kvm ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-pris_per_kvm-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Pris per kvm descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-vikt_per_pall-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per pall ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-vikt_per_pall-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per pall descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-vikt_per_kantsten-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per kantsten ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-vikt_per_kantsten-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per kantsten descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-antal_per_pall-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal per pall ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-antal_per_pall-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Antal per pall descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-vikt_per_trappsteg-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per trappsteg ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-vikt_per_trappsteg-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Vikt per trappsteg descending{% endif %}
+                {% elsif sort_by == 'mf-my_fields-artikelnummer-ascending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Artikelnummer ascending{% endif %}
+        {% elsif sort_by == 'mf-my_fields-artikelnummer-descending' %}
+          {% if translation.sort[sort_by] %}{{translation.sort[sort_by]}}{% else %}Artikelnummer descending{% endif %}
+                {% endif %}
+      {% endcapture %}
+      {% comment %}
+      <div class="sort-by">
+        <label for="changeSortBy" class="sort-by-toggle" role="button" tabindex="0" aria-expanded="false">{{translation.sort.sort_by | default: "Sort by"}}</label>
+        <select id="changeSortBy" class="sortby-select" onchange="changeSortBy(this.value); return false;">
+          {% if available_sort contains 'best-selling' %}<option {% if sort_by == 'best-selling' %} selected{% endif %} value="best-selling">{{translation.sort.best_selling | default: "Best Selling"}}</option>{% endif %}
+          {% if available_sort contains 'featured' or available_sort contains 'manual' %}<option {% if sort_by == 'manual' %} selected{% endif %} value="manual">{{translation.sort.manually | default: "Featured"}}</option>{% endif %}
+          {% if available_sort contains 'stock-descending' %}<option {% if sort_by == 'stock-descending' %} selected{% endif %} value="stock-descending">{{translation.sort.availability_in_stock_first | default: "Availability"}}</option>{% endif %}
+          {% if available_sort contains 'relevance' %}<option {% if sort_by == 'relevance' %} selected{% endif %} value="relevance">{{translation.sort.relevance | default: "Relevance"}}</option>{% endif %}
+          {% if available_sort contains 'title-ascending' %}<option {% if sort_by == 'title-ascending' %} selected{% endif %} value="title-ascending">{{translation.sort.alphabetically_a_z | default: "Alphabetically, A-Z"}}</option>{% endif %}
+          {% if available_sort contains 'title-descending' %}<option {% if sort_by == 'title-descending' %} selected{% endif %} value="title-descending">{{translation.sort.alphabetically_z_a | default: "Alphabetically, Z-A"}}</option>{% endif %}
+          {% if available_sort contains 'price-ascending' %}<option {% if sort_by == 'price-ascending' %} selected{% endif %} value="price-ascending">{{translation.sort.price_low_to_high | default: "Price, low to high"}}</option>{% endif %}
+          {% if available_sort contains 'price-descending' %}<option {% if sort_by == 'price-descending' %} selected{% endif %} value="price-descending">{{translation.sort.price_high_to_low | default: "Price, high to low"}}</option>{% endif %}
+          {% if available_sort contains 'created-descending' %}<option {% if sort_by == 'created-descending' %} selected{% endif %} value="created-descending">{{translation.sort.date_new_to_old | default: "Date, new to old"}}</option>{% endif %}
+          {% if available_sort contains 'created-ascending' %}<option {% if sort_by == 'created-ascending' %} selected{% endif %} value="created-ascending">{{translation.sort.date_old_to_new | default: "Date, old to new"}}</option>{% endif %}
+          {% if available_sort contains 'sale-descending' %}<option {% if sort_by == 'sale-descending' %} selected{% endif %} value="sale-descending">{{translation.sort.sale_off | default: "% Sale off"}}</option>{% endif %}
+        </select>
+      </div>
+      {% endcomment %}
+      <div class="sort-by">
+        <label for="globo-dropdown-sort_options" class="sort-by-toggle" role="button" tabindex="0" aria-expanded="false"><span>{{sort_by_text}}</span></label>
+        <div id="globo-dropdown-sort_options" class="globo-dropdown-custom__options">
+          {% for sort in available_sort %}
+            {% if sort == 'best-selling' %}
+              <span data-sort="best-selling" onclick="changeSortBy('best-selling');">{{translation.sort.best_selling | default: "Best Selling"}}</span>
+            {% elsif sort == 'featured' or sort == 'manual' %}
+              <span data-sort="manual" onclick="changeSortBy('manual');">{{translation.sort.manually | default: "Featured"}}</span>
+            {% elsif sort == 'stock-descending' %}
+              <span data-sort="stock-descending" onclick="changeSortBy('stock-descending');">{{translation.sort.availability_in_stock_first | default: "Availability"}}</span>
+            {% elsif sort == 'relevance' %}
+              <span data-sort="relevance" onclick="changeSortBy('relevance');">{{translation.sort.relevance | default: "Relevance"}}</span>
+            {% elsif sort == 'title-ascending' %}
+              <span data-sort="title-ascending" onclick="changeSortBy('title-ascending');">{{translation.sort.alphabetically_a_z | default: "Alphabetically, A-Z"}}</span>
+            {% elsif sort == 'title-descending' %}
+              <span data-sort="title-descending" onclick="changeSortBy('title-descending');">{{translation.sort.alphabetically_z_a | default: "Alphabetically, Z-A"}}</span>
+            {% elsif sort == 'price-ascending' %}
+              <span data-sort="price-ascending" onclick="changeSortBy('price-ascending');">{{translation.sort.price_low_to_high | default: "Price, low to high"}}</span>
+            {% elsif sort == 'price-descending' %}
+              <span data-sort="price-descending" onclick="changeSortBy('price-descending');">{{translation.sort.price_high_to_low | default: "Price, high to low"}}</span>
+            {% elsif sort == 'created-descending' %}
+              <span data-sort="created-descending" onclick="changeSortBy('created-descending');">{{translation.sort.date_new_to_old | default: "Date, new to old"}}</span>
+            {% elsif sort == 'created-ascending' %}
+              <span data-sort="created-ascending" onclick="changeSortBy('created-ascending');">{{translation.sort.date_old_to_new | default: "Date, old to new"}}</span>
+            {% elsif sort == 'sale-descending' %}
+              <span data-sort="sale-descending" onclick="changeSortBy('sale-descending');">{{translation.sort.sale_off | default: "% Sale off"}}</span>
+                        {% elsif sort == 'mf-my_fields-farg-ascending' %}
+              <span data-sort="mf-my_fields-farg-ascending" onclick="changeSortBy('mf-my_fields-farg-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Färg ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-farg-descending' %}
+              <span data-sort="mf-my_fields-farg-descending" onclick="changeSortBy('mf-my_fields-farg-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Färg descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-antal_kvm_per_pall-ascending' %}
+              <span data-sort="mf-my_fields-antal_kvm_per_pall-ascending" onclick="changeSortBy('mf-my_fields-antal_kvm_per_pall-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal kvm per pall ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-antal_kvm_per_pall-descending' %}
+              <span data-sort="mf-my_fields-antal_kvm_per_pall-descending" onclick="changeSortBy('mf-my_fields-antal_kvm_per_pall-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal kvm per pall descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-anv_ndningsomr_de-ascending' %}
+              <span data-sort="mf-my_fields-anv_ndningsomr_de-ascending" onclick="changeSortBy('mf-my_fields-anv_ndningsomr_de-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Användningsområde ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-anv_ndningsomr_de-descending' %}
+              <span data-sort="mf-my_fields-anv_ndningsomr_de-descending" onclick="changeSortBy('mf-my_fields-anv_ndningsomr_de-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Användningsområde descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-frostbest_ndig-ascending' %}
+              <span data-sort="mf-my_fields-frostbest_ndig-ascending" onclick="changeSortBy('mf-my_fields-frostbest_ndig-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Frostbeständig ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-frostbest_ndig-descending' %}
+              <span data-sort="mf-my_fields-frostbest_ndig-descending" onclick="changeSortBy('mf-my_fields-frostbest_ndig-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Frostbeständig descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-fogbredd-ascending' %}
+              <span data-sort="mf-my_fields-fogbredd-ascending" onclick="changeSortBy('mf-my_fields-fogbredd-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Fogbredd ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-fogbredd-descending' %}
+              <span data-sort="mf-my_fields-fogbredd-descending" onclick="changeSortBy('mf-my_fields-fogbredd-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Fogbredd descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-stensort-ascending' %}
+              <span data-sort="mf-my_fields-stensort-ascending" onclick="changeSortBy('mf-my_fields-stensort-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Stensort ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-stensort-descending' %}
+              <span data-sort="mf-my_fields-stensort-descending" onclick="changeSortBy('mf-my_fields-stensort-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Stensort descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-bearbetning-ascending' %}
+              <span data-sort="mf-my_fields-bearbetning-ascending" onclick="changeSortBy('mf-my_fields-bearbetning-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Bearbetning ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-bearbetning-descending' %}
+              <span data-sort="mf-my_fields-bearbetning-descending" onclick="changeSortBy('mf-my_fields-bearbetning-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Bearbetning descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-vikt_per_platta-ascending' %}
+              <span data-sort="mf-my_fields-vikt_per_platta-ascending" onclick="changeSortBy('mf-my_fields-vikt_per_platta-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per platta ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-vikt_per_platta-descending' %}
+              <span data-sort="mf-my_fields-vikt_per_platta-descending" onclick="changeSortBy('mf-my_fields-vikt_per_platta-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per platta descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-leveranstid-ascending' %}
+              <span data-sort="mf-my_fields-leveranstid-ascending" onclick="changeSortBy('mf-my_fields-leveranstid-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Leveranstid ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-leveranstid-descending' %}
+              <span data-sort="mf-my_fields-leveranstid-descending" onclick="changeSortBy('mf-my_fields-leveranstid-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Leveranstid descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-ce_standard-ascending' %}
+              <span data-sort="mf-my_fields-ce_standard-ascending" onclick="changeSortBy('mf-my_fields-ce_standard-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}CE / Standard ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-ce_standard-descending' %}
+              <span data-sort="mf-my_fields-ce_standard-descending" onclick="changeSortBy('mf-my_fields-ce_standard-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}CE / Standard descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-lagerort-ascending' %}
+              <span data-sort="mf-my_fields-lagerort-ascending" onclick="changeSortBy('mf-my_fields-lagerort-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Lagerort ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-lagerort-descending' %}
+              <span data-sort="mf-my_fields-lagerort-descending" onclick="changeSortBy('mf-my_fields-lagerort-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Lagerort descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-ursprungsland-ascending' %}
+              <span data-sort="mf-my_fields-ursprungsland-ascending" onclick="changeSortBy('mf-my_fields-ursprungsland-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Ursprungsland ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-ursprungsland-descending' %}
+              <span data-sort="mf-my_fields-ursprungsland-descending" onclick="changeSortBy('mf-my_fields-ursprungsland-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Ursprungsland descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-storlek-ascending' %}
+              <span data-sort="mf-my_fields-storlek-ascending" onclick="changeSortBy('mf-my_fields-storlek-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Storlek ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-storlek-descending' %}
+              <span data-sort="mf-my_fields-storlek-descending" onclick="changeSortBy('mf-my_fields-storlek-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Storlek descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-antal_plattor_per_kvm-ascending' %}
+              <span data-sort="mf-my_fields-antal_plattor_per_kvm-ascending" onclick="changeSortBy('mf-my_fields-antal_plattor_per_kvm-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal plattor per kvm ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-antal_plattor_per_kvm-descending' %}
+              <span data-sort="mf-my_fields-antal_plattor_per_kvm-descending" onclick="changeSortBy('mf-my_fields-antal_plattor_per_kvm-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal plattor per kvm descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-vikt_per_stolpe-ascending' %}
+              <span data-sort="mf-my_fields-vikt_per_stolpe-ascending" onclick="changeSortBy('mf-my_fields-vikt_per_stolpe-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per stolpe ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-vikt_per_stolpe-descending' %}
+              <span data-sort="mf-my_fields-vikt_per_stolpe-descending" onclick="changeSortBy('mf-my_fields-vikt_per_stolpe-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per stolpe descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-pris_per_kvm-ascending' %}
+              <span data-sort="mf-my_fields-pris_per_kvm-ascending" onclick="changeSortBy('mf-my_fields-pris_per_kvm-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Pris per kvm ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-pris_per_kvm-descending' %}
+              <span data-sort="mf-my_fields-pris_per_kvm-descending" onclick="changeSortBy('mf-my_fields-pris_per_kvm-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Pris per kvm descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-vikt_per_pall-ascending' %}
+              <span data-sort="mf-my_fields-vikt_per_pall-ascending" onclick="changeSortBy('mf-my_fields-vikt_per_pall-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per pall ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-vikt_per_pall-descending' %}
+              <span data-sort="mf-my_fields-vikt_per_pall-descending" onclick="changeSortBy('mf-my_fields-vikt_per_pall-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per pall descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-vikt_per_kantsten-ascending' %}
+              <span data-sort="mf-my_fields-vikt_per_kantsten-ascending" onclick="changeSortBy('mf-my_fields-vikt_per_kantsten-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per kantsten ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-vikt_per_kantsten-descending' %}
+              <span data-sort="mf-my_fields-vikt_per_kantsten-descending" onclick="changeSortBy('mf-my_fields-vikt_per_kantsten-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per kantsten descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-antal_per_pall-ascending' %}
+              <span data-sort="mf-my_fields-antal_per_pall-ascending" onclick="changeSortBy('mf-my_fields-antal_per_pall-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal per pall ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-antal_per_pall-descending' %}
+              <span data-sort="mf-my_fields-antal_per_pall-descending" onclick="changeSortBy('mf-my_fields-antal_per_pall-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Antal per pall descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-vikt_per_trappsteg-ascending' %}
+              <span data-sort="mf-my_fields-vikt_per_trappsteg-ascending" onclick="changeSortBy('mf-my_fields-vikt_per_trappsteg-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per trappsteg ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-vikt_per_trappsteg-descending' %}
+              <span data-sort="mf-my_fields-vikt_per_trappsteg-descending" onclick="changeSortBy('mf-my_fields-vikt_per_trappsteg-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Vikt per trappsteg descending{% endif %}
+              </span>
+                        {% elsif sort == 'mf-my_fields-artikelnummer-ascending' %}
+              <span data-sort="mf-my_fields-artikelnummer-ascending" onclick="changeSortBy('mf-my_fields-artikelnummer-ascending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Artikelnummer ascending{% endif %}
+              </span>
+            {% elsif sort == 'mf-my_fields-artikelnummer-descending' %}
+              <span data-sort="mf-my_fields-artikelnummer-descending" onclick="changeSortBy('mf-my_fields-artikelnummer-descending');">
+                {% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}Artikelnummer descending{% endif %}
+              </span>
+                        {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+          </div>
+
+    <div class="globo-selected-items-wrapper visible-xs">
+      {% if has_filter and filters %}
+      <ul class="globo-selected-items">
+        {% capture selected_item_html %}
+        {% assign filter_count = 0 %}
+        {% for filter in filters %}
+          {% if filter.is_selected %}
+            {% if filter.style == 'Slider' %}
+              {% assign filter_count = filter_count | plus: 1 %}
+              <li class="selected-item gf-option-label">
+                <a onclick="removeFilter({{filter.id}})">
+                  <span class="selected-item">
+                    <strong>
+                      {% if filter.attribute == 'Price' %}
+                        <span class="money">{{filter.values.min | money}}</span> - <span class="money">{{filter.values.max | money}}</span>
+                      {% elsif filter.attribute == 'Percent Sale' %}
+                        {{filter.values.min}}% - {{filter.values.max}}%
+                      {% else %}
+                        {{filter.values.min}} - {{filter.values.max}}
+                      {% endif %}
+                    </strong>
+                  </span>
+                  <span class="gf-clear">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11.414 10l6.293-6.293a1 1 0 10-1.414-1.414L10 8.586 3.707 2.293a1 1 0 00-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 101.414 1.414L10 11.414l6.293 6.293A.998.998 0 0018 17a.999.999 0 00-.293-.707L11.414 10z" fill="#5C5F62"/></svg>
+                  </span>
+                </a>
+              </li>
+            {% else %}
+              {% for value in filter.values %}
+                {% if value.selected %}
+                  {% assign filter_count = filter_count | plus: 1 %}
+                  <li class="selected-item gf-option-label">
+                    <a onclick="removeFilterValue({{filter.id}}, '{{value.value | replace:"\'", "\\\'" | escape_once}}')">
+                      <span class="selected-item">
+                        <strong>
+                          {% if filter.style == 'Rating' %}
+                          <span class="gf-label gf-stars">
+                            {% for star in (1..5) %}
+                              {% if star <= value.value %}
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.2 18a.8.8 0 01-.792-.914l.743-5.203-2.917-2.917a.8.8 0 01.434-1.355l4.398-.733 2.218-4.435a.8.8 0 011.435.008l2.123 4.361 4.498.801a.8.8 0 01.425 1.353l-2.917 2.917.744 5.203a.8.8 0 01-1.154.828l-4.382-2.22-4.502 2.223A.792.792 0 015.2 18z" fill="#ff9800"/></svg>
+                              {% else %}
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M6.71 15.116l3.357-1.658.892.452 2.327 1.178-.56-3.912.708-.707 1.29-1.29-3.235-.576-.445-.915-1.059-2.176L8.4 8.683l-1.005.168-2.098.35 1.975 1.975-.141.99-.422 2.95zM5.2 18a.8.8 0 01-.792-.914l.743-5.203-2.917-2.917a.8.8 0 01.434-1.355l4.398-.733 2.218-4.435a.8.8 0 011.435.008l2.123 4.361 4.498.801a.8.8 0 01.425 1.353l-2.917 2.917.744 5.203a.8.8 0 01-1.154.828l-4.382-2.22-4.502 2.223A.792.792 0 015.2 18z" fill="#ff9800"/></svg>
+                              {% endif %}
+                            {% endfor %}
+                          </span>
+                          {% elsif filter.attribute contains 'metafield:' and value.value contains 'https:' -%}
+                          <img style="max-height: 21px;display: block;" src="{{ value.value }}" />
+                          {%- else -%}
+                          {{value.label}}
+                          {%- endif -%}
+                        </strong>
+                      </span>
+                      <span class="gf-clear"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11.414 10l6.293-6.293a1 1 0 10-1.414-1.414L10 8.586 3.707 2.293a1 1 0 00-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 101.414 1.414L10 11.414l6.293 6.293A.998.998 0 0018 17a.999.999 0 00-.293-.707L11.414 10z" fill="#5C5F62"/></svg></span>
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% endcapture %}
+        {% if filter_count > 1 %}
+        <li class="selected-item gf-option-label"><a onclick="clearAllFilter()" class="clear-refinements">{{ translation.filter.clear_all | default: "Clear all"}}</a></li>
+        {% endif %}
+        {{selected_item_html}}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endraw %}

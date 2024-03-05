@@ -1,0 +1,149 @@
+{% comment %}
+    This portion of code is a stripped down copy of the "buy_buttons" block code from main-product.liquid.
+    In the future the stripped portions can be added back in with switches and checks to make it a single re-usable code snippet for all buy instances.
+    For now, let's just use this to get the desired outcome and add on to it at a later time.
+{% endcomment %}
+{% form 'product', product, id: product_form_id, class: product_form_class %}
+    {% if product.metafields.custom.lastpall == true %}
+        <input type="hidden" name="properties[_pallet_num]" value="{{product.metafields.custom.pallet_num}}">
+        <input type="hidden" name="properties[_mainproduct_id]" value="{{product.id}}">
+    {% endif %}
+    <select name="id" class="original-selector" aria-label="{{ 'products.product.selector_label' | t | escape }}">
+        {% for variant in product.variants %}
+            <option value="{{ variant.id }}"
+                    {% if variant == current_variant %} selected="selected"{% endif %}
+                    {% if variant.inventory_management != blank %}
+                        data-inventory="{{ variant.inventory_quantity }}"
+                    {% endif %}
+                    data-stock="{% if variant.inventory_management != blank and variant.inventory_quantity <= 0 %}out{% endif %}">{{ variant.title | escape }}</option>
+        {% endfor %}
+    </select>
+    {% if product.metafields.custom.lastpall == true %}
+        {% for item in product.metafields.custom.pallet_product.value %}
+            <input type="hidden" name="items[{{ forloop.index0 }}]id" value="{{ item.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="items[{{forloop.index0}}]quantity" data-product = {{item.title}} >
+            <input type="hidden" name="items[{{forloop.index0}}][properties][_mainproduct_id]" value="{{product.id}}">
+            <input type="hidden" name="properties[_subproduct_id_{{forloop.index0}}]" value="{{item.selected_or_first_available_variant.id}}">
+        {% endfor %} 
+    {% endif %}
+
+    {%- if block.settings.show_tax_and_shipping -%}
+        {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+            <div class="rte product-policies">
+                <p>
+                    {%- if cart.taxes_included -%}
+                        {{ 'products.general.include_taxes' | t }}
+                    {%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%}
+                        {{ 'products.general.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                    {%- endif -%}
+                </p>
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+
+    <div class="product-status-message"></div>
+
+    <div class="product-detail__form__action product-detail__gap-lg product-detail__form__options--with-calculated-quantity">
+        <div class="quantity-section" style="display: flex; gap: 10px; width: 100%;">
+            {% unless product.tags contains 'Kantsten' or product.tags contains 'Stolpar' or product.tags contains 'Trappor' %}
+                {% if block.settings.show_labels %}<label class="calculated-input-label" for="ratio"><span>{{ block.settings.antecedent_label | default: 'ratio' }}</span>{% endif %}
+                    <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                        <a href="#" data-quantity="down">&minus;</a>
+                        <input {% unless block.settings.show_labels %}aria-label="{{ block.settings.antecedent_label | default: 'ratio' }}"{% endunless %} class="select-on-focus" name="ratio" data-consequent="{{ block.settings.consequent }}"  value="0" type="number" min="0" step="0.01"/>
+                        <a href="#" data-quantity="up">&plus;</a>
+                    </div>
+                {% if block.settings.show_labels %}</label>{% endif %}       
+                
+            {% endunless %}
+        
+            {%- capture quantity_label -%}
+                {%- if block.settings.quantity_label != blank -%}{{ block.settings.quantity_label }}{%- else -%}{{ 'products.product.quantity' | t }}{%- endif -%}
+            {%- endcapture -%}
+
+            
+
+            {% comment %} input for small stons {% endcomment %}
+            {% if product.metafields.custom.antal_kvm_per_sack %}
+                {% if block.settings.show_labels %}<label class="calculated-input-label" for="quantity"><span>SÄCKAR</span>{% endif %}
+                <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                    <a href="#" data-quantity="down">&minus;</a>
+                    <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="bags" name="quantity" value="0" />
+                    <a href="#" data-quantity="up">&plus;</a>
+                </div>
+                {% if block.settings.show_labels %}</label>{% endif %}
+            {% else %}
+                {% comment %} input for Stycken {% endcomment %}
+                {% if block.settings.show_labels %}<label class="calculated-input-label" for="quantity"><span>{{ quantity_label }}</span>{% endif %}
+                    <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                    <a href="#" data-quantity="down">&minus;</a>
+                    <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
+                    <a href="#" data-quantity="up">&plus;</a>
+                    </div>
+                {% if block.settings.show_labels %}</label>{% endif %}
+            {% endif %}
+
+            {% if product.metafields.custom.lastpall == true %}
+                
+                <label class="pallet calculated-input-label" for="quantity"><span>Pall</span>
+                <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                <a href="#" data-quantity="down">&minus;</a>
+                <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus"  name="pallet" value="0" data-limit="{{product.metafields.custom.pallet_num}}" />
+                <a href="#" data-quantity="up">&plus;</a>
+                </div>
+                </label>
+            {% endif %}
+        
+        </div>           
+
+        <button class="b button" type="submit" name="add" id="AddToCart" disabled>
+            {%- if product.template_suffix contains 'preorder' -%}
+                {{ 'products.product.preorder' | t }}
+            {%- else -%}
+                {{ 'products.product.add_to_cart' | t }}
+            {%- endif -%}
+        </button>
+ 
+        {% if product.metafields.custom.lastpall == true %}
+            <div class="price-pallet">
+                <div class="total-price">
+                    <span class="title">Pris</span>
+                    <div class="price-value price theme-money" data-product-price="{{product.price}}">0 kr</div>
+                </div>
+                <div class="sub-price">
+                    <span class="subtitle-price">Emballage & Hantering</span>
+                    <div class="sub-price-section">
+                        {% if product.metafields.custom.pallet_product %}
+                            {% for pallet_product in product.metafields.custom.pallet_product.value %}
+                                <div class="pallet-price" data-item="{{pallet_product.title}}">
+                                    <span class="title">{{pallet_product.title}}</span>
+                                    <span class="aa sub-price-value pallet-value" data-pallet-{{ forloop.index}} ="{{pallet_product.price}}">{{pallet_product.price | divided_by:100 }} kr</span>
+                                </div> 
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                </div>
+                
+            </div>
+        {% endif %}
+
+        {% if product.metafields.custom.antal_kvm_per_sack %}
+            <div class="price-pallet">
+                <div class="total-price">
+                    <span class="title">Pris</span>
+                    <div class="price-value price theme-money" data-product-price="{{product.price}}">0 kr</div>
+                </div>
+            </div>
+        {% endif %}
+
+
+
+    </div>
+
+    {{ form | payment_terms }}
+
+{% endform %}
+
+
+  

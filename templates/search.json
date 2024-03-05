@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "search_show_title": true,
+        "layout": "rows",
+        "grid": 4,
+        "grid_mobile": "2",
+        "products_per_page": 12,
+        "enable_infinite_scroll": true,
+        "show_vendor": false,
+        "show_filter_counts": false,
+        "show_filter_deadends": true,
+        "ajax_products": true,
+        "filter_mode": "simple",
+        "sticky_sidebar": false,
+        "collapse_filters_method": "none",
+        "collapse_sort_by": false,
+        "enable_sorting": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

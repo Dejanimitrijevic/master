@@ -1,0 +1,37 @@
+{%- if rating_value != blank -%}
+  {%- liquid
+    assign rating_decimal = 0
+    assign decimal = rating_value.rating | modulo: 1
+    if decimal > 0 and decimal <= 0.5
+      assign rating_decimal = 0.5
+    endif
+    assign rating_ceiling = rating_value.rating | ceil
+  -%}
+  <div class="cc-rating" role="img" data-rating-decimal="{{ rating_decimal }}" aria-label="{{ 'general.accessibility_labels.star_reviews_info' | t: rating_value: rating_value, rating_max: rating_value.scale_max }}">
+    <span aria-hidden="true" class="cc-rating-stars">
+      <span class="cc-rating-stars--inactive">
+        {%- liquid
+          for i in (1..5)
+            render 'rating-star-icon'
+          endfor
+        -%}
+      </span>
+      <span class="cc-rating-stars--active">
+        {%- liquid
+          for i in (1..rating_ceiling)
+            render 'rating-star-icon'
+          endfor
+        -%}
+      </span>
+    </span>
+  </div>
+  <p class="cc-rating-text">
+    <span aria-hidden="true">{{ rating_value }} / {{ rating_value.scale_max }}</span>
+  </p>
+  {% if rating_count != blank and rating_count > 0 %}
+    <p class="cc-rating-count">
+      <span aria-hidden="true">({{ rating_count }})</span>
+      <span class="visually-hidden">{{ rating_count }} {{ "general.accessibility_labels.total_reviews" | t }}</span>
+    </p>
+  {% endif %}
+{%- endif -%}

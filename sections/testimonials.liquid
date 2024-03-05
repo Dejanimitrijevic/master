@@ -1,0 +1,258 @@
+<div id="section-id-{{ section.id }}"
+     data-section-type="testimonials"
+     class="half-gutter section-spacing section-spacing--top-only {% if section.settings.alternate_bg_color %}use-alt-bg{% endif %}" data-cc-animate>
+  {% assign no_images = true %}
+  {%- for block in section.blocks -%}
+    {% if block.settings.image1 != blank or block.settings.image2 != blank %}
+      {% assign no_images = false %}
+    {% endif %}
+  {%- endfor -%}
+
+  {% if section.settings.title != blank %}
+    <div class="container container--large">
+      <div class="section-heading section-heading--with-spacing {% if no_images %}centered{% endif %}" data-cc-animate>
+        <h2 class="h2">{{ section.settings.title | escape }}</h2>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container container--large {% if no_images %}section-testimonials--no-images{% endif %}">
+
+    {%- for block in section.blocks -%}
+      {% assign image1 = block.settings.image1 %}
+      {% assign image1_caption = block.settings.image1_caption %}
+      {% assign image2 = block.settings.image2 %}
+      {% assign image2_caption = block.settings.image2_caption %}
+
+      {% if image1 == blank and image2 != blank %}
+        {% assign image1 = image2 %}
+        {% assign image1_caption = image2_caption %}
+        {% assign image2 = "" %}
+        {% assign image2_caption = "" %}
+      {% endif %}
+
+      <div class="cc-testimonial
+        cc-testimonial--align-{{ block.settings.layout }}
+        {% if image1 == blank and image2 == blank %}cc-testimonial--no-images{% endif %}
+        {% if image1 != blank and image2 == blank %}cc-testimonial--one-image{% endif %}
+        {% if image1 != blank and image2 != blank %}cc-testimonial--two-images{% endif %}
+        "
+        {{ block.shopify_attributes }}
+           data-scrollax-parent="true">
+
+        {% if image1 != blank %}
+          <div class="cc-testimonial__column">
+            <figure class="cc-testimonial__image-with-caption" data-cc-animate>
+              <div class="cc-testimonial__image-wrapper">
+                <div data-scrollax="properties: { 'translateY': '100px' }">
+                  {%- render 'responsive-image', image: image1 -%}
+                </div>
+              </div>
+
+              {% if image1_caption != blank %}
+                <figcaption class="cc-testimonial__image-with-caption__caption">
+                  {{ image1_caption }}
+                </figcaption>
+              {% endif %}
+            </figure>
+          </div>
+        {% endif %}
+
+        <div class="cc-testimonial__column">
+          <div class="cc-testimonial__content overlay-type">
+            {%- if block.settings.star_rating > 0 -%}
+              <div class="cc-testimonial__star-rating" data-cc-animate="cc-fade-in-up">
+                {%- for i in (1..block.settings.star_rating) -%}
+                <span class="cc-testimonial__star">{% render 'svg-star' %}</span>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="line-1" data-cc-animate="cc-fade-in-up">
+                {{ block.settings.title | newline_to_br }}
+              </h3>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="rte line-2" data-cc-animate="cc-fade-in-up">
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+
+            {% if block.settings.button_label != blank %}
+              <div class="button-row" data-cc-animate="cc-fade-in-up">
+                <a data-cc-animate-click
+                   class="overlay-type-ignore {% if section.settings.button_style == 'link' %}link-display {% else %}button {% if section.settings.button_style == 'secondary' %}alt{% endif %}{% endif %}"
+                   href="{{ block.settings.link }}">
+                  {{ block.settings.button_label | escape }}
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
+          {% if image2 != blank %}
+            <div class="cc-testimonial__image-wrapper">
+              <figure class="cc-testimonial__image-with-caption cc-testimonial__image-with-caption--small" data-cc-animate>
+                <div class="cc-testimonial__image-wrapper">
+                  <div data-scrollax="properties: { 'translateY': '50px' }">
+                    {%- render 'responsive-image', image: image2 -%}
+                  </div>
+                </div>
+
+                {% if image2_caption != blank %}
+                  <figcaption class="cc-testimonial__image-with-caption__caption">
+                    {{ image2_caption }}
+                  </figcaption>
+                {% endif %}
+              </figure>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Testimonials",
+    "class": "section-testimonials",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "default": "primary",
+        "options": [
+          {
+            "label": "Button - primary",
+            "value": "primary"
+          },
+          {
+            "label": "Button - secondary",
+            "value": "secondary"
+          },
+          {
+            "label": "Link",
+            "value": "link"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "alternate_bg_color",
+        "label": "Use alternate section color",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "range",
+            "id": "star_rating",
+            "min": 0,
+            "max": 5,
+            "step": 1,
+            "label": "Star rating",
+            "default": 5
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Heading",
+            "default": "Testimonial header"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to elaborate on what your happy customers are saying. Use this section without the stars for unique text with image layouts.</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image",
+            "info": "750 x 1000px recommended"
+          },
+          {
+            "type": "text",
+            "id": "image1_caption",
+            "label": "Image caption"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image",
+            "info": "750 x 1000px recommended"
+          },
+          {
+            "type": "text",
+            "id": "image2_caption",
+            "label": "Image caption"
+          },
+          {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "options": [
+              {
+                "value": "left",
+                "label": "Testimonial on left"
+              },
+              {
+                "value": "right",
+                "label": "Testimonial on right"
+              }
+            ],
+            "default": "left"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "settings": {},
+        "blocks": [
+          {
+            "type": "testimonial",
+            "settings": {
+              "layout": "right"
+            }
+          },
+          {
+            "type": "testimonial",
+            "settings": {
+              "layout": "left"
+            }
+          },
+          {
+            "type": "testimonial",
+            "settings": {
+              "layout": "left"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

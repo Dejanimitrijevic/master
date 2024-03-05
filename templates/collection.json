@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_collection_content": true,
+        "show_collection_image": true,
+        "description_position": "top",
+        "layout": "rows",
+        "grid": 4,
+        "grid_mobile": "2",
+        "products_per_page": 24,
+        "enable_infinite_scroll": true,
+        "show_vendor": false,
+        "show_alternative_pricing": true,
+        "show_alternative_pricing_over_price": true,
+        "show_filter_counts": true,
+        "show_filter_deadends": true,
+        "ajax_products": true,
+        "filter_mode": "none",
+        "sticky_sidebar": false,
+        "collapse_filters_method": "none",
+        "collapse_sort_by": false,
+        "enable_sorting": false,
+        "show_featured_in_sort": false
+      }
+    },
+    "165097599365f3c9d5": {
+      "type": "rich-text",
+      "settings": {
+        "subheading": "",
+        "title": "Beskrivning",
+        "title_size": 48,
+        "heading_h1": false,
+        "text": "<p>{{ collection.metafields.my_fields.long_description | metafield_tag }}<\/p>",
+        "image_width": 120,
+        "button_label": "",
+        "button_link": "",
+        "button_style": "auto",
+        "text_alignment": "left",
+        "enlarge_text": false,
+        "full_width": true,
+        "no_padding_bottom": false,
+        "color_scheme": "standard",
+        "color_bg": "",
+        "color_text": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "165097599365f3c9d5"
+  ]
+}

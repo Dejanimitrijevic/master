@@ -1,0 +1,124 @@
+{% if render_li  %}
+<li class="nav-ctas__cta">
+{% else %}
+<div class="nav-ctas__cta">
+{% endif %}
+
+  {%- unless cta.settings.cta_link1 == blank or cta.settings.text contains '</a>' -%}<a data-cc-animate-click class="inner image-overlay image-overlay--bg-full" href="{{ cta.settings.cta_link1 }}">{% else %}<div class="inner image-overlay image-overlay--bg-full">{%- endunless -%}
+
+  {% if cta.settings.image1 == blank %}
+    <div class="placeholder-image placeholder--banner dark">
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {% else %}
+    <div class="rimage-outer-wrapper rimage-background lazyload--manual fade-in"
+         style="background-position: {{ cta.settings.desktop_image_position1 }}"
+         data-bgset="{% render 'bgset', image: cta.settings.image1 %}"
+         data-sizes="auto"
+         data-parent-fit="cover">
+      <noscript>
+        <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: cta.settings.image1.aspect_ratio | times: 100 }}%">
+          <img src="{{ cta.settings.image1 | img_url: '1024x1024' }}" alt="{{ cta.settings.image1.alt | escape }}" class="rimage__image">
+        </div>
+      </noscript>
+    </div>
+  {% endif %}
+
+  <div class="overlay-type overlay position--hcenter position--vcenter">
+    <div class="inner">
+      <div>
+        <div class="overlay__content">
+          {%- if cta.settings.subheading1 != blank -%}
+            <div class="feature-subheader">
+              {{ cta.settings.subheading1 | escape }}
+            </div>
+          {% endif %}
+
+          {%- if cta.settings.title1 != blank -%}
+            <h2 class="line-1">
+              {{ cta.settings.title1 | newline_to_br }}
+            </h2>
+          {%- endif -%}
+
+          {%- if cta.settings.text1 != blank -%}
+            <div class="rte line-2">
+              {{ cta.settings.text1 }}
+            </div>
+          {%- endif -%}
+
+          {%- if cta.settings.button_label1 != blank -%}
+            <div class="line-3">
+              <span class="button no-hover">{{ cta.settings.button_label1 | escape }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+    {%- unless cta.settings.cta_link1 == blank or cta.settings.text contains '</a>' -%}</a>{% else %}</div>{%- endunless -%}
+{% if render_li  %}
+</li>
+{% else %}
+</div>
+{% endif %}
+
+{% if cta.settings.image2 != blank %}
+  {% if render_li  %}
+  <li class="nav-ctas__cta">
+  {% else %}
+  <div class="nav-ctas__cta">
+  {% endif %}
+
+    {%- unless cta.settings.cta_link2 == blank or cta.settings.text contains '</a>' -%}<a data-cc-animate-click href="{{ cta.settings.cta_link2 }}" class="inner image-overlay image-overlay--bg-full">{% else %}<div class="inner image-overlay image-overlay--bg-full">{%- endunless -%}
+
+    <div class="rimage-outer-wrapper rimage-background lazyload--manual fade-in"
+         style="background-position: {{ cta.settings.desktop_image_position2 }}"
+         data-bgset="{% render 'bgset', image: cta.settings.image2 %}"
+         data-sizes="auto"
+         data-parent-fit="cover">
+      <noscript>
+        <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: cta.settings.image2.aspect_ratio | times: 100 }}%">
+          <img src="{{ cta.settings.image2 | img_url: '1024x1024' }}" alt="{{ cta.settings.image2.alt | escape }}" class="rimage__image">
+        </div>
+      </noscript>
+    </div>
+
+    <div class="overlay-type overlay position--hcenter position--vcenter">
+      <div class="inner">
+        <div>
+          <div class="overlay__content">
+            {%- if cta.settings.subheading2 != blank -%}
+              <div class="feature-subheader">
+                {{ cta.settings.subheading2 | escape }}
+              </div>
+            {% endif %}
+
+            {%- if cta.settings.title2 != blank -%}
+              <h2 class="line-1">
+                {{ cta.settings.title2 | newline_to_br }}
+              </h2>
+            {%- endif -%}
+
+            {%- if cta.settings.text2 != blank -%}
+              <div class="rte line-2">
+                {{ cta.settings.text2 }}
+              </div>
+            {%- endif -%}
+
+            {%- if cta.settings.button_label2 != blank -%}
+              <div class="line-3">
+                <span class="button no-hover">{{ cta.settings.button_label2 | escape }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- unless cta.settings.cta_link2 == blank or cta.settings.text contains '</a>' -%}</a>{% else %}</div>{%- endunless -%}
+
+  {% if render_li  %}
+    </li>
+  {% else %}
+    </div>
+  {% endif %}
+{% endif %}

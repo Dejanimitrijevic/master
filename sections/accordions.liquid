@@ -1,0 +1,247 @@
+<div id="section-id-{{ section.id }}" data-section-type="accordion" class="half-gutter section-spacing {% if section.settings.alternate_bg_color %}use-alt-bg{% endif %}" data-components="accordion">
+  <div class="accordion-container reading-width {% if section.settings.title == blank %}no-title{% endif %}">
+    {% if section.settings.title != blank %}
+      <div class="section-heading section-heading--with-spacing container container--large"
+           data-cc-animate>
+        <h2 class="h2">{{ section.settings.title | escape }}</h2>
+
+        {% if section.settings.view_all_page %}
+          <a data-cc-animate-click class="view-all-link" href="{{ section.settings.view_all_page }}">
+            {{ 'faq.view_all' | t }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="container container--large" data-cc-animate>
+      {% for block in section.blocks %}
+        <div {{ block.shopify_attributes }}>
+          {% capture accordion_title %}
+            {% if block.settings.icon != "none" %}
+              {% render 'icon', icon: block.settings.icon %}
+            {% endif %}
+            {{ block.settings.title }}
+          {% endcapture %}
+
+          {%- render "accordion", first_item_open: block.settings.open, item1_title: accordion_title, item1_content: block.settings.text -%}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Expandable content",
+  "class": "section-accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Expandable content"
+    },
+    {
+      "id": "alternate_bg_color",
+      "type": "checkbox",
+      "label": "Use alternate section color",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "view_all_page",
+      "label": "Link to more info",
+      "info": "If specified, shows a 'View all' link to this URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "none",
+          "options": [
+  {
+    "value": "none",
+    "label": "None"
+  },
+  {
+    "value": "award",
+    "label": "Award"
+  },
+  {
+    "value": "box",
+    "label": "Box"
+  },
+  {
+    "value": "briefcase",
+    "label": "Briefcase"
+  },
+  {
+    "value": "calendar",
+    "label": "Calendar"
+  },
+  {
+    "value": "chat_bubble",
+    "label": "Chat bubble"
+  },
+  {
+    "value": "check_mark",
+    "label": "Check mark"
+  },
+  {
+    "value": "clock",
+    "label": "Clock"
+  },
+  {
+    "value": "credit_card",
+    "label": "Credit card"
+  },
+  {
+    "value": "dollar_sign",
+    "label": "Dollar sign"
+  },
+  {
+    "value": "dryer",
+    "label": "Dryer"
+  },
+  {
+    "value": "eye",
+    "label": "Eye"
+  },
+  {
+    "value": "feather",
+    "label": "Feather"
+  },
+  {
+    "value": "gift",
+    "label": "Gift"
+  },
+  {
+    "value": "heart",
+    "label": "Heart"
+  },
+  {
+    "value": "iron",
+    "label": "Iron"
+  },
+  {
+    "value": "leaf",
+    "label": "Leaf"
+  },
+  {
+    "value": "leather",
+    "label": "Leather"
+  },
+  {
+    "value": "lock",
+    "label": "Lock"
+  },
+  {
+    "value": "map_pin",
+    "label": "Map pin"
+  },
+  {
+    "value": "pants",
+    "label": "Pants"
+  },
+  {
+    "value": "percent",
+    "label": "Percent"
+  },
+  {
+    "value": "plane",
+    "label": "Plane"
+  },
+  {
+    "value": "price_tag",
+    "label": "Price tag"
+  },
+  {
+    "value": "question_mark",
+    "label": "Question mark"
+  },
+  {
+    "value": "return",
+    "label": "Return"
+  },
+  {
+    "value": "ruler",
+    "label": "Ruler"
+  },
+  {
+    "value": "scissors",
+    "label": "Scissors"
+  },
+  {
+    "value": "shirt",
+    "label": "Shirt"
+  },
+  {
+    "value": "shoe",
+    "label": "Shoe"
+  },
+  {
+    "value": "silhouette",
+    "label": "Silhouette"
+  },
+  {
+    "value": "star",
+    "label": "Star"
+  },
+  {
+    "value": "truck",
+    "label": "Truck"
+  },
+  {
+    "value": "washing",
+    "label": "Washing"
+  }
+]
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add the content to appear when the content is expanded</p>"
+        },
+        {
+          "id": "open",
+          "type": "checkbox",
+          "label": "Open",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Expandable content",
+      "settings": {
+      },
+      "blocks": [
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,729 @@
+{
+  "current": {
+    "col_text": "#111111",
+    "col_headings": "#111111",
+    "col_links": "#111111",
+    "col_page_bg": "#ffffff",
+    "col_stars": "#eeaf2e",
+    "col_head_links": "#111111",
+    "col_head_links_alt": "#ffffff",
+    "col_head_nav_bg": "#ffffff",
+    "col_head_links_active": "#111111",
+    "col_head_featured": "#dd6666",
+    "col_head_announcement_bar_bg": "#c4d5a9",
+    "col_head_announcement_text": "#111111",
+    "col_btn": "#ffffff",
+    "col_btn_bg": "#c4d5a9",
+    "col_btn_secondary": "#111111",
+    "col_btn_bg_secondary": "#ffffff",
+    "coll_col_sale_text": "#e32c2b",
+    "coll_col_sale": "rgba(0,0,0,0)",
+    "coll_col_sold_text": "#111111",
+    "coll_col_sold": "rgba(0,0,0,0)",
+    "coll_col_background": "",
+    "image_overlay_text": "#ffffff",
+    "image_overlay_bg": "#111111",
+    "image_overlay_opacity": 14,
+    "alt_bg_col": "#fbf7f5",
+    "alt_bg_text_col": "#111111",
+    "footer_text": "#111111",
+    "footer_background": "#ffffff",
+    "prod_thumb_shape": "square",
+    "prod_thumb_crop": true,
+    "prod_thumb_crop_align": "center",
+    "prod_hover": "second_image",
+    "show_product_block_reviews": false,
+    "show_sale_label": true,
+    "show_preorder_label": false,
+    "show_sold_out_label": false,
+    "show_new_label": false,
+    "prod_label_layout": "standard",
+    "collection_thumb_shape": "portrait",
+    "collection_image_position": "center",
+    "collection_hover_effect": "info",
+    "collection_show_product_count": false,
+    "type_base_font": "neuzeit_s_n4",
+    "type_heading_font": "futura_n6",
+    "type_nav_font": "neuzeit_s_n4",
+    "type_logo_font": "neuzeit_s_n9",
+    "font_size_base_int": 15,
+    "font_size_nav_int": 30,
+    "font_size_nav_sub_int": 18,
+    "buttons_style": "uppercase",
+    "buttons_shape": "sharp",
+    "social_facebook_url": "https:\/\/www.facebook.com\/Stengrossen-110734390625367\/",
+    "social_youtube_url": "https:\/\/www.youtube.com\/channel\/UCqC24LA0JsC3PjgZDnIHEEQ",
+    "social_instagram_url": "https:\/\/www.instagram.com\/stengrossen\/",
+    "favicon": "shopify:\/\/shop_images\/Stengrossen-favicon.png",
+    "animation_enabled_desktop": true,
+    "animation_enabled_mobile": true,
+    "currency_code_enabled": false,
+    "cart_currency_code_enabled": true,
+    "metafield_key_label_list": "ce_standard: CE \/ Standard\nfrostbest_ndig: Frostbeständig\nanv_ndningsomr_de: Användningsområde\nfarg: Färg\npris_per_sack: Pris per säck",
+    "alternative_pricing_field_list": "my_fields.pris_per_kvm\ncustom.pris_per_styck\ncustom.pris_per_sack",
+    "checkout_logo_image": "shopify:\/\/shop_images\/stengrossen-logo-removebg-preview.png",
+    "checkout_logo_position": "left",
+    "checkout_logo_size": "medium",
+    "checkout_body_background_image": "",
+    "checkout_body_background_color": "#fff",
+    "checkout_input_background_color_mode": "white",
+    "checkout_sidebar_background_color": "#fafafa",
+    "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+    "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+    "checkout_accent_color": "#c4d5a9",
+    "checkout_button_color": "#c4d5a9",
+    "checkout_error_color": "#e32c2b",
+    "alternative_pricing_field": "my_fields.pris_per_kvm",
+    "prod_hover_effect": "image",
+    "enable_reviews": true,
+    "show_product_reviews": false,
+    "col_mod_bg": "#e3a7a6",
+    "buttons_shadow": false,
+    "use_mod_bg_op": false,
+    "col_content_bg": "#ffffff",
+    "use_content_bg_trans": false,
+    "col_nav_prim": "#ffffff",
+    "col_nav_sec": "#ffffff",
+    "col_select_bg": "#ffffff",
+    "col_select_txt": "#000000",
+    "prod_label_col": "#ecb1b0",
+    "bg_image_method": "fill",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "menu_linklist": "main-menu",
+          "nav_featured_link": "Sale",
+          "desktop_navigation": "inline",
+          "nav_opacity": "opaque",
+          "nav_positioning": "sticky",
+          "logo": "shopify:\/\/shop_images\/stengrossen-logo-removebg-preview.png",
+          "desktop_logo_width": 115,
+          "mobile_logo_width": 140,
+          "use_alt_logo_when_active": true,
+          "logo_h1": true,
+          "show_announcement": true,
+          "announcement_home_only": false,
+          "announcement_text": "Kampanj! Just nu 25% på all dekorsten!",
+          "announcement_text_size": 15,
+          "announcement_link": "shopify:\/\/collections\/dekorsten",
+          "nav_cart_icon": "basket2",
+          "show_country_selector": true,
+          "show_language_selector": true
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "1601021503013": {
+            "type": "newsletter",
+            "settings": {
+              "title": "Nyhetsbrev",
+              "text": "<p>Registrera er för att ta del av vårt nyhetsbrev.<\/p>",
+              "show_social_icons_newsletter": true
+            }
+          },
+          "1601022030378": {
+            "type": "menu",
+            "settings": {
+              "title": "Kategorier",
+              "menu": "footer-ketegorier"
+            }
+          },
+          "1601020687263": {
+            "type": "menu",
+            "settings": {
+              "title": "Företaget",
+              "menu": "footer"
+            }
+          },
+          "1600963133542": {
+            "type": "text",
+            "settings": {
+              "title": "Kontakta oss",
+              "text": "<p>0775 - 15 20 25<\/p><p><strong>Telefontider <\/strong><\/p><p>Måndag - Fredag: <em>08.00 - 17.00<\/em> <\/p><p>Lunchstängt: <em>11.00 - 12.00<\/em><\/p><p>Lör, Sön, Helgdag: <em>Stängt<\/em><\/p><p><strong>E-post<\/strong><em><strong> <\/strong><\/em><a href=\"mailto:info@stengrossen.se\">info@stengrossen.se<\/a><\/p>",
+              "image_width": 100,
+              "show_social_icons": false
+            }
+          }
+        },
+        "block_order": [
+          "1601021503013",
+          "1601022030378",
+          "1601020687263",
+          "1600963133542"
+        ],
+        "settings": {
+          "lower_menu": "",
+          "show_payment_icons": false,
+          "show_country_selector": true,
+          "show_language_selector": true
+        }
+      },
+      "popup": {
+        "type": "popup",
+        "settings": {
+          "mode": "disabled",
+          "popup_delay_seconds": 5,
+          "popup_dismiss_for_days": 2,
+          "position": "center",
+          "title": "Sign up and save",
+          "text": "<p>Entice customers to sign up for your mailing list with discounts or exclusive offers.<\/p>",
+          "show_newsletter": true,
+          "show_social_icons": true
+        }
+      },
+      "ms-smtprice-sec": {
+        "type": "ms-smtprice-sec",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "2950567246721570496": {
+        "type": "shopify:\/\/apps\/tabs-by-station\/blocks\/global_embed_block\/19980fb9-f2ca-4ada-ad36-c0364c3318b8",
+        "disabled": false,
+        "settings": {
+          "init_type": "fallback",
+          "init_selector": "",
+          "replace_contents": false,
+          "init_timing": "immediate",
+          "custom_script": "",
+          "custom_style": ""
+        }
+      },
+      "2530237624131658027": {
+        "type": "shopify:\/\/apps\/shipping-rates-delivery-date\/blocks\/cs-app-block\/1a3d1068-6186-4cb9-936d-3cbb65a9de24",
+        "disabled": true,
+        "settings": {}
+      },
+      "3824936769257688723": {
+        "type": "shopify:\/\/apps\/sami-product-labels-badges\/blocks\/app-embed-block\/b9b44663-5d51-4be1-8104-faedd68da8c5",
+        "disabled": false,
+        "settings": {}
+      }
+    }
+  },
+  "presets": {
+    "Native": {
+      "col_text": "#423f3f",
+      "col_headings": "#413f3f",
+      "col_links": "#ecb1b0",
+      "col_page_bg": "#ffffff",
+      "col_stars": "#ff9fbc",
+      "col_head_links": "#000000",
+      "col_head_links_alt": "#ffffff",
+      "col_head_nav_bg": "#ffffff",
+      "col_head_links_active": "#000000",
+      "col_head_featured": "#dd6666",
+      "col_head_announcement_bar_bg": "#000000",
+      "col_head_announcement_text": "#ffffff",
+      "col_btn": "#ffffff",
+      "col_btn_bg": "#232323",
+      "col_btn_secondary": "#232323",
+      "col_btn_bg_secondary": "#ffffff",
+      "coll_col_sale_text": "#e32c2b",
+      "coll_col_sale": "rgba(0,0,0,0)",
+      "coll_col_sold_text": "#000000",
+      "coll_col_sold": "rgba(0,0,0,0)",
+      "coll_col_background": "",
+      "image_overlay_text": "#ffffff",
+      "image_overlay_bg": "#000000",
+      "image_overlay_opacity": 10,
+      "alt_bg_col": "#f8f8f8",
+      "alt_bg_text_col": "#423f3f",
+      "footer_text": "#423f3f",
+      "footer_background": "#ffffff",
+      "prod_thumb_shape": "natural",
+      "prod_hover_effect": "image",
+      "enable_reviews": true,
+      "show_product_block_reviews": false,
+      "show_sale_label": true,
+      "show_sold_out_label": true,
+      "prod_label_layout": "marquee_on_hover",
+      "collection_thumb_shape": "natural",
+      "collection_image_position": "center",
+      "collection_hover_effect": "info",
+      "collection_show_product_count": true,
+      "type_base_font": "gill_sans_nova_n4",
+      "type_heading_font": "gill_sans_nova_n7",
+      "type_nav_font": "futura_n4",
+      "type_logo_font": "futura_n4",
+      "font_size_base_int": 16,
+      "font_size_nav_int": 30,
+      "font_size_nav_sub_int": 16,
+      "buttons_style": "normal",
+      "buttons_shape": "rounded",
+      "checkout_logo_position": "left",
+      "checkout_logo_size": "medium",
+      "checkout_body_background_image": "",
+      "checkout_body_background_color": "#fff",
+      "checkout_input_background_color_mode": "white",
+      "checkout_sidebar_background_color": "#fafafa",
+      "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_accent_color": "#197bbd",
+      "checkout_button_color": "#197bbd",
+      "checkout_error_color": "#e32c2b",
+      "show_product_reviews": false,
+      "col_mod_bg": "#e3a7a6",
+      "buttons_shadow": false,
+      "use_mod_bg_op": false,
+      "col_content_bg": "#ffffff",
+      "use_content_bg_trans": false,
+      "col_nav_prim": "#ffffff",
+      "col_nav_sec": "#ffffff",
+      "col_select_bg": "#ffffff",
+      "col_select_txt": "#000000",
+      "prod_label_col": "#ecb1b0",
+      "bg_image_method": "fill",
+      "animation_enabled_desktop": true,
+      "animation_enabled_mobile": true,
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "desktop_navigation": "inline",
+            "nav_opacity": "transparent",
+            "nav_positioning": "peek",
+            "use_alt_logo_when_active": true,
+            "desktop_logo_width": 130,
+            "mobile_logo_width": 90,
+            "show_announcement": true,
+            "announcement_home_only": true,
+            "announcement_text": "Announce something here",
+            "announcement_text_size": 16,
+            "show_language_selector": true,
+            "show_country_selector": false
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "1599643458732": {
+              "type": "text",
+              "settings": {
+                "image_width": 100,
+                "show_social_icons": true
+              }
+            },
+            "1599643486667": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1599643512956": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1599643553849": {
+              "type": "newsletter",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "1599643458732",
+            "1599643486667",
+            "1599643512956",
+            "1599643553849"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "mode": "disabled",
+            "popup_delay_seconds": 5,
+            "popup_dismiss_for_days": 2,
+            "position": "center",
+            "show_newsletter": true,
+            "show_social_icons": true
+          }
+        }
+      }
+    },
+    "Betty": {
+      "col_text": "#5e5c5c",
+      "col_headings": "#423f3f",
+      "col_links": "#ef9a9a",
+      "col_page_bg": "#ffffff",
+      "col_stars": "#ef9a9a",
+      "col_head_links": "#423f3f",
+      "col_head_links_alt": "#ffffff",
+      "col_head_nav_bg": "#423f3f",
+      "col_head_links_active": "#ffffff",
+      "col_head_featured": "#e57373",
+      "col_head_announcement_bar_bg": "#423f3f",
+      "col_head_announcement_text": "#ffffff",
+      "col_btn": "#ffffff",
+      "col_btn_bg": "#423f3f",
+      "col_btn_secondary": "#423f3f",
+      "col_btn_bg_secondary": "#ffffff",
+      "coll_col_sale_text": "#ffffff",
+      "coll_col_sale": "#ef9a9a",
+      "coll_col_sold_text": "#ffffff",
+      "coll_col_sold": "#423f3f",
+      "coll_col_background": "",
+      "image_overlay_text": "#ffffff",
+      "image_overlay_bg": "#423f3f",
+      "image_overlay_opacity": 13,
+      "alt_bg_col": "#f4f4f4",
+      "alt_bg_text_col": "#423f3f",
+      "footer_text": "#ffffff",
+      "footer_background": "#423f3f",
+      "prod_thumb_shape": "square",
+      "prod_show_videos": true,
+      "enable_reviews": true,
+      "show_product_block_reviews": true,
+      "show_sale_label": true,
+      "show_sold_out_label": true,
+      "prod_label_layout": "standard",
+      "swatch_enabled": true,
+      "swatch_images": true,
+      "collection_thumb_shape": "square",
+      "collection_image_position": "center",
+      "collection_hover_effect": "info",
+      "collection_show_product_count": true,
+      "type_base_font": "nunito_sans_n4",
+      "type_heading_font": "century_gothic_n4",
+      "type_nav_font": "nunito_sans_n4",
+      "type_logo_font": "century_gothic_n7",
+      "font_size_base_int": 15,
+      "font_size_nav_int": 30,
+      "font_size_nav_sub_int": 17,
+      "buttons_style": "uppercase",
+      "buttons_shape": "slightly_rounded",
+      "checkout_logo_position": "left",
+      "checkout_logo_size": "medium",
+      "checkout_body_background_image": "",
+      "checkout_body_background_color": "#fff",
+      "checkout_input_background_color_mode": "white",
+      "checkout_sidebar_background_image": "",
+      "checkout_sidebar_background_color": "#fafafa",
+      "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_accent_color": "#197bbd",
+      "checkout_button_color": "#197bbd",
+      "checkout_error_color": "#e32c2b",
+      "prod_hover_effect": "image",
+      "col_mod_bg": "#e3a7a6",
+      "use_mod_bg_op": false,
+      "col_content_bg": "#ffffff",
+      "use_content_bg_trans": false,
+      "col_nav_prim": "#ffffff",
+      "col_nav_sec": "#ffffff",
+      "col_select_bg": "#ffffff",
+      "col_select_txt": "#000000",
+      "prod_label_col": "#ecb1b0",
+      "bg_image_method": "fill",
+      "animation_enabled_desktop": true,
+      "animation_enabled_mobile": true,
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "desktop_navigation": "inline",
+            "nav_opacity": "transparent",
+            "nav_positioning": "peek",
+            "use_alt_logo_when_active": true,
+            "desktop_logo_width": 200,
+            "mobile_logo_width": 140,
+            "show_announcement": true,
+            "announcement_home_only": true,
+            "announcement_text": "Announce something here",
+            "announcement_text_size": 16,
+            "show_language_selector": true,
+            "show_country_selector": false
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "mode": "enabled",
+            "popup_delay_seconds": 5,
+            "popup_dismiss_for_days": 2,
+            "position": "bottom-right",
+            "show_newsletter": true,
+            "show_social_icons": true
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "1601536191916": {
+              "type": "text",
+              "settings": {
+                "image_width": 100,
+                "show_social_icons": true
+              }
+            },
+            "1601536195594": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1601536198541": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1601536182566": {
+              "type": "newsletter",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "1601536191916",
+            "1601536195594",
+            "1601536198541",
+            "1601536182566"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        }
+      }
+    },
+    "Beard": {
+      "col_text": "#1a1a1a",
+      "col_headings": "#1a1a1a",
+      "col_links": "#c5b358",
+      "col_page_bg": "#ffffff",
+      "col_stars": "#c5b358",
+      "col_head_links": "#adadad",
+      "col_head_links_alt": "#adadad",
+      "col_head_nav_bg": "#1a1a1a",
+      "col_head_links_active": "#e4e4e4",
+      "col_head_featured": "#c5b358",
+      "col_head_announcement_bar_bg": "#1a1a1a",
+      "col_btn": "#e5e3da",
+      "col_btn_bg": "#333333",
+      "col_btn_secondary": "#333333",
+      "col_btn_bg_secondary": "#e5e3da",
+      "coll_col_sale_text": "#ffffff",
+      "coll_col_sale": "#c01612",
+      "coll_col_sold": "#444444",
+      "image_overlay_bg": "#1a1a1a",
+      "image_overlay_opacity": 24,
+      "alt_bg_col": "#444444",
+      "alt_bg_text_col": "#ffffff",
+      "popup_text": "#1a1a1a",
+      "footer_text": "#ffffff",
+      "footer_background": "#1a1a1a",
+      "prod_thumb_shape": "natural",
+      "show_product_block_reviews": true,
+      "prod_label_layout": "standard",
+      "collection_thumb_shape": "square",
+      "type_base_font": "anonymous_pro_n4",
+      "type_heading_font": "archivo_narrow_n6",
+      "type_nav_font": "archivo_narrow_n6",
+      "type_logo_font": "archivo_narrow_n7",
+      "font_size_base_int": 14,
+      "font_size_nav_int": 20,
+      "font_size_nav_sub_int": 18,
+      "buttons_shape": "sharp",
+      "checkout_logo_position": "center",
+      "checkout_logo_size": "small",
+      "checkout_body_background_color": "#444444",
+      "checkout_sidebar_background_color": "#f9f9f9",
+      "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_accent_color": "#c5b358",
+      "checkout_button_color": "#e5e3da",
+      "checkout_error_color": "#c01612",
+      "prod_hover_effect": "image",
+      "col_mod_bg": "#e3a7a6",
+      "use_mod_bg_op": false,
+      "col_content_bg": "#ffffff",
+      "use_content_bg_trans": false,
+      "col_nav_prim": "#ffffff",
+      "col_nav_sec": "#ffffff",
+      "col_select_bg": "#ffffff",
+      "col_select_txt": "#000000",
+      "prod_label_col": "#ecb1b0",
+      "bg_image_method": "fill",
+      "animation_enabled_desktop": true,
+      "animation_enabled_mobile": true,
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "desktop_navigation": "inline",
+            "nav_opacity": "opaque",
+            "nav_positioning": "sticky",
+            "use_alt_logo_when_active": true,
+            "desktop_logo_width": 125,
+            "mobile_logo_width": 120,
+            "show_announcement": true,
+            "announcement_text": "Announce something here",
+            "announcement_home_only": false,
+            "announcement_text_size": 15,
+            "nav_cart_icon": "basket2",
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "mode": "enabled",
+            "popup_delay_seconds": 4,
+            "popup_dismiss_for_days": 24,
+            "position": "center",
+            "show_newsletter": true,
+            "show_social_icons": true
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "settings": {
+            "show_payment_icons": true,
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        }
+      }
+    },
+    "Luna": {
+      "col_text": "#111111",
+      "col_headings": "#111111",
+      "col_links": "#111111",
+      "col_page_bg": "#ffffff",
+      "col_stars": "#eeaf2e",
+      "col_head_links": "#111111",
+      "col_head_links_alt": "#ffffff",
+      "col_head_nav_bg": "#ffffff",
+      "col_head_links_active": "#111111",
+      "col_head_featured": "#dd6666",
+      "col_head_announcement_bar_bg": "#111111",
+      "col_head_announcement_text": "#ffffff",
+      "col_btn": "#ffffff",
+      "col_btn_bg": "#111111",
+      "col_btn_secondary": "#111111",
+      "col_btn_bg_secondary": "#ffffff",
+      "coll_col_sale_text": "#e32c2b",
+      "coll_col_sale": "rgba(0,0,0,0)",
+      "coll_col_sold_text": "#111111",
+      "coll_col_sold": "rgba(0,0,0,0)",
+      "image_overlay_text": "#ffffff",
+      "image_overlay_bg": "#111111",
+      "image_overlay_opacity": 14,
+      "alt_bg_col": "#fbf7f5",
+      "alt_bg_text_col": "#111111",
+      "footer_text": "#111111",
+      "footer_background": "#ffffff",
+      "prod_thumb_shape": "natural",
+      "prod_hover_effect": "image",
+      "enable_reviews": true,
+      "show_product_block_reviews": false,
+      "show_sale_label": true,
+      "show_sold_out_label": true,
+      "prod_label_layout": "marquee_on_hover",
+      "collection_thumb_shape": "portrait_tall",
+      "collection_image_position": "center",
+      "collection_hover_effect": "info",
+      "collection_show_product_count": true,
+      "type_base_font": "neuzeit_s_n4",
+      "type_heading_font": "futura_n6",
+      "type_nav_font": "neuzeit_s_n4",
+      "type_logo_font": "neuzeit_s_n9",
+      "font_size_base_int": 15,
+      "font_size_nav_int": 30,
+      "font_size_nav_sub_int": 18,
+      "buttons_style": "uppercase",
+      "buttons_shape": "sharp",
+      "checkout_logo_position": "left",
+      "checkout_logo_size": "medium",
+      "checkout_body_background_image": "",
+      "checkout_body_background_color": "#fff",
+      "checkout_input_background_color_mode": "white",
+      "checkout_sidebar_background_color": "#fafafa",
+      "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "checkout_accent_color": "#197bbd",
+      "checkout_button_color": "#197bbd",
+      "checkout_error_color": "#e32c2b",
+      "show_product_reviews": false,
+      "buttons_shadow": false,
+      "col_mod_bg": "#e3a7a6",
+      "use_mod_bg_op": false,
+      "col_content_bg": "#ffffff",
+      "use_content_bg_trans": false,
+      "col_nav_prim": "#ffffff",
+      "col_nav_sec": "#ffffff",
+      "col_select_bg": "#ffffff",
+      "col_select_txt": "#000000",
+      "prod_label_col": "#ecb1b0",
+      "bg_image_method": "fill",
+      "animation_enabled_desktop": true,
+      "animation_enabled_mobile": true,
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "desktop_navigation": "inline",
+            "nav_opacity": "transparent",
+            "nav_positioning": "sticky",
+            "use_alt_logo_when_active": true,
+            "desktop_logo_width": 110,
+            "mobile_logo_width": 140,
+            "show_announcement": true,
+            "announcement_text": "Announce something here",
+            "announcement_home_only": false,
+            "announcement_text_size": 15,
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "1600963133542": {
+              "type": "text",
+              "settings": {
+                "image_width": 100,
+                "show_social_icons": true
+              }
+            },
+            "1601020687263": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1601022030378": {
+              "type": "menu",
+              "settings": {}
+            },
+            "1601021503013": {
+              "type": "newsletter",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "1600963133542",
+            "1601020687263",
+            "1601022030378",
+            "1601021503013"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_language_selector": true,
+            "show_country_selector": true
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "mode": "disabled",
+            "popup_delay_seconds": 5,
+            "popup_dismiss_for_days": 2,
+            "position": "center",
+            "show_newsletter": true,
+            "show_social_icons": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{% layout none %}
+{
+"format":{{ shop.money_format | json }},
+"collection":"{% for item in cart.items %}cart_collections['{{item.variant_id}}'] = [],cart_tags['{{item.variant_id}}'] = [],{% for c in item.product.collections %}cart_collections['{{item.variant_id}}'].push(`{{c.title}}`) {% if forloop.last %};{% else %},{% endif %}{% endfor %}{% for tag in item.product.tags %}cart_tags['{{item.variant_id}}'].push(`{{tag}}`){% if forloop.last %};{% else %},{% endif %}{% endfor %}{% endfor %}",
+ "cs_cart_count":"items_length={{ cart.item_count }}"
+}
