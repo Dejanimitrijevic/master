@@ -13285,12 +13285,13 @@ shopify-payment-terms {
 .cart-list .col-notimage {
   display: flex;
   flex-grow: 1;
-  text-align: right;
+  width: 100%;
+  justify-content: space-between;
 }
 .cart-list .desc {
-  flex-grow: 1;
   text-align: left;
   margin-right: 24px;
+  width: 25%;
 }
 .cart-list .desc .product-title {
   font-weight: 600;
@@ -13303,24 +13304,20 @@ shopify-payment-terms {
 .cart-list .quantity-and-remove {
   margin: 0 24px;
   text-align: center;
-  width: 128px;
+  width: 100%;
 }
 .cart-list .quantity {
   flex: 0 0 auto;
   display: inline-block;
   position: relative;
   padding: 3px 44px;
+  width: 128px;
   background: {{ col_select_bg }};
   color: {{ col_select_txt }};
   border: 1px solid {{ col_select_txt | color_mix: col_select_bg, 25 }};
   overflow: hidden;
-  width: 128px;
 }
-@media (min-width: 768px) {
-  .cart-list .quantity {
-    width: 100%;
-  }
-}
+
 .cart-list .quantity .plus,
 .cart-list .quantity .minus {
   position: absolute;
@@ -14848,4 +14845,32 @@ body {
 .product-list .custom-product .col-image {
   width: 40px;
   height: 40px;
+}
+
+.product-list .quantity-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-list .quantity-section .item-quantity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-list .product-quantity {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.subtotal-row.weight {
+  border-top: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+.subtotal-row.weight p {
+  margin: 0;
 }
