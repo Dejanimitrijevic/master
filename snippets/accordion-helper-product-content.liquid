@@ -1,0 +1,30 @@
+{% comment %}
+  Parameters:
+  - add_content_class {string} [optional] - Additional class(es) to add to the content element
+  - toggle_icon {string} [optional] - Custom icon markup, e.g. '<span class="icon">...</span>'
+{% endcomment %}
+
+{%- liquid
+  if section.settings.description_location == 'accordion'
+    assign product_description_title = 'products.product.description' | t
+    assign description_open = true
+
+    if section.settings.accordion_description_collapsed
+      assign description_open = false
+    endif
+
+    render 'accordion-item', title: product_description_title, content: product.description, add_content_class: add_content_class, toggle_icon: toggle_icon, item_open: description_open
+  endif
+
+  if section.settings.accordion_item1_page != blank
+    render 'accordion-item', title: pages[section.settings.accordion_item1_page].title, content: pages[section.settings.accordion_item1_page].content, add_content_class: add_content_class, toggle_icon: toggle_icon
+  endif
+
+  if section.settings.accordion_item2_page != blank
+    render 'accordion-item', title: pages[section.settings.accordion_item2_page].title, content: pages[section.settings.accordion_item2_page].content, add_content_class: add_content_class, toggle_icon: toggle_icon
+  endif
+
+  if section.settings.accordion_item3_page != blank
+    render 'accordion-item', title: pages[section.settings.accordion_item3_page].title, content: pages[section.settings.accordion_item3_page].content, add_content_class: add_content_class, toggle_icon: toggle_icon
+  endif
+-%}

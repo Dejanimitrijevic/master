@@ -1,0 +1,392 @@
+{%- liquid
+  assign heading_tag = "h2"
+  if section.settings.heading_h1
+    assign heading_tag = "h1"
+  endif
+-%}
+
+<div id="section-id-{{ section.id }}" class="section-id-{{ section.id }}" data-section-type="image-with-text-overlay" data-cc-animate>
+  {% style %}
+    {%- if section.settings.height == 'fixed' -%}
+    #section-id-{{ section.id }} .rimage-outer-wrapper,
+    #section-id-{{ section.id }} .placeholder-image {
+      height: {{ section.settings.height_mobile }}px;
+    }
+    {%- endif -%}
+
+    #section-id-{{ section.id }} .rimage-outer-wrapper {
+      background-position: {{ section.settings.mobile_image_position }}
+    }
+
+    @media (min-width: 768px) {
+      {%- if section.settings.height == 'fixed' -%}
+      #section-id-{{ section.id }} .rimage-outer-wrapper ,
+      #section-id-{{ section.id }} .placeholder-image {
+        height: {{ section.settings.height_desktop }}px;
+      }
+      {%- endif -%}
+
+      #section-id-{{ section.id }} .line-1 {
+        {%- assign title_size_medium = section.settings.title_size | times: 0.7 -%}
+        font-size: {{ title_size_medium }}px;
+      }
+
+      #section-id-{{ section.id }} .rimage-outer-wrapper {
+        background-position: {{ section.settings.desktop_image_position }}
+      }
+    }
+
+    @media (min-width: 992px) {
+      #section-id-{{ section.id }} .line-1 {
+        font-size: {{ section.settings.title_size }}px;
+      }
+    }
+  {% endstyle %}
+
+  {%- unless section.settings.full_width -%}<div class="wide-container half-gutter section-spacing">{%- endunless -%}
+
+    {%- assign show_overlay_text = false -%}
+    {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.text != blank or section.settings.button_label != blank -%}
+      {%- assign show_overlay_text = true -%}
+    {%- endif -%}
+
+    <div class="height--{{ section.settings.height }} image-overlay {% if section.settings.overlay_style_tint %}image-overlay--bg-full{% endif %}
+{% if section.settings.mobile_overlay_under %}overlay-text-static-xs{% endif %}">
+      {%- unless section.settings.image_link == blank or section.settings.text contains '</a>' -%}<a href="{{ section.settings.image_link }}">{%- endunless -%}
+
+        {% if section.settings.image == blank %}
+          <div class="placeholder-image placeholder--banner {% if show_overlay_text %}dark{% endif %}">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% else %}
+          <div class="rimage-outer-wrapper rimage-background lazyload fade-in"
+              data-cc-animate="cc-zoom-out"
+              data-bgset="{% render 'bgset', image: section.settings.image %}"
+              data-sizes="auto"
+              data-parent-fit="cover">
+            {%- if section.settings.height == 'natural' -%}
+              <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%"></div>
+            {%- endif -%}
+            <noscript>
+              <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%">
+                <img src="{{ section.settings.image | img_url: '1024x1024' }}" alt="{{ section.settings.image.alt | escape }}" class="rimage__image">
+              </div>
+            </noscript>
+          </div>
+        {% endif %}
+
+        {%- if show_overlay_text -%}
+          <div class="overlay-type overlay {{ section.settings.overlay_position }}">
+            <div class="inner">
+              <div>
+                <div class="overlay__content" {% if section.settings.overlay_position == 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-zoom-out"{% endif %}>
+                  {%- if section.settings.subheading != blank -%}
+                    <div class="feature-subheader" {% if section.settings.overlay_position != 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.3s"{% endif %}>
+                      {{ section.settings.subheading | escape }}
+                    </div>
+                  {% endif %}
+
+                  {%- if section.settings.title != blank -%}
+                    <{{ heading_tag }} class="line-1  {% if section.settings.title_size >= 86 %}line-1--large{% endif %}"
+                        {% if section.settings.overlay_position != 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.2s"{% endif %}>
+                      {{ section.settings.title | newline_to_br }}
+                    </{{ heading_tag }}>
+                  {%- endif -%}
+
+                  {%- if section.settings.text != blank -%}
+                    <div class="rte line-2 {% if section.settings.enlarge_text %}large-text{% endif %}" {% if section.settings.overlay_position != 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.4s"{% endif %}>
+                      {{ section.settings.text }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if section.settings.button_label != blank -%}
+                    <div class="line-3" {% if section.settings.overlay_position != 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.5s"{% endif %}>
+                      <span class="button hover-grow">{{ section.settings.button_label | escape }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+      {%- unless section.settings.image_link == blank or section.settings.text contains '</a>' -%}</a>{%- endunless -%}
+    </div>
+
+  {%- unless section.settings.full_width -%}</div>{%- endunless -%}
+</div>
+
+{% schema %}
+  {
+    "name": "Image with text overlay",
+    "class": "header-overlap-section section-image-with-text-overlay needs-alt-logo",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "2048 x 1024px recommended"
+      },
+      {
+        "type": "select",
+        "id": "desktop_image_position",
+        "label": "Desktop image alignment",
+        "default": "center center",
+        "info": "Used to keep the subject of your image in view",
+        "options": [
+          {
+            "value": "top left",
+            "label": "Top left"
+          },
+          {
+            "value": "top center",
+            "label": "Top center"
+          },
+          {
+            "value": "top right",
+            "label": "Top right"
+          },
+          {
+            "value": "center left",
+            "label": "Middle left"
+          },
+          {
+            "value": "center center",
+            "label": "Middle center"
+          },
+          {
+            "value": "center right",
+            "label": "Middle right"
+          },
+          {
+            "value": "bottom left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom right",
+            "label": "Bottom right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "mobile_image_position",
+        "label": "Mobile image alignment",
+        "default": "center center",
+        "options": [
+          {
+            "value": "top left",
+            "label": "Top left"
+          },
+          {
+            "value": "top center",
+            "label": "Top center"
+          },
+          {
+            "value": "top right",
+            "label": "Top right"
+          },
+          {
+            "value": "center left",
+            "label": "Middle left"
+          },
+          {
+            "value": "center center",
+            "label": "Middle center"
+          },
+          {
+            "value": "center right",
+            "label": "Middle right"
+          },
+          {
+            "value": "bottom left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom right",
+            "label": "Bottom right"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "height",
+        "label": "Image height",
+        "default": "fixed",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "full",
+            "label": "Full screen"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed height"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "height_desktop",
+        "min": 200,
+        "max": 1000,
+        "step": 50,
+        "unit": "px",
+        "label": "Desktop fixed height",
+        "default": 450
+      },
+      {
+        "type": "range",
+        "id": "height_mobile",
+        "min": 100,
+        "max": 1000,
+        "step": 50,
+        "unit": "px",
+        "label": "Mobile fixed height",
+        "default": 400
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text overlay"
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "min": 20,
+        "max": 150,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading text size",
+        "default": 60
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_h1",
+        "label": "Set as primary page heading",
+        "info": "Uses <h1> tag. One per page recommended. [Learn more](https://cleancanvas.co.uk/support/showcase/seo#inner-anchor-0)",
+        "default": false
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair text with an image to draw attention to an important detail of your brand or product line.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "enlarge_text",
+        "label": "Enlarge text",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button"
+      },
+      {
+        "type": "url",
+        "id": "image_link",
+        "label": "Image link"
+      },
+      {
+        "type": "select",
+        "id": "overlay_position",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "position--left position--top",
+            "label": "Top left"
+          },
+          {
+            "value": "position--hcenter position--top",
+            "label": "Top center"
+          },
+          {
+            "value": "position--right position--top",
+            "label": "Top right"
+          },
+          {
+            "value": "position--left position--vcenter",
+            "label": "Middle left"
+          },
+          {
+            "value": "position--hcenter position--vcenter",
+            "label": "Middle center"
+          },
+          {
+            "value": "position--right position--vcenter",
+            "label": "Middle right"
+          },
+          {
+            "value": "position--left position--bottom",
+            "label": "Bottom left"
+          },
+          {
+            "value": "position--hcenter position--bottom",
+            "label": "Bottom center"
+          },
+          {
+            "value": "position--right position--bottom",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "position--hcenter position--vcenter"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "id": "full_width",
+        "type": "checkbox",
+        "label": "Full page width",
+        "default": true
+      },
+      {
+        "id": "mobile_overlay_under",
+        "type": "checkbox",
+        "label": "Show text below image on mobile",
+        "default": false
+      },
+      {
+        "id": "overlay_style_tint",
+        "type": "checkbox",
+        "label": "Show overlay tint",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with text overlay",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

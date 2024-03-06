@@ -1,0 +1,182 @@
+{% style %}
+  {% if section.settings.color_scheme == "custom" %}
+    .section-id-{{ section.id }} {
+      background: {{ section.settings.color_bg }};
+      --cust-text-color: {{ section.settings.color_text }};
+    }
+  {% endif %}
+
+  #section-id-{{ section.id }} .overlay-type {
+    height: {{ section.settings.height_mobile }}px;
+  }
+
+  @media (min-width: 768px) {
+    #section-id-{{ section.id }} .overlay-type {
+      height: {{ section.settings.height_desktop }}px;
+    }
+  }
+{% endstyle %}
+
+<div id="section-id-{{ section.id }}"
+     class="section-id-{{ section.id }}
+  wide-container align-center use-{{ section.settings.color_scheme }}-bg
+  {% if section.settings.image and section.settings.color_scheme == "standard" %} image-overlay image-overlay--bg-full{% endif %}
+" data-cc-animate>
+
+  {% if section.settings.image and section.settings.color_scheme == "standard" %}
+    <div class="rimage-outer-wrapper rimage-background lazyload fade-in"
+      data-cc-animate="cc-zoom-out"
+      data-bgset="{% render 'bgset', image: section.settings.image %}"
+      data-sizes="auto"
+      data-parent-fit="cover">
+      <noscript>
+        <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%">
+          <img src="{{ section.settings.image | img_url: '1024x1024' }}" alt="{{ section.settings.image.alt | escape }}" class="rimage__image">
+        </div>
+      </noscript>
+    </div>
+  {% endif %}
+
+  <div class="overlay-type overlay {{ section.settings.overlay_position }}">
+    <div class="inner">
+      <div>
+        <div class="overlay__content">
+          {% assign form_id = section.id | prepend: "newsletter-signup-" %}
+          {% form 'customer', id: form_id %}
+            {% if section.settings.subheading != blank %}
+              <div class="feature-subheader" data-cc-animate>{{ section.settings.subheading | escape }}</div>
+            {% endif %}
+
+            <h4 class="h2 line-1" data-cc-animate>{{ section.settings.title | escape }}</h4>
+
+            <div class="signup-form">
+              {% if form.posted_successfully? %}
+                <div class="signup-form__response">
+                  <p>{{ 'general.newsletter.success' | t }}</p>
+                </div>
+              {% else %}
+                <input type="hidden" name="newsletter" value="true"/>
+                <div class="rte align-center" data-cc-animate data-cc-animate-delay="0.2s">{{ section.settings.text }}</div>
+
+                <input type="hidden" id="contact_tags{{ section.id }}" name="contact[tags]" value="prospect,newsletter"/>
+                <div class="inline-mini-form inline-mini-form--arrow" data-cc-animate data-cc-animate-delay="0.4s">
+                  <input type="email" aria-label="{{ 'general.signup.email_label' | t | escape }}"
+                         placeholder="{{ 'general.signup.email_label' | t | escape }}" class="required" value="" id="mailinglist_email{{ section.id }}" name="contact[email]" />
+                  <button class="compact no-hover" type="submit" aria-label="{{ 'general.signup.subscribe' | t | escape }}">
+                    {% render 'svg-rarrow-long' %}
+                  </button>
+                </div>
+
+                {% if form.errors %}
+                  <div class="signup-form__response">
+                    {% for field in form.errors %}
+                      <p class="error">{{ field | capitalize }} - {{ form.errors.messages[field] }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endif %}
+            </div>
+          {% endform %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "class": "section-newsletter",
+    "settings": [
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },
+	    {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Sign up to our newsletter and we'll keep you up to date with the latest arrivals<\/p>"
+      },
+      {
+        "type": "range",
+        "id": "height_desktop",
+        "min": 300,
+        "max": 1000,
+        "step": 50,
+        "unit": "px",
+        "label": "Desktop fixed height",
+        "default": 500
+      },
+      {
+        "type": "range",
+        "id": "height_mobile",
+        "min": 300,
+        "max": 700,
+        "step": 50,
+        "unit": "px",
+        "label": "Mobile fixed height",
+        "default": 400
+      },
+      {
+        "type": "paragraph",
+        "content": "Customers who subscribe will have their email address added to the 'accepts marketing' [customer list](/admin/customers?query=&accepts_marketing=1)"
+      },
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "2048 x 1024px recommended"
+      },
+      {
+        "type": "radio",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "standard",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "alt",
+            "label": "Alternate colors"
+          },
+          {
+            "value": "custom",
+            "label": "Custom colors"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Custom background color"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color"
+      }
+	  ],
+	  "presets": [
+      {
+        "name": "Newsletter",
+        "settings": {}
+      }
+	  ]
+  }
+{% endschema %}

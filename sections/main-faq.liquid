@@ -1,0 +1,81 @@
+<div class="central content py-medium" data-section-type="faq" data-sidebar-enabled="{{ section.settings.show_sidebar }}" data-sidebar-title="{{ section.settings.sidebar_title | escape }}">
+  {% if section.settings.show_title %}<h1 class="feature-header align-{{ section.settings.text_alignment }}" data-cc-animate>{{ page.title }}</h1>{% endif %}
+
+  {% if section.settings.show_content %}
+    <div class="rte align-{{ section.settings.text_alignment }}" data-cc-animate>
+      {{ page.content }}
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_search %}
+    <div class="inline-mini-form inline-mini-form--arrow mt-0" data-cc-animate>
+      <input type="text"
+       id="faq-search__input"
+       placeholder="{{ 'faq.search.placeholder' | t }}"
+       value="{{ search.terms | escape }}"
+       aria-label="{{ 'faq.search.label' | t | escape }}"
+       autocomplete="off" />
+      <button class="compact no-hover" type="submit" aria-label="{{ 'general.search.search_button' | t | escape }}"
+      >{% render 'svg-search', stroke_width: 2.5 %}</button>
+    </div>
+
+    <div class="faq-search__no_results">
+      {{ 'faq.search.no_results' | t }}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show page content",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show FAQ search bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show FAQ sidebar",
+      "info": "Shows a sidebar next to all consecutive 'Expandable content' sections immediately below this section.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "label": "Sidebar title"
+    }
+  ]
+}
+{% endschema %}

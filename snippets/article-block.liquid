@@ -1,0 +1,57 @@
+{% capture excerpt %}
+  {% if blog_excerpt == "hover" %}
+    <p>{{ article.excerpt_or_content | strip_html | truncate: 100 }}</p>
+  {% else %}
+    <p>{{ article.excerpt_or_content | strip_html }}</p>
+  {% endif %}
+{% endcapture %}
+
+<a href="{{ article.url }}"
+   data-cc-animate-click
+   class="article-block {% if blog_excerpt == "below" %}article-block--excerpt-below{% endif %}"
+   data-cc-animate="cc-fade-in-up"
+   {% if index %}
+    data-loop-index="{{ index }}"
+    data-cc-animate-delay="{{ index | times: 0.1 }}s"
+   {% endif %}
+>
+
+  <div class="article-block__image article-block__image--{{ image_shape }} {% if blog_excerpt == "hover" %}image-overlay image-overlay--bg-full{% endif %}">
+    {% if article.image %}
+      {% render 'responsive-image', image: article.image %}
+    {% else %}
+      <div class="placeholder-image">{{ 'collection-2' | placeholder_svg_tag }}</div>
+    {% endif %}
+
+    {% if blog_excerpt == "hover" %}
+      <div class="article-block__excerpt">
+        {{ excerpt }}
+        <span data-cc-animate class="button alt no-hover" href="{{ article.url }}">
+          {{ 'blogs.article.read_more' | t }}
+        </span>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="article-block__content">
+    {% if show_date or show_author %}
+      <div class="article-block__meta ">
+        {%- if show_author -%}
+          <span class="author feature-subheader">{{ article.author }}</span>
+          {%- if show_date -%}&nbsp;<span class="cc-bullet">&bull;</span>&nbsp;{%- endif -%}
+        {%- endif -%}
+        {%- if show_date -%}
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="feature-subheader">{{ article.published_at | date: format: 'month_date_year_blog' }}</time>
+        {%- endif -%}
+      </div>
+    {% endif %}
+
+    <h3 class="article-block__title align-left">{{ article.title }}</h3>
+
+    {% if blog_excerpt == "below" %}
+      <div class="article-block__excerpt rte">
+        {{ excerpt }}
+      </div>
+    {% endif %}
+  </div>
+</a>

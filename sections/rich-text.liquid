@@ -1,0 +1,248 @@
+{%- liquid
+  assign heading_tag = "h2"
+  if section.settings.heading_h1
+    assign heading_tag = "h1"
+  endif
+-%}
+
+<div id="section-id-{{ section.id }}" class="section-id-{{ section.id }} cf use-{{ section.settings.color_scheme }}-bg" data-cc-animate>
+  {% style %}
+    {% if section.settings.color_scheme == "custom" %}
+      .section-id-{{ section.id }} {
+        background: {{ section.settings.color_bg }};
+        --cust-text-color: {{ section.settings.color_text }};
+      }
+
+      {% if section.settings.button_style == 'auto' %}
+        #section-id-{{ section.id }} .button:hover {
+          background-color: {{ section.settings.color_text }};
+          color: {{ section.settings.color_bg }};
+          border-color: {{ section.settings.color_bg }};
+        }
+      {% endif %}
+    {% endif %}
+
+    #section-id-{{ section.id }} .section-rich-text__image .rimage-outer-wrapper {
+      width: {{ section.settings.image_width }}px;
+    }
+
+    @media (min-width: 768px) {
+      #section-id-{{ section.id }} .feature-header {
+        {%- assign title_size_medium = section.settings.title_size | times: 0.7 -%}
+        font-size: {{ title_size_medium }}px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      #section-id-{{ section.id }} .feature-header {
+        font-size: {{ section.settings.title_size }}px;
+      }
+    }
+  {% endstyle %}
+
+  <div class="section-spacing wide-container {% if section.settings.no_padding_bottom %}section-spacing--sm-b{% endif %}">
+    <div class="content transparent align-{{ section.settings.text_alignment }} {% if section.settings.full_width == false %}reading-width{% endif %}">
+
+      {% if section.settings.image != blank %}
+        <div class="section-rich-text__image" data-cc-animate="cc-fade-in-up">
+          {%- render 'responsive-image', image: section.settings.image -%}
+        </div>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <div class="feature-subheader" data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.1s">{{ section.settings.subheading | escape }}</div>
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <{{ heading_tag }} class="feature-header align-{{ section.settings.text_alignment }}
+          {% if section.settings.title_size >= 86 %}feature-header--large{% endif %}
+          {% if section.settings.text == blank and section.settings.button_label == blank %}feature-header__no-line feature-header__no-gap{% endif %}" data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.2s">
+          {{ section.settings.title | newline_to_br }}
+        </{{ heading_tag }}>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="rte inherit-colors {% if section.settings.enlarge_text %}large-text{% endif %} align-{{ section.settings.text_alignment }}" data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.3s">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.button_label != blank %}
+        <div class="button-row inherit-colors" data-cc-animate="cc-fade-in-up" data-cc-animate-delay="0.3s">
+          <a data-cc-animate-click class="
+            {% if section.settings.button_style != 'auto' %}button-custom {% endif %}
+            {% if section.settings.button_style == 'link' %}link-display {% if section.settings.enlarge_text %}type-2{% endif %}{% else %}button {% if section.settings.button_style == 'secondary' %}alt{% endif %}{% endif %}" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Rich text",
+    "class": "section-rich-text",
+    "settings": [
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Rich text"
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "min": 20,
+        "max": 150,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading text size",
+        "default": 48
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_h1",
+        "label": "Set as primary page heading",
+        "info": "Uses <h1> tag. One per page recommended. [Learn more](https://cleancanvas.co.uk/support/showcase/seo#inner-anchor-0)",
+        "default": false
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Use this text to share information about your store with your customers. Describe products, share announcements, or welcome customers to your store. Add <strong>bold<\/strong>, <em>italic<\/em> and <a href=\"\/\" title=\"\/\">hyperlinks<\/a>.<\/p>"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "range",
+        "id": "image_width",
+        "min": 60,
+        "max": 700,
+        "step": 10,
+        "label": "Image width",
+        "unit": "px",
+        "default": 120
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "options": [
+          {
+            "label": "Button - primary",
+            "value": "primary"
+          },
+          {
+            "label": "Button - secondary",
+            "value": "secondary"
+          },
+          {
+            "label": "Button - auto",
+            "value": "auto"
+          },
+          {
+            "label": "Link",
+            "value": "link"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "enlarge_text",
+        "label": "Enlarge text",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Wide display",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "no_padding_bottom",
+        "label": "Remove bottom spacing",
+        "default": false
+      },
+      {
+        "type": "radio",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "standard",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "alt",
+            "label": "Alternate colors"
+          },
+          {
+            "value": "custom",
+            "label": "Custom colors"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Custom background color"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Custom text color"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Rich text",
+        "settings": {}
+      }
+    ]
+  }
+{% endschema %}

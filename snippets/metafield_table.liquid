@@ -1,0 +1,120 @@
+{% assign metafield_table = metafield_table | default: false %}
+{% assign render_as_selected = render_as_selected | default: false %}
+{%- unless metafield_table == false -%}
+  {%- assign _settings = metafield_table.settings -%}
+  {%- if _settings.title != blank and _settings.metafields != blank -%}
+    {%- liquid
+      assign table_render_only = false
+      if _settings.append_id != ''
+        assign table_render_only = true
+      endif
+      if _settings.append_id == '' and _settings.display_as == 'block'
+        assign table_render_only = true
+      endif
+    -%}
+    {% comment %} <!-- block settings metafields: {{ _settings.metafields }} --> {% endcomment %}
+    {%- capture metafield_table_rows -%}
+      {%- assign given_metafields = _settings.metafields | newline_to_br | split: '<br />' -%}
+      {% comment %} <!-- given metafields: {{ given_metafields }} --> {% endcomment %}
+      {%- unless given_metafields.size < 1 -%}
+        {%- for metafield_string in given_metafields -%}
+          {% comment %} <!-- {{ metafield_string }}--> {% endcomment %}
+          {%- assign metafield_parts = metafield_string | split: '.' -%}
+          {%- assign metafield_namespace = metafield_parts | first | strip -%}
+          {%- assign parsed_metafield_namespace = product.metafields[metafield_namespace] -%}
+          {%- assign metafield_key = metafield_parts | last | strip -%}
+          {%- assign parsed_metafield = parsed_metafield_namespace[metafield_key] -%}
+          {%- assign display_key = metafield_key | replace: '_', ' ' | capitalize -%}
+          {%- if settings.metafield_key_label_list != blank -%}
+            {%- assign key_label_list = settings.metafield_key_label_list | newline_to_br | split: '<br />' -%}
+            {%- unless key_label_list.size < 1 -%}
+              {%- for key_label_association in key_label_list -%}
+                {%- assign association_parts = key_label_association | split: ':' -%}
+                {%- assign association_key = association_parts | first | strip -%}
+                {%- assign association_label = association_parts | last | strip -%}
+                {% comment %} <!-- does "{{ metafield_key }}" == "{{ association_key }}" --> {% endcomment %}
+                {%- if metafield_key == association_key -%}
+                  {%- assign display_key = association_label -%}
+                  {% comment %} <!-- adjusting display key to: {{ display_key }}--> {% endcomment %}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+          {%- endif -%}
+          {%- assign display_value = parsed_metafield.value -%}
+          {%- if parsed_metafield.type == "boolean" -%}
+            {%- if parsed_metafield.value -%}
+              {%- assign display_value = "Ja" -%}
+            {%- else -%}
+              {%- assign display_value = "Nej" -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- if display_value != blank -%}
+            <tr>
+              <td>{{ display_key }}</td>
+              <td>{{ display_value }}</td>
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endunless -%}
+    {%- endcapture -%}
+    {%- if metafield_table_rows != blank -%}
+      {% capture metafield_table_html %}
+      <div class="metafields_table">
+        <table>
+          {% if table_render_only %}
+          <thead>
+            <tr>
+              <th>{{ _settings.title }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          {% endif %}
+          <tbody>
+            {{ metafield_table_rows }}
+          </tbody>
+        </table>
+      </div>
+      {% endcapture %}
+    {%- endif -%}
+    {% unless metafield_table_html == blank %}
+    {% endunless %}
+    {%- if table_render_only -%}
+      <div class="metafields-table-container">{{ metafield_table_html }}</div>
+    {%- else -%}
+      <div class="cc-tabs__tab" role="tablist">
+        {%- if _settings.display_as == 'accordion' -%}
+          <a
+            href="#"
+            class="cc-tabs__accordion__header"
+            role="tab"
+            aria-selected="{{ render_as_selected }}"
+            aria-controls="product-tab-panelFields_{{ metafield_table.id }}"
+            data-cc-toggle-panel="Fields_{{ metafield_table.id }}"
+          >
+            {{ _settings.title }}
+          </a>
+        {%- endif -%}
+        <div
+          class="a cc-tabs__tab__panel rte"
+          {% unless render_as_selected %}
+            hidden=""
+          {% endunless %}
+          role="tab"
+          id="product-tab-panelFields_{{ metafield_table.id }}"
+          aria-labelledby="product-tab-panelFields_{{ metafield_table.id }}"
+        >
+          {% if _settings.rte_content != blank %}
+            <div class="rte">
+              {{ _settings.rte_content }}
+            </div>
+          {% endif %}
+          {{ metafield_table_html }}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endunless -%}
+
+<script>
+  console.log({{ _settings.metafields | json }}, "---meta")
+</script>

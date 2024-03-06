@@ -1,0 +1,130 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_h1": true
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_alternative_pricing": true,
+            "show_alternative_pricing_over_price": true
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_style": "underlined",
+            "show_realtime_availability": true,
+            "show_size_chart": false,
+            "size_chart_variant": "Size",
+            "size_chart_page": ""
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_tax_and_shipping": true,
+            "show_quantity_selector": true,
+            "enable_payment_button": false,
+            "show_pickup_availability": true,
+            "enable_mobile_sticky_cart": false
+          }
+        },
+        "894098fc-32c4-4f76-b08d-eda8f3a896d5": {
+          "type": "calculated_quantity",
+          "settings": {
+            "quantity_label": "Stycken",
+            "antecedent_label": "Kvm",
+            "consequent": "{{ product.metafields.custom.antal_kvm_per_sack.value }}{{ product.metafields.my_fields.antal_plattor_per_kvm.value }}",
+            "consequent_bags": "",
+            "show_labels": true,
+            "show_tax_and_shipping": true
+          }
+        },
+        "tabs": {
+          "type": "tabs",
+          "settings": {
+            "display_as": "accordion",
+            "show_product_reviews": false,
+            "show_product_description": true,
+            "tab_1_append_id": "product_description",
+            "tab_2_append_id": "",
+            "tab_2_page": "",
+            "tab_2_title": "",
+            "tab_2_content": "",
+            "tab_3_append_id": "",
+            "tab_3_page": "",
+            "tab_3_title": "",
+            "tab_3_content": "",
+            "tab_4_append_id": "",
+            "tab_4_page": "",
+            "tab_4_title": "",
+            "tab_4_content": ""
+          }
+        },
+        "3d831032-6e99-41a0-bd78-2affd3840e71": {
+          "type": "metafield_table",
+          "settings": {
+            "display_as": "accordion",
+            "render_location": "before_existing",
+            "append_id": "",
+            "append_location": "above",
+            "title": "Fakta",
+            "rte_content": "",
+            "metafields": "my_fields.artikelnummer\nmy_fields.antal_per_pall\nmy_fields.vikt_per_kantsten\nmy_fields.vikt_per_pall\nmy_fields.pris_per_kvm\nmy_fields.vikt_per_stolpe\nmy_fields.antal_plattor_per_kvm\nmy_fields.storlek\nmy_fields.ursprungsland\nmy_fields.lagerort\nmy_fields.ce_standard\nmy_fields.leveranstid\nmy_fields.vikt_per_platta\nmy_fields.bearbetning\nmy_fields.stensort\nmy_fields.fogbredd\nmy_fields.frostbest_ndig\nmy_fields.anv_ndningsomr_de\nmy_fields.antal_kvm_per_pall\ncustom.trafikklass\ncustom.antal_kvm_per_sack"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "rating",
+        "variant_picker",
+        "buy_buttons",
+        "894098fc-32c4-4f76-b08d-eda8f3a896d5",
+        "tabs",
+        "3d831032-6e99-41a0-bd78-2affd3840e71"
+      ],
+      "settings": {
+        "media_style": "collage",
+        "sticky_behaviour": "bottom",
+        "full_width": true,
+        "show_backorder_text": true,
+        "slide_nav_style": "dots",
+        "media_crop": "center",
+        "enable_zoom": false,
+        "zoom_cursor": "plus-light",
+        "show_thumbnails": true,
+        "enable_video_looping": false,
+        "scroll_to_variant_media": true,
+        "highlight_selected_media": true,
+        "variant_media_grouping": false,
+        "variant_media_grouping_option": "Color,Colour,Couleur,Farbe"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": false,
+        "title": "You may also like",
+        "hide_swatches": false,
+        "show_vendor": false,
+        "grid": 3
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations"
+  ]
+}

@@ -1,0 +1,51 @@
+{%- layout none -%}
+{%- paginate search.results by 1000 -%}
+    [{%- for product in search.results -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        {
+            "id":{{-product.id-}},
+            "title":{{-product.title | json-}},
+            "handle":{{-product.handle | json-}},
+            "price":"{{-product.price-}}",
+            "price_max":"{{-product.price_max}}",
+            "price_min":"{{-product.price_min}}",
+            "type":{{-product.type | json-}},
+            "created_at":"{{-product.created_at | date: "%Y-%m-%d %H:%M" -}}",
+            "published_at":"{{-product.published_at | date: "%Y-%m-%d %H:%M" -}}",
+            "tags": {{-product.tags | json-}},
+            "vendor": {{-product.vendor | json-}},
+            "featured_image":"{{-product.featured_image-}}",
+            "url":"{{-product.url-}}",
+            "collections":{{-product.collections | map: 'id' | json-}},
+            "compare_at_price":"{{-product.compare_at_price-}}",
+            "compare_at_price_max": "{{-product.compare_at_price_max-}}",
+            "compare_at_price_min": "{{-product.compare_at_price_min-}}",
+            "price_varies": "{{-product.price_varies-}}",
+            "compare_at_price_varies": "{{-product.compare_at_price_varies-}}",
+            "images":[
+            {%- for image in product.images -%}{%- unless forloop.first -%},
+            {%- endunless -%}{"id":{{-image.id-}},
+            "src":{{-image.src | json-}}}{%- endfor -%}],
+            "first_available_variant":{"id":{{product.selected_or_first_available_variant.id}}},
+            "available":{{-product.available-}},
+            "variants":[
+                {%- for variant in product.variants -%}{%- unless forloop.first -%},
+                    {%- endunless -%}
+                    {
+                    "id":{{-variant.id-}},
+                    "title":{{-variant.title | json}},
+                    "name":{{-variant.name | json}},
+                    "price":{{-variant.price-}},
+                    "compare_at_price":"{{-variant.compare_at_price-}}",
+                    "available":{{-variant.available-}},
+                    "sku":{{-variant.sku | json -}},
+                    "weight":"{{-variant.weight-}}",
+                    "weight_unit": "{{-variant.weight_unit-}}",
+                    "inventory_quantity":{{-variant.inventory_quantity-}},
+                    "selected": {%- if variant.selected -%}  {{-variant.selected-}} {%- elsif product.selected_or_first_available_variant.id == variant.id -%} true  {%- else -%} false {%- endif -%}
+                    }
+                {%- endfor -%}
+            ]
+        }
+    {%- endfor -%}]
+{%- endpaginate -%}

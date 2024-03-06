@@ -1,0 +1,320 @@
+{%- liquid
+  assign heading_tag = "h2"
+  if section.settings.heading_h1
+    assign heading_tag = "h1"
+  endif
+-%}
+
+<div id="section-id-{{ section.id }}" class="{% if section.settings.full_width == false %}section-spacing wide-container{% else %}header-overlap-section needs-alt-logo{% endif %}" data-section-type="video">
+  {% style %}
+    #section-id-{{ section.id }} .rimage-outer-wrapper {
+      background-position: {{ section.settings.mobile_image_position }}
+    }
+
+    @media (min-width: 768px) {
+      #section-id-{{ section.id }} .line-1 {
+        {%- assign title_size_medium = section.settings.title_size | times: 0.7 -%}
+        font-size: {{ title_size_medium }}px;
+      }
+
+      #section-id-{{ section.id }} .rimage-outer-wrapper {
+        background-position: {{ section.settings.desktop_image_position }}
+      }
+    }
+
+    @media (min-width: 992px) {
+      #section-id-{{ section.id }} .line-1 {
+        font-size: {{ section.settings.title_size }}px;
+      }
+    }
+  {% endstyle %}
+
+  {% if section.settings.video != blank %}
+    <div class="video-container video-container--image video-container--modal-mobile image-overlay  {% if section.settings.overlay_style_tint %}image-overlay--bg-full{% endif %}"
+         data-cc-animate
+         data-video-url="{{ section.settings.video }}"
+         data-video-id="{{ section.settings.video.id }}"
+         data-video-type="{{ section.settings.video.type }}"
+         data-video-autoplay="false"
+         data-video-loop="false">
+      <a class="video-container__stop" href="#">{% render 'svg-x' %}</a>
+      <div class="video-container__video"></div>
+
+      {%- assign show_overlay_text = true -%}
+
+      <div class="video-container__cover">
+        {%- if section.settings.image == blank -%}
+          <div class="placeholder-image placeholder--banner {% if show_overlay_text %}dark{% endif %}">
+            {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+          </div>
+        {%- else -%}
+          <div class="rimage-outer-wrapper lazyload fade-in"
+              data-bgset="{% render 'bgset', image: section.settings.image %}"
+              data-sizes="auto"
+              data-parent-fit="cover">
+            <noscript>
+              <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%">
+                <img src="{{ section.settings.image | img_url: '1024x1024' }}" alt="{{ section.settings.image.alt | escape }}" class="rimage__image">
+              </div>
+            </noscript>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if show_overlay_text -%}
+        <div class="overlay-type overlay {{ section.settings.overlay_position }}">
+          <div class="inner">
+            <div>
+              <div class="overlay__content" {% if section.settings.overlay_position == 'position--hcenter position--vcenter' %}data-cc-animate="cc-fade-in-zoom-out"{% endif %}>
+                {%- if section.settings.subheading != blank -%}
+                  <div class="feature-subheader">
+                    {{ section.settings.subheading | escape }}
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.video_title != blank -%}
+                  <{{ heading_tag }} class="line-1 {% if section.settings.title_size >= 86 %}line-1--large{% endif %}">
+                    {{ section.settings.video_title | newline_to_br }}
+                  </{{ heading_tag }}>
+                {%- endif -%}
+                {%- if section.settings.text != blank -%}
+                  <div class="rte line-2 {% if section.settings.enlarge_text %}large-text{% endif %}">
+                    {{ section.settings.text }}
+                  </div>
+                {%- endif -%}
+
+                <div class="line-3">
+                  <a href="#" class="video-container__play button hover-grow"
+                     aria-label="{{ 'general.accessibility_labels.video_play' | t | escape }}">
+                    {% render 'svg-play-without-circle' %}
+                    {{ 'general.accessibility_labels.video_play' | t | escape }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Video",
+    "class": "section-video",
+    "settings": [
+      {
+        "id": "video",
+        "type": "video_url",
+        "label": "Video link",
+        "accept": ["youtube", "vimeo"],
+        "info": "Supports YouTube and Vimeo",
+        "default": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "textarea",
+        "id": "video_title",
+        "label": "Heading",
+        "default": "Video"
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "min": 20,
+        "max": 150,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading text size",
+        "default": 60
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_h1",
+        "label": "Set as primary page heading",
+        "info": "Uses <h1> tag. One per page recommended. [Learn more](https://cleancanvas.co.uk/support/showcase/seo#inner-anchor-0)",
+        "default": false
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair text with a video to draw attention to an important detail of your brand or product line.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "enlarge_text",
+        "label": "Enlarge text",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "overlay_position",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "position--left position--top",
+            "label": "Top left"
+          },
+          {
+            "value": "position--hcenter position--top",
+            "label": "Top center"
+          },
+          {
+            "value": "position--right position--top",
+            "label": "Top right"
+          },
+          {
+            "value": "position--left position--vcenter",
+            "label": "Middle left"
+          },
+          {
+            "value": "position--hcenter position--vcenter",
+            "label": "Middle center"
+          },
+          {
+            "value": "position--right position--vcenter",
+            "label": "Middle right"
+          },
+          {
+            "value": "position--left position--bottom",
+            "label": "Bottom left"
+          },
+          {
+            "value": "position--hcenter position--bottom",
+            "label": "Bottom center"
+          },
+          {
+            "value": "position--right position--bottom",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "position--hcenter position--vcenter"
+      },
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "Cover image",
+        "info": "Required. Shows over the video before it's played."
+      },
+      {
+        "type": "select",
+        "id": "desktop_image_position",
+        "label": "Desktop image alignment",
+        "info": "Used to keep the subject of your image in view",
+        "default": "center center",
+        "options": [
+          {
+            "value": "top left",
+            "label": "Top left"
+          },
+          {
+            "value": "top center",
+            "label": "Top center"
+          },
+          {
+            "value": "top right",
+            "label": "Top right"
+          },
+          {
+            "value": "center left",
+            "label": "Middle left"
+          },
+          {
+            "value": "center center",
+            "label": "Middle center"
+          },
+          {
+            "value": "center right",
+            "label": "Middle right"
+          },
+          {
+            "value": "bottom left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom right",
+            "label": "Bottom right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "mobile_image_position",
+        "label": "Mobile image alignment",
+        "default": "center center",
+        "options": [
+          {
+            "value": "top left",
+            "label": "Top left"
+          },
+          {
+            "value": "top center",
+            "label": "Top center"
+          },
+          {
+            "value": "top right",
+            "label": "Top right"
+          },
+          {
+            "value": "center left",
+            "label": "Middle left"
+          },
+          {
+            "value": "center center",
+            "label": "Middle center"
+          },
+          {
+            "value": "center right",
+            "label": "Middle right"
+          },
+          {
+            "value": "bottom left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom right",
+            "label": "Bottom right"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "id": "full_width",
+        "type": "checkbox",
+        "label": "Full page width",
+        "default": false
+      },
+      {
+        "id": "overlay_style_tint",
+        "type": "checkbox",
+        "label": "Show overlay tint",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video",
+        "settings": {
+          "video": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+        }
+      }
+    ]
+  }
+{% endschema %}

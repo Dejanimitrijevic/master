@@ -1,0 +1,177 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-faq",
+      "settings": {
+        "show_title": false,
+        "show_content": true,
+        "text_alignment": "left",
+        "show_search": true,
+        "show_sidebar": true,
+        "sidebar_title": "Quick links"
+      }
+    },
+    "1633684260f2d526f0": {
+      "type": "image-with-text-overlay",
+      "settings": {
+        "desktop_image_position": "center center",
+        "mobile_image_position": "center center",
+        "height": "fixed",
+        "height_desktop": 400,
+        "height_mobile": 400,
+        "subheading": "",
+        "title": "FAQs",
+        "title_size": 60,
+        "heading_h1": true,
+        "text": "",
+        "enlarge_text": false,
+        "button_label": "",
+        "image_link": "",
+        "overlay_position": "position--hcenter position--vcenter",
+        "full_width": true,
+        "mobile_overlay_under": false,
+        "overlay_style_tint": true
+      }
+    },
+    "16336816691fb51b7b": {
+      "type": "accordions",
+      "blocks": {
+        "16336816691fb51b7b-0": {
+          "type": "accordion",
+          "settings": {
+            "title": "What are your delivery times?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "16336816691fb51b7b-2": {
+          "type": "accordion",
+          "settings": {
+            "title": "How much will shipping cost?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "16336816691fb51b7b-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Can you provide worldwide shipping?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "16336816691fb51b7b-0",
+        "16336816691fb51b7b-2",
+        "16336816691fb51b7b-1"
+      ],
+      "settings": {
+        "title": "Shipping",
+        "alternate_bg_color": false,
+        "view_all_page": ""
+      }
+    },
+    "1633681707d0a1c902": {
+      "type": "accordions",
+      "blocks": {
+        "1633681707d0a1c902-0": {
+          "type": "accordion",
+          "settings": {
+            "title": "How can I cancel my order?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "1633681707d0a1c902-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "What if I receive the wrong product?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "1633681707d0a1c902-2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Do you offer exchanges for faulty items?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "1633681707d0a1c902-0",
+        "1633681707d0a1c902-1",
+        "1633681707d0a1c902-2"
+      ],
+      "settings": {
+        "title": "My Order",
+        "alternate_bg_color": false,
+        "view_all_page": ""
+      }
+    },
+    "1633684277a52541f1": {
+      "type": "accordions",
+      "blocks": {
+        "1633684277a52541f1-0": {
+          "type": "accordion",
+          "settings": {
+            "title": "How do I return my product?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "1633684277a52541f1-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "How do I care for my product?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        },
+        "cc3ff187-0164-4771-94eb-f1ca2d23b5d8": {
+          "type": "accordion",
+          "settings": {
+            "title": "Do you offer extended warranties?",
+            "text": "<p>Add the content to appear when the accordion is opened<\/p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "1633684277a52541f1-0",
+        "1633684277a52541f1-1",
+        "cc3ff187-0164-4771-94eb-f1ca2d23b5d8"
+      ],
+      "settings": {
+        "title": "Product",
+        "alternate_bg_color": false,
+        "view_all_page": ""
+      }
+    },
+    "1634028710b7446a77": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "collection": "",
+        "layout": "carousel",
+        "show_vendor": false,
+        "grid": 4,
+        "rows": 2,
+        "grid_mobile": "2",
+        "hide_swatches": false,
+        "alternate_bg_color": true,
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "1633684260f2d526f0",
+    "main",
+    "16336816691fb51b7b",
+    "1633681707d0a1c902",
+    "1633684277a52541f1",
+    "1634028710b7446a77"
+  ]
+}

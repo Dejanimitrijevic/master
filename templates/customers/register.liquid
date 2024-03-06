@@ -1,0 +1,40 @@
+<div class="central py-medium" id="template">
+  <div id="customer">
+    <!-- Create Customer -->
+    <div id="create-customer">
+      <div class="template_header">
+        <h1 class="h2 feature-header" data-cc-animate>{{ 'customer.register.title' | t }}</h1>
+      </div>
+
+      {% form 'create_customer' %}
+      {{ form.errors | default_errors }}
+      <div class="form">
+        <div class="input-row" data-cc-animate data-cc-animate-delay="0.2s">
+          <input aria-label="{{ 'customer.register.first_name' | t }}" placeholder="{{ 'customer.register.first_name' | t }}" type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" />
+        </div>
+
+        <div class="input-row" data-cc-animate data-cc-animate-delay="0.35s">
+          <input aria-label="{{ 'customer.register.last_name' | t }}" placeholder="{{ 'customer.register.last_name' | t }}" type="text" value="" name="customer[last_name]" id="last_name" class="large" size="30" />
+        </div>
+
+        <div class="input-row" data-cc-animate data-cc-animate-delay="0.5s">
+          <input aria-label="{{ 'customer.register.email' | t }}" placeholder="{{ 'customer.register.email' | t }}" type="email" value="" name="customer[email]" id="email" class="large" size="30" />
+        </div>
+
+        <div class="input-row" data-cc-animate data-cc-animate-delay="0.65s">
+          <input aria-label="{{ 'customer.register.password' | t }}" placeholder="{{ 'customer.register.password' | t }}" type="password" value="" name="customer[password]" id="password" class="large password" size="30" />
+        </div>
+
+        <div class="wide-action">
+          <input type="submit" value="{{ 'customer.register.submit' | t }}" data-cc-animate data-cc-animate-delay="0.8s"/>
+          <span class="note" data-cc-animate data-cc-animate-delay="0.95s">
+            <a data-cc-animate-click href="{{ routes.root_url }}">
+              {{ 'customer.register.cancel' | t }}
+            </a>
+          </span>
+        </div>
+      </div>
+      {% endform %}
+    </div>
+  </div>
+</div>

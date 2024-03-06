@@ -1,0 +1,30 @@
+{% if animation_type == blank %}
+  {% assign animation_type = "cc-fade-in-up" %}
+{% endif %}
+
+<div class="product-block collection-block hover-{{ settings.collection_hover_effect }} {{ product_class }}" data-loop-index="{{ i }}"
+     {% if animate %}data-cc-animate="{{ animation_type }}" data-cc-animate-delay="{{ animate | times: 0.1 }}s" {% endif %}>
+  <div class="product-block__inner">
+    <div class="image">
+      <div class="image-inner">
+        {% capture placeholder_svg_name %}collection-{{ i | modulo: 6 | plus: 1 }}{% endcapture %}
+        <div class="placeholder-image dark">{{ placeholder_svg_name | placeholder_svg_tag }}</div>
+      </div>
+    </div>
+    <div class="caption upper">
+      <span class="title h2">{{ 'onboarding.collection.title' | t }}</span>
+
+      {% if settings.collection_hover_effect == 'info' %}
+        <span class="button alt">
+          {{ 'collections.general.view' | t }}
+        </span>
+      {% endif %}
+
+      {% if settings.collection_show_product_count %}
+        <div class="price collection-count">
+          {{ 'collections.general.product_count' | t: count: 0 }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

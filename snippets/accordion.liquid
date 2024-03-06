@@ -1,0 +1,62 @@
+{% comment %}
+  Parameters:
+  - allow_multi_open {boolean} [optional] - Whether to allow multiple items to be open. Default is true.
+  - first_item_open {boolean} [optional] - Whether the first item should be open on page load. Default is false.
+  - add_content_class {string} [optional] - Additional class(es) to add to the content element
+  - toggle_icon {string} [optional] - Custom icon markup, e.g. '<span class="icon">...</span>'
+
+  One of the following three forms of content should also be provided:
+  1. content_snippet {string} - Helper snippet to use to generate content
+  2. content {string} - Custom content
+  3. item(x)_title {string} - The item title or summary (up to 10, requires item(x)_content)
+     item(x)_content {string} - The item content
+
+  Example usage:
+  render "accordion",
+    allow_multi_open: false,
+    first_item_open: true,
+    item1_title: pages[section.settings.accordion_item1_page].title,
+    item1_content: pages[section.settings.accordion_item1_page].content,
+    item2_title: pages[section.settings.accordion_item2_page].title,
+    item2_content: pages[section.settings.accordion_item2_page].content,
+    ...
+{% endcomment %}
+
+{%- unless content_snippet or content -%}
+  {%- capture item_titles -%}
+    {{ item1_title }} ⋮āňđ⋮ {{ item2_title }} ⋮āňđ⋮ {{ item3_title }} ⋮āňđ⋮ {{ item4_title }} ⋮āňđ⋮ {{ item5_title }} ⋮āňđ⋮ {{ item6_title }} ⋮āňđ⋮ {{ item7_title }} ⋮āňđ⋮ {{ item8_title }} ⋮āňđ⋮ {{ item9_title }} ⋮āňđ⋮ {{ item10_title }}
+  {%- endcapture -%}
+
+  {%- capture item_contents -%}
+    {{ item1_content }} ⋮āňđ⋮ {{ item2_content }} ⋮āňđ⋮ {{ item3_content }} ⋮āňđ⋮ {{ item4_content }} ⋮āňđ⋮ {{ item5_content }} ⋮āňđ⋮ {{ item6_content }} ⋮āňđ⋮ {{ item7_content }} ⋮āňđ⋮ {{ item8_content }} ⋮āňđ⋮ {{ item9_content }} ⋮āňđ⋮ {{ item10_content }}
+  {%- endcapture -%}
+
+  {%- assign item_titles = item_titles | split: ' ⋮āňđ⋮ ' -%}
+  {%- assign item_contents = item_contents | split: ' ⋮āňđ⋮ ' -%}
+{%- endunless -%}
+
+{%- if allow_multi_open != false -%}
+  {%- assign allow_multi_open = 'true' -%}
+{%- endif -%}
+
+<div class="cc-accordion" data-allow-multi-open="{{ allow_multi_open }}">
+  {%- liquid
+    if content
+      echo content
+    elsif content_snippet == 'accordion-helper-product-content'
+      render 'accordion-helper-product-content', add_content_class: add_content_class
+    else
+      for title in item_titles
+        if title != blank
+          if forloop.first and first_item_open
+            assign item_open = true
+          else
+            assign item_open = false
+          endif
+
+          render 'accordion-item', title: title, content: item_contents[forloop.index0], add_content_class: add_content_class, toggle_icon: toggle_icon, item_open: item_open
+        endif
+      endfor
+    endif
+  -%}
+</div>

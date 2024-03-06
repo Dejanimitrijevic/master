@@ -1,0 +1,21 @@
+{% comment %}
+Use:
+{% render 'split_images_from_content' with collection.description %}
+<div class="header">{{ split_images }}</div>
+<div class="description">{{ split_content }}</div>
+{% endcomment %}
+
+{% assign num_to_split = 1 %}
+{% assign split_content = split_images_from_content %}
+{% assign split_images = '' %}
+
+{% for i in (1..num_to_split) %}
+    {% if split_content contains '<img' %}
+        {% assign src = split_content | split: 'src="' %}
+        {% assign src = src[1] | split: '"' | first | replace: '//cdn', 'http://cdn' | replace: 'http:http://', 'http://' %}
+        {% if src %}
+            {% capture split_images %}{{ split_images }}<div class="split-image"><img src="{{ src }}" alt="{{ article.title }}" /></div>{% endcapture %}
+        {% endif %}
+    {% endif %}
+    {% assign split_content = split_content | replace_first: '<img ', '<meta ' | replace_first: ' src="', ' srcX="' %}
+{% endfor %}

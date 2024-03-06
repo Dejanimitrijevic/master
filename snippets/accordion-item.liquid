@@ -1,0 +1,29 @@
+{% comment %}
+  Parameters:
+  - title {string} [required] - The item title or summary
+  - content {string} [required] - The item content
+  - add_content_class {string} [optional] - Additional class(es) to add to the content element
+  - toggle_icon {string} [optional] - Custom icon markup, e.g. '<span class="icon">...</span>'
+  - item_open {boolean} [optional] - Whether the item should be open on page load. Default is false.
+{% endcomment %}
+
+{%- liquid
+  assign item_attr = 'class="cc-accordion-item"'
+
+  if item_open == true
+    assign item_attr = 'class="cc-accordion-item is-open" open'
+  endif
+
+  if add_content_class
+    assign content_class = add_content_class | prepend: ' '
+  endif
+-%}
+
+<details {{ item_attr }}>
+  <summary class="cc-accordion-item__title">{{- title -}}{{- toggle_icon -}}</summary>
+  <div class="cc-accordion-item__panel">
+    <div class="cc-accordion-item__content{{ content_class }}">
+      {{- content -}}
+    </div>
+  </div>
+</details>

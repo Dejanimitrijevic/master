@@ -1,0 +1,164 @@
+{%- liquid
+  assign columns = 4
+
+  if columns == 2
+    assign article_class = 'column half'
+  elsif columns == 3
+    assign article_class = 'column third'
+  else
+    assign article_class = 'column quarter'
+  endif
+
+  assign show_blog_filters = false
+  if blog.all_tags.size > 0 and section.settings.blog_show_filter
+    assign show_blog_filters = true
+  endif
+-%}
+
+<div data-section-type="blog-template" class="{% if section.settings.blog_show_title == false %}sm:pt-medium pb-medium{% else %}py-medium{% endif %}">
+  {% if section.settings.blog_show_title %}
+    <div class="central align-center">
+      <h1 class="feature-header" data-cc-animate>
+        <span>
+          {{ blog.title }}
+
+          {% if show_blog_filters == false and section.settings.blog_show_rss_link %}
+            <a class="rsslink {% if section.settings.blog_show_filter == false or blog.all_tags.size == 0 %}no-filter{% endif %}"
+               href="{{ blog.url }}.atom" title="{{ blog.title | escape }} RSS" aria-label="{{ blog.title | escape }} RSS">
+              {% render 'svg-rss' %}
+            </a>
+          {% endif %}
+          </span>
+      </h1>
+    </div>
+  {% endif %}
+
+  {% paginate blog.articles by section.settings.blog_posts_per_page %}
+    <div class="wide-container half-gutter">
+      {% if show_blog_filters %}
+        <div class="blog-toolbar" data-cc-animate data-cc-animate-delay="0.2s">
+          <div>
+            {% if section.settings.blog_show_rss_link %}
+              <a class="rsslink {% if section.settings.blog_show_filter == false or blog.all_tags.size == 0 %}no-filter{% endif %}"
+                 href="{{ blog.url }}.atom" title="{{ blog.title | escape }} RSS" aria-label="{{ blog.title | escape }} RSS">
+                {% render 'svg-rss' %}
+              </a>
+            {% endif %}
+          </div>
+
+          {% if show_blog_filters %}
+            <div class="option option--gap-top">
+              <label for="filter-by">{{ 'blogs.filtering.filter' | t }}</label>
+              <select id="filter-by" class="redirecter">
+                <option value="{{ blog.url }}">{{ 'blogs.filtering.all' | t }}</option>
+                {% for tag in blog.all_tags %}
+                  <option value="{{ blog.url }}/tagged/{{ tag | handle }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag | capitalize }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="product-list-container">
+        <div class="cc-articles product-list grid--uniform{% if section.settings.blog_posts_per_row_mobile == '2' %} mob-two-col{% endif %} product-list--{{ section.settings.blog_layout }}">
+          {% for article in blog.articles %}
+            <div class="{{ article_class }} article-column">
+              {% render 'article-block',
+                  article: article,
+                  show_date: settings.blog_show_date,
+                  show_author: settings.blog_show_author,
+                  image_shape: settings.blog_image_shape,
+                  blog_excerpt: settings.blog_excerpt
+              %}
+            </div>
+          {% else %}
+            <p class="align-centre"><em>{{ 'blogs.general.no_matches' | t }}</em></p>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div class="pagination central content" data-cc-animate>
+            {% comment %}
+            When paginating blog articles, a previous article is actually a newer article, not an older one,
+            because blog articles are shown and paginated in a reversed chronological order.
+            The word 'previous' can be confusing, hence we'll change it.
+            {% endcomment %}
+            {% assign older_articles = 'blogs.pagination.older_articles' | t %}
+            {% assign newer_articles = 'blogs.pagination.newer_articles' | t %}
+            {{ paginate | default_pagination | replace: 'Previous', newer_articles | replace: 'Next', older_articles }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endpaginate %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Blog pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "blog_layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "collage",
+            "label": "Collage"
+          },
+          {
+            "value": "rows",
+            "label": "Grid"
+          }
+        ],
+        "default": "collage",
+        "info": "Collage applies to larger screens only"
+      },
+      {
+        "type": "range",
+        "id": "blog_posts_per_page",
+        "label": "Posts per page",
+        "min": 6,
+        "max": 24,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "select",
+        "id": "blog_posts_per_row_mobile",
+        "label": "Posts per row on mobile",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_title",
+        "label": "Show page title",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_filter",
+        "label": "Show tag filter",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_rss_link",
+        "label": "Show RSS link",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

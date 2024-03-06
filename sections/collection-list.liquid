@@ -1,0 +1,176 @@
+{% if section.settings.layout == 'rows' %}
+  {% if section.settings.grid == 2 %}
+    {% assign product_class = 'column half' %}
+    {% elsif section.settings.grid == 3 %}
+    {% assign product_class = 'column third' %}
+  {% else %}
+    {% assign product_class = 'column quarter' %}
+  {% endif %}
+{% endif %}
+
+{% if section.settings.layout == 'carousel' %}<div class="product-slider">{% endif %}
+
+<div class="wide-container half-gutter section-spacing {% if section.settings.alternate_bg_color %}use-alt-bg {% endif %}" data-section-type="collection-list" data-cc-animate>
+  {% if section.settings.title != blank or section.settings.show_view_all %}
+    <div class="section-heading" data-cc-animate>
+      {% if section.settings.title != blank %}
+        <h2 class="h2">{{ section.settings.title | escape }}</h2>
+      {% else %}
+        <div></div>
+      {% endif %}
+
+      {% if section.settings.show_view_all %}
+        <a data-cc-animate-click class="view-all-link" href="{{ routes.collections_url }}">
+          {{ 'collections.general.view_all' | t }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% assign animation_type = "cc-fade-in-up" %}
+  {%- if section.settings.layout == "columns" -%}
+    {% assign animation_type = "cc-fade-in" %}
+  {%- endif -%}
+
+  {% if section.settings.layout == 'carousel' %}
+    <div class="swiper-container product-list product-list--{{ section.settings.layout }}"
+         data-products-in-view="{{ section.settings.grid }}">
+
+      <div class="swiper-wrapper" data-normheights=".image" data-normheights-inner="img">
+        {% for block in section.blocks %}
+          <div class="swiper-slide" {{ block.shopify_attributes }}>
+            {% if block.settings.collection == blank %}
+              {% render 'onboarding-collection-block', i: forloop.index, animation_type: animation_type, product_class: product_class, animate: forloop.index %}
+            {% else %}
+              {% render 'collection-block', collection: collections[block.settings.collection], product_class: product_class, animation_type: animation_type, i: forloop.index, animate: forloop.index, image: block.settings.image %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="swiper-scrollbar"></div>
+      <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
+      <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
+    </div>
+  {% else %}
+    <div class="product-list
+      product-list--{{ section.settings.layout }}
+      {% if section.settings.grid_mobile == '2' %}mob-two-col{% endif %}
+      {% if section.settings.layout == 'columns' %}jiggly-split dynamic-col-{{ section.settings.grid }}{% else %}grid--uniform{% endif %}">
+
+      {% for block in section.blocks %}
+        {% if block.settings.collection == blank %}
+          {% render 'onboarding-collection-block', i: forloop.index, product_class: product_class, animate: forloop.index, animation_type: animation_type, %}
+        {% else %}
+          {% render 'collection-block', collection: collections[block.settings.collection], product_class: product_class, i: forloop.index, animate: forloop.index, image: block.settings.image, animation_type: animation_type, %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  {% endif %}
+</div>
+
+{% if section.settings.layout == 'carousel' %}</div>{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "section-collection-list",
+    "max_blocks": 20,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "columns",
+            "label": "Collage"
+          },
+          {
+            "value": "rows",
+            "label": "Grid"
+          },
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          }
+        ],
+        "default": "rows",
+        "info": "Collage will only work when the 'Image shape'  is set to Natural - in Collections / Image shape"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Desktop collections per row",
+        "min": 2,
+        "max": 4,
+        "default": 3
+      },
+      {
+        "type": "select",
+        "id": "grid_mobile",
+        "label": "Mobile collections per row",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' link",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "alternate_bg_color",
+        "label": "Use alternate section color",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+              "type": "collection",
+              "id": "collection",
+              "label": "Collection"
+          },
+          {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "settings": {},
+        "blocks": [
+            { "type": "collection" },
+            { "type": "collection" },
+            { "type": "collection" }
+        ]
+      }
+    ]
+  }
+{% endschema %}

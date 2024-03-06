@@ -1,0 +1,574 @@
+{
+  "store": {
+    "id": 57989890187,
+    "plan": "basic",
+    "theme": "Copy of Marko_dev1",
+    "primaryLocale": "sv",
+    "adminMode": false
+  },
+  "tsPublished": 1709011712,
+  "declaration": {
+    "showPurpose": false,
+    "showProvider": false,
+    "showDateGenerated": false
+  },
+  "language": {
+    "languageMode": "Single",
+    "fallbackLanguage": "sv",
+    "languageDetection": "browser",
+    "languagesSupported": []
+  },
+  "texts": {
+    "managed": {
+      "headerText": {
+        "sv": "Vi respekterar din integritet"
+      },
+      "consentText": {
+        "sv": "Denna webbplats använder cookies för att säkerställa att du får den bästa upplevelsen."
+      },
+      "dismissButtonText": {
+        "sv": "Ok"
+      },
+      "linkText": {
+        "sv": "Läs mer"
+      },
+      "imprintText": {
+        "sv": "Avtryck"
+      },
+      "preferencesButtonText": {
+        "sv": "Preferenser"
+      },
+      "allowButtonText": {
+        "sv": "Acceptera"
+      },
+      "denyButtonText": {
+        "sv": "Neka"
+      },
+      "leaveSiteButtonText": {
+        "sv": "Lämna denna webbplats"
+      },
+      "cookiePolicyText": {
+        "sv": "Cookiepolicy"
+      },
+      "preferencesPopupTitleText": {
+        "sv": "Hantera samtyckeinställningar"
+      },
+      "preferencesPopupIntroText": {
+        "sv": "Vi använder cookies för att optimera webbplatsens funktionalitet, analysera prestanda och ge dig personlig upplevelse. Vissa kakor är viktiga för att webbplatsen ska fungera och fungera korrekt. Dessa cookies kan inte inaktiveras. I det här fönstret kan du hantera dina preferenser för cookies."
+      },
+      "preferencesPopupCloseButtonText": {
+        "sv": "Stäng"
+      },
+      "preferencesPopupAcceptAllButtonText": {
+        "sv": "Acceptera alla"
+      },
+      "preferencesPopupRejectAllButtonText": {
+        "sv": "Avvisa alla"
+      },
+      "preferencesPopupSaveButtonText": {
+        "sv": "Spara inställningar"
+      },
+      "accessSectionTitleText": {
+        "sv": "Dataportabilitet"
+      },
+      "accessSectionParagraphText": {
+        "sv": "Du har rätt att när som helst få tillgång till dina uppgifter."
+      },
+      "rectificationSectionTitleText": {
+        "sv": "Rättelse av data"
+      },
+      "rectificationSectionParagraphText": {
+        "sv": "Du har rätt att begära att dina uppgifter uppdateras när du tycker att det är lämpligt."
+      },
+      "erasureSectionTitleText": {
+        "sv": "Rätt att bli bortglömd"
+      },
+      "erasureSectionParagraphText": {
+        "sv": "Du har rätt att be alla dina data raderas. Efter det kommer du inte längre att kunna komma åt ditt konto."
+      },
+      "declIntroText": {
+        "sv": "Vi använder cookies för att optimera webbplatsens funktionalitet, analysera prestandan och ge dig en personlig upplevelse. Vissa cookies är nödvändiga för att webbplatsen ska fungera och fungera korrekt. Dessa cookies kan inte inaktiveras. I det här fönstret kan du hantera dina preferenser för cookies."
+      }
+    },
+    "categories": {
+      "strictlyNecessaryCookiesTitleText": {
+        "sv": "Strikt nödvändiga kakor"
+      },
+      "functionalityCookiesTitleText": {
+        "sv": "Funktionella kakor"
+      },
+      "performanceCookiesTitleText": {
+        "sv": "Prestandakakor"
+      },
+      "targetingCookiesTitleText": {
+        "sv": "Inriktningskakor"
+      },
+      "unclassifiedCookiesTitleText": {
+        "sv": "Oklassificerade cookies"
+      },
+      "strictlyNecessaryCookiesDescriptionText": {
+        "sv": "Dessa cookies är viktiga för att du ska kunna flytta runt på webbplatsen och använda dess funktioner, till exempel att komma åt säkra områden på webbplatsen. Webbplatsen kan inte fungera korrekt utan dessa cookies."
+      },
+      "functionalityCookiesDescriptionText": {
+        "sv": "Dessa cookies gör det möjligt för webbplatsen att tillhandahålla förbättrad funktionalitet och anpassning. De kan ställas in av oss eller av tredjepartsleverantörer vars tjänster vi har lagt till på våra sidor. Om du inte tillåter dessa kakor kanske vissa eller alla av dessa tjänster inte fungerar korrekt."
+      },
+      "performanceCookiesDescriptionText": {
+        "sv": "Dessa cookies gör att vi kan övervaka och förbättra prestandan på vår webbplats. Till exempel tillåter de oss att räkna besök, identifiera trafikkällor och se vilka delar av webbplatsen som är mest populära."
+      },
+      "targetingCookiesDescriptionText": {
+        "sv": "Dessa cookies kan sättas via vår webbplats av våra reklampartners. De kan användas av dessa företag för att skapa en profil av dina intressen och visa relevanta annonser på andra webbplatser. De lagrar inte direkt personlig information, men är baserade på att identifiera din webbläsare och internetenhet på ett unikt sätt. Om du inte tillåter dessa cookies kommer du att uppleva mindre riktad reklam."
+      },
+      "unclassifiedCookiesDescriptionText": {
+        "sv": "Oklassificerade cookies är cookies som vi håller på att klassificera tillsammans med leverantörerna av enskilda cookies."
+      }
+    },
+    "auto": {
+      "declName": {
+        "sv": "Namn"
+      },
+      "declPath": {
+        "sv": "Väg"
+      },
+      "declType": {
+        "sv": "Typ"
+      },
+      "declDomain": {
+        "sv": "Domän"
+      },
+      "declPurpose": {
+        "sv": "Syfte"
+      },
+      "declProvider": {
+        "sv": "Leverantör"
+      },
+      "declRetention": {
+        "sv": "Varaktighet"
+      },
+      "declFirstParty": {
+        "sv": "Förstapartskakor"
+      },
+      "declThirdParty": {
+        "sv": "Tredje part"
+      },
+      "declSeconds": {
+        "sv": "sekunder"
+      },
+      "declMinutes": {
+        "sv": "minuter"
+      },
+      "declHours": {
+        "sv": "timmar"
+      },
+      "declDays": {
+        "sv": "dagar"
+      },
+      "declMonths": {
+        "sv": "månader"
+      },
+      "declYears": {
+        "sv": "år"
+      },
+      "declSession": {
+        "sv": "Session"
+      },
+      "cookiesDetailsText": {
+        "sv": "Information om cookies"
+      },
+      "preferencesPopupAlwaysAllowedText": {
+        "sv": "Alltid tillåtna"
+      },
+      "submitButton": {
+        "sv": "Skicka in"
+      },
+      "submittingButton": {
+        "sv": "Skickar ..."
+      },
+      "cancelButton": {
+        "sv": "Avbryt"
+      },
+      "guestsSupportInfoText": {
+        "sv": "Logga in med ditt kundkonto för att fortsätta."
+      },
+      "guestsSupportEmailPlaceholder": {
+        "sv": "E-postadress"
+      },
+      "guestsSupportEmailValidationError": {
+        "sv": "E-post är inte giltig"
+      },
+      "guestsSupportEmailSuccessTitle": {
+        "sv": "Tack för din förfrågan"
+      },
+      "guestsSupportEmailFailureTitle": {
+        "sv": "Ett problem uppstod"
+      },
+      "guestsSupportEmailSuccessMessage": {
+        "sv": "Om du är registrerad som kund i den här butiken får du snart ett mejl med instruktioner om hur du går tillväga."
+      },
+      "guestsSupportEmailFailureMessage": {
+        "sv": "Din begäran skickades inte. Försök igen och om problemet kvarstår, kontakta butiksägaren för hjälp."
+      },
+      "confirmationSuccessTitle": {
+        "sv": "Din begäran har verifierats"
+      },
+      "confirmationFailureTitle": {
+        "sv": "Ett problem uppstod"
+      },
+      "confirmationSuccessMessage": {
+        "sv": "Vi återkommer snart till dig angående din begäran."
+      },
+      "confirmationFailureMessage": {
+        "sv": "Din begäran verifierades inte. Försök igen och kontakta butiksägaren för att få hjälp om problemet kvarstår"
+      },
+      "consentSectionTitleText": {
+        "sv": "Ditt samtycke till cookies"
+      },
+      "consentSectionNoConsentText": {
+        "sv": "Du har inte godkänt cookiepolicyn för denna webbplats."
+      },
+      "consentSectionConsentedText": {
+        "sv": "Du har samtyckt till cookiespolicyn för denna webbplats den"
+      },
+      "consentStatus": {
+        "sv": "samtycke"
+      },
+      "consentDate": {
+        "sv": "Samtyckesdatum"
+      },
+      "consentId": {
+        "sv": "Samtyckes-ID"
+      },
+      "consentSectionChangeConsentActionText": {
+        "sv": "Ändra samtyckesinställning"
+      },
+      "accessSectionGDPRRequestsActionText": {
+        "sv": "Begäran av registrerade"
+      },
+      "accessSectionAccountInfoActionText": {
+        "sv": "Personlig information"
+      },
+      "accessSectionOrdersRecordsActionText": {
+        "sv": "Order"
+      },
+      "accessSectionDownloadReportActionText": {
+        "sv": "Ladda ner allt"
+      },
+      "rectificationCommentPlaceholder": {
+        "sv": "Beskriv vad du vill uppdatera"
+      },
+      "rectificationCommentValidationError": {
+        "sv": "Kommentar krävs"
+      },
+      "rectificationSectionEditAccountActionText": {
+        "sv": "Begär en uppdatering"
+      },
+      "erasureSectionRequestDeletionActionText": {
+        "sv": "Begär radering av personuppgifter"
+      }
+    }
+  },
+  "library": {
+    "previewMode": false,
+    "fadeInTimeout": 0,
+    "defaultBlocked": 7,
+    "showLink": true,
+    "showImprintLink": false,
+    "enabled": true,
+    "cookie": {
+      "name": "_pandectes_gdpr",
+      "expiryDays": 365,
+      "secure": true
+    },
+    "dismissOnScroll": false,
+    "dismissOnWindowClick": false,
+    "dismissOnTimeout": false,
+    "palette": {
+      "popup": {
+        "background": "#FFFFFF",
+        "backgroundForCalculations": {
+          "a": 1,
+          "b": 255,
+          "g": 255,
+          "r": 255
+        },
+        "text": "#000000"
+      },
+      "button": {
+        "background": "transparent",
+        "backgroundForCalculations": {
+          "a": 1,
+          "b": 255,
+          "g": 255,
+          "r": 255
+        },
+        "text": "#000000",
+        "textForCalculation": {
+          "a": 1,
+          "b": 0,
+          "g": 0,
+          "r": 0
+        },
+        "border": "#000000"
+      }
+    },
+    "content": {
+      "href": "https:\/\/stengrossendev.myshopify.com\/policies\/privacy-policy",
+      "imprintHref": "\/",
+      "close": "&#10005;",
+      "target": "",
+      "logo": "<img class=\"cc-banner-logo\" height=\"40\" width=\"40\" src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/17\/assets\/pandectes-logo.png?v=1709010424\" alt=\"Stengrossen\" \/>"
+    },
+    "window": "<div role=\"dialog\" aria-live=\"polite\" aria-label=\"cookieconsent\" aria-describedby=\"cookieconsent:desc\" id=\"pandectes-banner\" class=\"cc-window-wrapper cc-bottom-wrapper\"><div class=\"pd-cookie-banner-window cc-window {{classes}}\"><!--googleoff: all-->{{children}}<!--googleon: all--><\/div><\/div>",
+    "compliance": {
+      "opt-both": "<div class=\"cc-compliance cc-highlight\">{{deny}}{{allow}}<\/div>"
+    },
+    "type": "opt-both",
+    "layouts": {
+      "basic": "{{logo}}{{messagelink}}{{compliance}}{{close}}"
+    },
+    "position": "bottom",
+    "theme": "wired",
+    "revokable": true,
+    "animateRevokable": false,
+    "revokableReset": false,
+    "revokableLogoUrl": "https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/17\/assets\/pandectes-reopen-logo.png?v=1709010424",
+    "revokablePlacement": "bottom-left",
+    "revokableMarginHorizontal": 15,
+    "revokableMarginVertical": 15,
+    "static": false,
+    "autoAttach": true,
+    "hasTransition": true,
+    "blacklistPage": [
+      ""
+    ]
+  },
+  "geolocation": {
+    "brOnly": false,
+    "caOnly": false,
+    "euOnly": false,
+    "canadaOnly": false
+  },
+  "dsr": {
+    "guestsSupport": false,
+    "accessSectionDownloadReportAuto": false
+  },
+  "banner": {
+    "resetTs": 1664193485,
+    "extraCss": "        .cc-banner-logo {max-width: 24em!important;}    @media(min-width: 768px) {.cc-window.cc-floating{max-width: 24em!important;width: 24em!important;}}    .cc-message, .cc-header, .cc-logo {text-align: left}    .cc-window-wrapper{z-index: 2147483647;}    .cc-window{z-index: 2147483647;font-family: inherit;}    .cc-header{font-family: inherit;}    .pd-cp-ui{font-family: inherit; background-color: #FFFFFF;color:#000000;}    button.pd-cp-btn, a.pd-cp-btn{}    input + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 0.3)}    .pd-cp-scrolling-section::-webkit-scrollbar{background-color: rgba(0, 0, 0, 0.3)}    input:checked + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 1)}    .pd-cp-scrolling-section::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 1)}    .pd-cp-ui-close{color:#000000;}    .pd-cp-preferences-slider:before{background-color: #FFFFFF}    .pd-cp-title:before {border-color: #000000!important}    .pd-cp-preferences-slider{background-color:#000000}    .pd-cp-toggle{color:#000000!important}    @media(max-width:699px) {.pd-cp-ui-close-top svg {fill: #000000}}    .pd-cp-toggle:hover,.pd-cp-toggle:visited,.pd-cp-toggle:active{color:#000000!important}    .pd-cookie-banner-window {box-shadow: 0 0 18px rgb(0 0 0 \/ 20%);}  ",
+    "customJavascript": null,
+    "showPoweredBy": false,
+    "hybridStrict": false,
+    "cookiesBlockedByDefault": "7",
+    "isActive": true,
+    "implicitSavePreferences": false,
+    "cookieIcon": false,
+    "blockBots": false,
+    "showCookiesDetails": true,
+    "hasTransition": true,
+    "blockingPage": false,
+    "showOnlyLandingPage": false,
+    "leaveSiteUrl": "https:\/\/www.google.com",
+    "linkRespectStoreLang": false
+  },
+  "cookies": {
+    "0": [
+      {
+        "name": "secure_customer_sig",
+        "domain": "stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "1 year(s)",
+        "expires": 1,
+        "unit": "declYears",
+        "purpose": {
+          "sv": "Används i samband med kundinloggning."
+        }
+      },
+      {
+        "name": "localization",
+        "domain": "stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "1 year(s)",
+        "expires": 1,
+        "unit": "declYears",
+        "purpose": {
+          "sv": "Shopify butikslokalisering"
+        }
+      },
+      {
+        "name": "cart_currency",
+        "domain": "stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "14 day(s)",
+        "expires": 14,
+        "unit": "declDays",
+        "purpose": {
+          "sv": "Cookien är nödvändig för den säkra utchecknings- och betalningsfunktionen på webbplatsen. Denna funktion tillhandahålls av shopify.com."
+        }
+      }
+    ],
+    "1": [
+      {
+        "name": "_landing_page",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "14 day(s)",
+        "expires": 14,
+        "unit": "declDays",
+        "purpose": {
+          "sv": "Spårar målsidor."
+        }
+      },
+      {
+        "name": "_y",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "1 year(s)",
+        "expires": 1,
+        "unit": "declYears",
+        "purpose": {
+          "sv": "Shopify-analys."
+        }
+      },
+      {
+        "name": "_s",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "30 minute(s)",
+        "expires": 30,
+        "unit": "declMinutes",
+        "purpose": {
+          "sv": "Shopify-analys."
+        }
+      },
+      {
+        "name": "_orig_referrer",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "14 day(s)",
+        "expires": 14,
+        "unit": "declDays",
+        "purpose": {
+          "sv": "Spårar målsidor."
+        }
+      },
+      {
+        "name": "_shopify_s",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "30 minute(s)",
+        "expires": 30,
+        "unit": "declMinutes",
+        "purpose": {
+          "sv": "Shopify-analys."
+        }
+      },
+      {
+        "name": "_shopify_sa_p",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "30 minute(s)",
+        "expires": 30,
+        "unit": "declMinutes",
+        "purpose": {
+          "sv": "Shopify-analyser relaterade till marknadsföring och hänvisningar."
+        }
+      },
+      {
+        "name": "_shopify_y",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "1 year(s)",
+        "expires": 1,
+        "unit": "declYears",
+        "purpose": {
+          "sv": "Shopify-analys."
+        }
+      },
+      {
+        "name": "_shopify_sa_t",
+        "domain": ".stengrossendev.myshopify.com",
+        "path": "\/",
+        "provider": "Shopify",
+        "firstParty": true,
+        "retention": "30 minute(s)",
+        "expires": 30,
+        "unit": "declMinutes",
+        "purpose": {
+          "sv": "Shopify-analyser relaterade till marknadsföring och hänvisningar."
+        }
+      }
+    ],
+    "2": [],
+    "4": [],
+    "8": []
+  },
+  "blocker": {
+    "isActive": false,
+    "googleConsentMode": {
+      "id": "",
+      "analyticsId": "",
+      "isActive": false,
+      "adStorageCategory": 4,
+      "analyticsStorageCategory": 2,
+      "personalizationStorageCategory": 1,
+      "functionalityStorageCategory": 1,
+      "customEvent": true,
+      "securityStorageCategory": 0,
+      "redactData": true,
+      "urlPassthrough": false
+    },
+    "facebookPixel": {
+      "id": "",
+      "isActive": false,
+      "ldu": false
+    },
+    "rakuten": {
+      "isActive": false,
+      "cmp": false,
+      "ccpa": false
+    },
+    "defaultBlocked": 7,
+    "patterns": {
+      "whiteList": [],
+      "blackList": {
+        "1": [],
+        "2": [],
+        "4": [],
+        "8": []
+      },
+      "iframesWhiteList": [],
+      "iframesBlackList": {
+        "1": [],
+        "2": [],
+        "4": [],
+        "8": []
+      },
+      "beaconsWhiteList": [],
+      "beaconsBlackList": {
+        "1": [],
+        "2": [],
+        "4": [],
+        "8": []
+      }
+    }
+  }
+}

@@ -1,0 +1,249 @@
+<div id="section-id-{{ section.id }}" class="half-gutter section-spacing {% if section.settings.alternate_bg_color %}use-alt-bg{% endif %}" data-cc-animate>
+  {% style %}
+    {%- for block in section.blocks -%}
+    #section-id-{{ section.id }} #block-id-{{ block.id }} .text-column__image {
+      max-width: {{ block.settings.image_width }}px;
+    }
+    {%- endfor -%}
+  {% endstyle %}
+
+  {% if section.settings.title != blank %}
+    <div class="section-heading section-heading--with-spacing
+      align-{{ section.settings.text_alignment }}
+      {% if section.settings.full_width %}
+          wide-container
+      {% else %}
+        container container--large
+      {% endif %}"
+         data-cc-animate>
+      <h2 class="h2">{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {% if section.settings.full_width %}
+    <div class="wide-container">
+  {% else %}
+    <div class="container container--large">
+  {% endif %}
+
+    <div class="flexible-layout flexible-layout--variable-columns flexible-layout--columns-{{ section.blocks.size }} align-{{ section.settings.text_alignment }}">
+      {% for block in section.blocks %}
+        <div id="block-id-{{ block.id }}" class="column text-column align-{{ section.settings.text_alignment }}" {{ block.shopify_attributes }}
+             data-cc-animate="cc-fade-in-up" data-cc-animate-delay="{{ forloop.index | times: 0.15 }}s">
+
+          {% if block.settings.enable_image %}
+            <div class="text-column__image text-column__image--shape-{{ section.settings.media_shape }}">
+              {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" {% if block.settings.title %}aria-label="{{ block.settings.title | escape }}"{% endif %}>{%- endif -%}
+
+              {%- if block.settings.image == blank and block.settings.video == blank -%}
+                <div class="placeholder-image">
+                  {{- 'image' | placeholder_svg_tag: 'placeholder-svg' -}}
+                </div>
+              {%- elsif block.settings.video == blank -%}
+                {%- render 'responsive-image', image: block.settings.image -%}
+              {%- else -%}
+                {% render 'inline-video', video: block.settings.video, image: block.settings.image %}
+              {%- endif -%}
+
+              {%- if block.settings.link != blank -%}</a>{% endif -%}
+            </div>
+          {% endif %}
+
+          {% if block.settings.title != blank %}
+            <h3 class="text-column__title align-{{ section.settings.text_alignment }}">{{ block.settings.title }}</h3>
+          {% endif %}
+
+          {% if block.settings.text != blank %}
+            <div class="text-column__text rte align-{{ section.settings.text_alignment }}">{{ block.settings.text }}</div>
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+            <div class="button-row inherit-colors align-{{ section.settings.text_alignment }}">
+              <a data-cc-animate-click
+                 class="{% if section.settings.button_style == 'link' %}link-display {% else %}button {% if section.settings.button_style == 'secondary' %}alt{% endif %}{% endif %}"
+                 href="{{ block.settings.link }}">
+                {{ block.settings.button_label | escape }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Text columns with media",
+  "class": "section-text-columns-with-images",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Text columns with media"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "primary",
+      "options": [
+        {
+          "label": "Button - primary",
+          "value": "primary"
+        },
+        {
+          "label": "Button - secondary",
+          "value": "secondary"
+        },
+        {
+          "label": "Link",
+          "value": "link"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "media_shape",
+      "label": "Media shape",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (3:2)"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (2:3)"
+        },
+        {
+          "value": "portrait_tall",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "portrait_taller",
+          "label": "Portrait (9:16)"
+        }
+      ],
+      "default": "natural"
+    },
+    {
+      "id": "alternate_bg_color",
+      "type": "checkbox",
+      "label": "Use alternate section color",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Wide display",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Column",
+      "settings": [
+        {
+          "id": "enable_image",
+          "type": "checkbox",
+          "label": "Enable media",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "If you're using an mp4 video, it's recommended to also add an image, which will be shown while the video loads"
+        },
+        {
+          "id": "video",
+          "type": "text",
+          "label": "MP4 video URL",
+          "info": "E.g. https://example.com/video.mp4 - will not work with YouTube or Vimeo. [Learn more](https://cleancanvas.co.uk/support/showcase/sections/#inner-anchor-5)"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 60,
+          "max": 700,
+          "step": 10,
+          "label": "Media width",
+          "unit": "px",
+          "default": 700
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text columns with media",
+      "settings": {
+      },
+      "blocks": [
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

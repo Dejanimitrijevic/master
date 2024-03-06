@@ -1,0 +1,24 @@
+{%- assign temp_video = video | downcase -%}
+<div data-section-type="background-video" class="section-background-video section-background-video--inline">
+  {% if video != blank and temp_video contains ".mp4" %}
+    <div class="video-container video-container--background"
+         data-video-url="{{ video }}"
+         data-video-autoplay="true"
+         data-video-loop="true">
+      <div class="video-container__video"></div>
+
+      {% if image != blank %}
+        <div class="video-container__fallback rimage-outer-wrapper lazyload fade-in"
+             data-bgset="{% render 'bgset', image: image %}"
+             data-sizes="auto"
+             data-parent-fit="cover">
+          <noscript>
+            <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%">
+              <img src="{{ image | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}" class="rimage__image">
+            </div>
+          </noscript>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,43 @@
+{%- liquid
+  if animation_type == blank
+    assign animation_type = "cc-fade-in-up"
+  endif
+
+  unless image
+    if collection.featured_image
+      assign image = collection.featured_image
+    endif
+  endunless
+-%}
+
+<div class="product-block collection-block hover-{{ settings.collection_hover_effect }} {{ product_class }}" data-loop-index="{{ i }}"
+     {% if animate %}data-cc-animate="{{ animation_type }}" data-cc-animate-delay="{{ animate | times: 0.1 }}s" {% endif %}>
+  <div class="product-block__inner">
+    <div class="image">
+      {% if image == blank %}
+        <div class="image-inner">
+          <div class="placeholder-image">{{ 'collection-1' | placeholder_svg_tag }}</div>
+        </div>
+      {% else %}
+        <a data-cc-animate-click class="image-inner" href="{{ collection.url }}" aria-label="{{ collection.title | escape }}">
+          {% render 'responsive-image', image: image %}
+        </a>
+      {% endif %}
+    </div>
+    <div class="caption upper">
+      <a data-cc-animate-click href="{{ collection.url }}" class="title h2">{{ collection.title }}</a>
+
+      {% if settings.collection_hover_effect == 'info' %}
+        <a data-cc-animate-click href="{{ collection.url }}" class="button alt">
+          {{ 'collections.general.view' | t }}
+        </a>
+      {% endif %}
+
+      {% if settings.collection_show_product_count and collection.all_products_count > 0 %}
+        <a data-cc-animate-click href="{{ collection.url }}" class="price collection-count">
+          {{ 'collections.general.product_count' | t: count: collection.all_products_count }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

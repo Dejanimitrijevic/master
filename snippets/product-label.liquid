@@ -1,0 +1,80 @@
+{% assign num_labels_reps = 20 %}
+{% if product.available == false and settings.show_sold_out_label %}
+  <span class="product-label unavailable
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee{% endif %}
+    {% if settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee-on-hover{% endif %}">
+
+    <span>{{ 'products.listing.sold_out' | t }}</span>
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}
+      {% for i in (1..num_labels_reps) %}
+        <span>{{ 'products.listing.sold_out' | t }}</span>
+      {% endfor %}
+    {% endif %}
+  </span>
+{% elsif settings.show_preorder_label and product.template_suffix == 'preorder' %}
+  <span class="product-label preorder
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee{% endif %}
+    {% if settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee-on-hover{% endif %}">
+
+    <span>{{ 'products.product.preorder' | t }}</span>
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}
+      {% for i in (1..num_labels_reps) %}
+        <span>{{ 'products.product.preorder' | t }}</span>
+      {% endfor %}
+    {% endif %}
+  </span>
+
+{% elsif cheapest_variant.compare_at_price > cheapest_variant.price and settings.show_sale_label %}
+  <span class="product-label sale
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee{% endif %}
+    {% if settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee-on-hover{% endif %}">
+
+    <span>{{ 'products.product.sale' | t }}</span>
+    {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}
+      {% for i in (1..num_labels_reps) %}
+        <span>{{ 'products.product.sale' | t }}</span>
+      {% endfor %}
+    {% endif %}
+  </span>
+{%- elsif settings.show_new_label -%}
+
+  {%- liquid
+    assign show_new_in = false
+    if settings.show_new_label
+      if settings.prod_new_method == 'date'
+        assign now_s = 'now' | date: '%s' | plus: 0
+        assign pub_s = product.created_at | date: '%s' | plus: 0
+        assign diff_days = now_s | minus: pub_s | divided_by: 86400
+
+        if diff_days < settings.prod_new_limit_int
+          assign show_new_in = true
+        endif
+      elsif settings.prod_new_method == 'tag'
+        if product.tags contains 'New'
+          assign show_new_in = true
+        endif
+      else
+        for collection in product.collections
+          assign split_collection_handle = collection.handle | split: '-'
+          if split_collection_handle contains 'new'
+            assign show_new_in = true
+            break
+          endif
+        endfor
+      endif
+    endif
+  %}
+
+  {%- if show_new_in -%}
+    <span class="product-label product-label--new
+      {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee{% endif %}
+      {% if settings.prod_label_layout == 'marquee_on_hover' %}product-label--marquee-on-hover{% endif %}">
+      <span>{{ 'products.labels.new_in' | t }}</span>
+       {% if settings.prod_label_layout == 'marquee' or settings.prod_label_layout == 'marquee_on_hover' %}
+         {% for i in (1..num_labels_reps) %}
+           <span>{{ 'products.labels.new_in' | t }}</span>
+         {% endfor %}
+       {% endif %}
+    </span>
+  {%- endif -%}
+{% endif %}

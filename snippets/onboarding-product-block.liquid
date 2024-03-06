@@ -1,0 +1,29 @@
+<div class="product-block
+  {% if settings.prod_hover == "second_image" %}hover-image{% endif %} {{ product_class }}"
+     data-loop-index="{{ i }}"
+    {% if animate %} data-cc-animate="{{ animation_type }}" data-cc-animate-delay="{{ animate | times: 0.15 }}s" {% endif %}>
+
+  <div class="product-block__inner">
+    <div class="image">
+      <div class="image-inner">
+        {%- if i > 6 -%}
+          {% comment %}Assign i to a random number between 1 and 6{% endcomment %}
+          {% assign min = 1 %}
+          {% assign max = 6 %}
+          {% assign diff = max | minus: min %}
+          {% assign i = "now" | date: "%N" | modulo: diff | plus: min %}
+        {%- endif -%}
+
+        {% capture placeholder_svg_name %}product-{{ i }}{% endcapture %}
+        <div class="placeholder-image">{{ placeholder_svg_name | placeholder_svg_tag }}</div>
+      </div>
+    </div>
+    <div class="caption upper">
+      <span class="title">{{ 'onboarding.product.product_title' | t }}</span>
+
+      <div class="price">
+        <span class="theme-money">{%- render "price", price: 1999 -%}</span>
+      </div>
+    </div>
+  </div>
+</div>

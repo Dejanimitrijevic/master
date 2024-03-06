@@ -1,0 +1,62 @@
+<div class="central py-medium" data-cc-animate data-cc-animate-delay="0.2s">
+  {% if section.settings.show_title %}
+    <h1 class="feature-header">{{ page.title }}</h1>
+  {% endif %}
+
+  {% form 'contact' %}
+    {% if form.posted_successfully? %}
+      <div class="rte align-center">
+        {{ 'contact.form.post_success' | t }}
+      </div>
+
+    {% else %}
+
+      <div class="rte">
+        {{ page.content }}
+      </div>
+
+      {% if form.errors %}
+        <div class="errors">
+          <p>{{ 'contact.form.post_error' | t }}</p>
+          {% assign message_label = 'contact.form.message' | t %}
+          <ul>
+            {% for field in form.errors %}
+              <li>{{ field | replace: 'body',message_label | capitalize }} - {{ form.errors.messages[field] }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="form">
+        <div class="input-row">
+          <input aria-label="{{ 'contact.form.name' | t }}" placeholder="{{ 'contact.form.name' | t }}" type="text"
+                 class="required" id="contact_name" name="contact[name]"/>
+        </div>
+        <div class="input-row">
+          <input aria-label="{{ 'contact.form.email' | t }}" placeholder="{{ 'contact.form.email' | t }}" type="email"
+                 class="required" id="contact_email" class="email" name="contact[email]"/>
+        </div>
+        <div class="input-row">
+          <textarea aria-label="{{ 'contact.form.message' | t }}" placeholder="{{ 'contact.form.message' | t }}"
+                    id="message" class="required" name="contact[body]"></textarea>
+        </div>
+        <div class="wide-action">
+          <input type="submit" value="{{ 'contact.form.send' | t }}"/>
+        </div>
+      </div>
+    {% endif %}
+  {% endform %}
+</div>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
