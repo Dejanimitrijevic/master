@@ -1,20 +1,39 @@
 // total price
-let price = 0;
-let item_price = 0;
-let calculatedPrice = 0;
-document.querySelectorAll('.cart-list .pallet').forEach(item => {
-    item.querySelectorAll('.pallet-product').forEach(item => {
-        calculatedPrice += Number(item.querySelector('.item-price .pallet-price').getAttribute('data-item-price'));
+// let price = 0;
+// let item_price = 0;
+// let calculatedPrice = 0;
+// document.querySelectorAll('.cart-list .pallet').forEach(item => {
+//     item.querySelectorAll('.pallet-product').forEach(item => {
+//         calculatedPrice += Number(item.querySelector('.item-price .pallet-price').getAttribute('data-item-price'));
+//     })
+//     // if (item.querySelector('.breaking')) {
+//     //     item_price = item.querySelector('.breaking').getAttribute('data-item-price'); 
+//     // }
+//     console.log(calculatedPrice, 'calculatedPrice');
+// })
+// let main_price = $('.amount').data('total-price');
+// let cart_price = Number(main_price) + Number(calculatedPrice);
+// let price_format = (cart_price/100).toLocaleString("en");
+// $('.under-cart .amount .money').text(price_format + ' kr');
+
+// total weight
+let weight = 0;
+let itemWei = 0;
+let itemPcs = 0;
+let calculatedWei = 0;
+document.querySelectorAll('.cart-list .product-list').forEach(item => {
+    item.querySelectorAll('.title').forEach(item => {
+        itemWei = item.getAttribute('data-product-weight');
+        itemPcs = item.getAttribute('data-quantity');
+        var numWei = parseFloat(itemWei.replace(',', '.'));
+        var subItemWei = numWei*Number(itemPcs);
+        if (subItemWei) {
+            calculatedWei += Number(subItemWei);
+        }        
+        console.log(calculatedWei, "item-weight--->");
     })
-    // if (item.querySelector('.breaking')) {
-    //     item_price = item.querySelector('.breaking').getAttribute('data-item-price'); 
-    // }
-    console.log(calculatedPrice, 'calculatedPrice');
 })
-let main_price = $('.amount').data('total-price');
-let cart_price = Number(main_price) + Number(calculatedPrice);
-let price_format = (cart_price/100).toLocaleString("en");
-$('.under-cart .amount .money').text(price_format + ' kr');
+document.querySelector('.weight-value').innerHTML = calculatedWei.toFixed(2) + ' kg';
 
 
 // remove all

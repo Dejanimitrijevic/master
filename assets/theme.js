@@ -7775,29 +7775,29 @@ document.querySelectorAll('.product-price').forEach(item => {
 })
 
 // custom search result
-document.querySelector('.search-btn').addEventListener('click', (e) => {
-  // e.preventDefault();
+if (document.querySelector('.search-btn')) {
+  document.querySelector('.search-btn').addEventListener('click', (e) => {
+    // e.preventDefault();
+    setTimeout(() => {
+     document.querySelectorAll('.product-block').forEach(item => {
+        if (item.getAttribute('data-product-show') == "search") {
+          item.style.display = "none";
+        }
+        
+      })
+  }, "1000");
+  })
   setTimeout(() => {
-   document.querySelectorAll('.product-block').forEach(item => {
-      if (item.getAttribute('data-product-show') == "search") {
-        item.style.display = "none";
-      }
-      
-    })
-}, "1000");
-})
+     document.querySelectorAll('.product-block').forEach(item => {
+        if (item.getAttribute('data-product-show') == "search") {
+          item.style.display = "none";
+        }        
+      })
+  }, "1000");
+}
 
 
 
-// Set a timeout for 3 seconds (3000 milliseconds)
-setTimeout(() => {
-   document.querySelectorAll('.product-block').forEach(item => {
-      if (item.getAttribute('data-product-show') == "search") {
-        item.style.display = "none";
-      }
-      
-    })
-}, "1000");
 
 
 

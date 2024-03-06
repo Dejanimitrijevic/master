@@ -54,6 +54,7 @@
       <div class="product-list">
         
           {% for item in cart.items %}
+
               <li
                   class="item clearfix"
                   data-item-id="{{ item.id }}"
@@ -66,15 +67,18 @@
                       {% render 'responsive-image', image: item.image %}
                     </a>
                   </div>
+
+                  {% comment %} quantity {% endcomment %}
+                  {% assign length = item.properties | size %}
                   <div class="col-notimage">
-                    <div class="desc">
+                    <div class="desc {{ length }}">
                       {% if settings.show_preorder_label and item.product.template_suffix == 'preorder' %}
                         <div class="feature-subheader feature-subheader--small">
                           {{ 'products.product.preorder' | t }}
                         </div>
                       {% endif %}
                       
-                      <div class="title">
+                      <div class="title" data-quantity="{{ item.quantity }}" data-product-weight="{{ item.product.metafields.my_fields.vikt_per_platta.value }}">
                         <a data-cc-animate-click href="{{ item.url }}">
                           <span class="product-title">{{ item.product.title }}</span>
                           {% unless item.product.has_only_default_variant %}{{ item.variant.title }}{% endunless %}
@@ -87,7 +91,78 @@
                           </div>
                         </div>
                       </div>
-                      <span class="product-price" data-product-price="{{ item.price }}" >{{ item.price | money }} /st</span>
+                      {% if length > 0 and length < 4 %}
+                        <span class="product-price" data-product-price="{{ item.price }}" >{{ item.price | money }} /st</span>
+                      {% else %}
+                        <div class="a item-price">
+                          {% if section.settings.show_alternative_pricing
+                            and settings.alternative_pricing_field_list != blank
+                            and section.settings.show_alternative_pricing_over_price
+                          %}
+                            <div class="theme-money">
+                              {%- render 'price', product: item.product, price: current_variant.compare_at_price -%}
+                            </div>
+                          {% else %}
+                            {% if item.original_line_price > item.final_line_price %}
+                              <div class="original-price theme-money">
+                                {%- render 'price',
+                                  product: item.product,
+                                  price: item.original_price,
+                                  disable_currency_code: true,
+                                  disable_alternative_pricing: true
+                                -%}
+                              </div>
+                              <div class="theme-money">
+                                {%- render 'price',
+                                  product: item.product,
+                                  price: item.final_price,
+                                  disable_currency_code: true,
+                                  disable_alternative_pricing: true
+                                -%}
+                              </div>
+                            {% else %}
+                              <div class="theme-money">
+                                {%- render 'price',
+                                  product: item.product,
+                                  price: item.final_price,
+                                  disable_currency_code: true,
+                                  disable_alternative_pricing: true
+                                -%}
+                              </div>
+                            {% endif %}
+                            {% if section.settings.show_alternative_pricing
+                              and settings.alternative_pricing_field_list != blank
+                              and section.settings.show_alternative_pricing_over_price == false
+                            %}
+                              <div class="theme-money">
+                                {%- render 'price', product: item.product, price: current_variant.compare_at_price -%}
+                              </div>
+                            {% endif %}
+                          {% endif %}
+      
+                          {% render 'unit-price', variant: item %}
+      
+                          {% if item.line_level_discount_allocations.size > 0 %}
+                            <ul class="cart-discount-list">
+                              {% for discount_allocation in item.line_level_discount_allocations %}
+                                <li class="cart-discount">
+                                  <div class="cart-discount__label">
+                                    {{ discount_allocation.discount_application.title }}
+                                  </div>
+                                  <div class="cart-discount__amount">
+                                    (-<span class="theme-money">
+                                      {%- render 'price',
+                                        price: discount_allocation.amount,
+                                        disable_currency_code: true
+                                      -%}</span
+                                    >)
+                                  </div>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        </div>
+                      {% endif %}
                       {% comment %}
                         Line Item Properties
                       {% endcomment %}
@@ -116,109 +191,270 @@
                       {% if section.settings.show_backorder_text == true %}
                         {% render 'backorder', variant: item.variant %}
                       {% endif %}
+                        
+                        
                     </div>
-                    <div class="item-price">
-                      {% if section.settings.show_alternative_pricing
-                        and settings.alternative_pricing_field_list != blank
-                        and section.settings.show_alternative_pricing_over_price
-                      %}
-                        <div class="theme-money">
-                          {%- render 'price', product: item.product, price: current_variant.compare_at_price -%}
+                    <div class="product-quantity">
+                      {% if length > 0 and length < 4 %}
+                        <span class="product-price" >Antal: {{item.quantity }}</span>
+                      {% endif %}
+                      
+                      <div class="quantity-and-remove">
+                        <div class="quantity-section" style="display: flex; gap: 10px; ">
+                          {% if item.product.metafields.my_fields.antal_plattor_per_kvm %}
+                            {% unless item.product.tags contains 'Kantsten' or item.product.tags contains 'Stolpar' or item.product.tags contains 'Trappor' %}
+                              <div class="item-quantity">  
+                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span>
+                                    {% comment %} <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                        <a href="#" data-quantity="down">&minus;</a>
+                                        <input aria-label="{{ block.settings.antecedent_label | default: 'ratio' }}"  class="select-on-focus" name="ratio" data-consequent="{{ item.metafields.my_fields.antal_per_pall }}"  value="0" type="number" min="0" step="0.01"/>
+                                        <a href="#" data-quantity="up">&plus;</a>
+                                    </div> {% endcomment %}
+                                </label>
+                                <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                  <a
+                                    class="minus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                    aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                    ><span>&minus;</span></a
+                                  >
+                                  <input
+                                    class="a select-on-focus jc-cart-value"
+                                    type="text"
+                                    size="2" data-price = "{{ item.price }}"
+                                    id="updates_{{ item.id }}"
+                                    data-properties='{{ item.properties | json }}'
+                                    name="updates[]"
+                                    value="{{ item.quantity }}"
+                                    aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                  >
+                                  <a
+                                    class="plus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                    aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                    ><span>&plus;</span></a
+                                  >
+                                </div>
+                              </div>
+                            {% endunless %}                     
+    
+                            {% comment %} input for small stons {% endcomment %}
+                            <div class="item-quantity">
+                              {% comment %} input for Stycken {% endcomment %}
+                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span>
+                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                  <a href="#" data-quantity="down">&minus;</a>
+                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
+                                  <a href="#" data-quantity="up">&plus;</a>
+                                  </div> {% endcomment %}
+                              </label>
+                              <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                <a
+                                  class="minus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                  aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                  ><span>&minus;</span></a
+                                >
+                                <input
+                                  class="a select-on-focus jc-cart-value"
+                                  type="text"
+                                  size="2" data-price = "{{ item.price }}"
+                                  id="updates_{{ item.id }}"
+                                  data-properties='{{ item.properties | json }}'
+                                  name="updates[]"
+                                  value="{{ item.quantity }}"
+                                  aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                >
+                                <a
+                                  class="plus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                  aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                  ><span>&plus;</span></a
+                                >
+                              </div>
+                            </div>
+    
+                            {% if item.product.metafields.custom.lastpall == true %}
+                              <div class="item-quantity">
+                                  {% comment %} <label class="jc-cart quantity pallet calculated-input-label" for="quantity"><span>PALL</span>
+                                  <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                  <a href="#" data-quantity="down">&minus;</a>
+                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus"  name="pallet" value="0" data-limit="{{product.metafields.custom.pallet_num}}" />
+                                  <a href="#" data-quantity="up">&plus;</a>
+                                  </div>
+                                  </label> {% endcomment %}
+                                <label class="pall calculated-input-label" for="quantity"><span>PALL</span></label>
+                                <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                  <a
+                                    class="minus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                    aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                    ><span>&minus;</span></a
+                                  >
+                                  <input
+                                    class="a select-on-focus jc-cart-value"
+                                    type="text"
+                                    size="2" data-price = "{{ item.price }}"
+                                    id="updates_{{ item.id }}"
+                                    data-properties='{{ item.properties | json }}'
+                                    name="updates[]"
+                                    value="{{ item.quantity }}"
+                                    aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                  >
+                                  <a
+                                    class="plus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                    aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                    ><span>&plus;</span></a
+                                  >
+                                </div>
+                              </div>
+                            {% endif %}     
+                          {% elsif item.product.metafields.custom.antal_kvm_per_sack %}
+                            {% unless item.product.tags contains 'Kantsten' or item.product.tags contains 'Stolpar' or item.product.tags contains 'Trappor' %}
+                              <div class="item-quantity">  
+                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span>
+                                    {% comment %} <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                        <a href="#" data-quantity="down">&minus;</a>
+                                        <input aria-label="{{ block.settings.antecedent_label | default: 'ratio' }}"  class="select-on-focus" name="ratio" data-consequent="{{ item.metafields.my_fields.antal_per_pall }}"  value="0" type="number" min="0" step="0.01"/>
+                                        <a href="#" data-quantity="up">&plus;</a>
+                                    </div> {% endcomment %}
+                                </label>
+                                <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                  <a
+                                    class="minus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                    aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                    ><span>&minus;</span></a
+                                  >
+                                  <input
+                                    class="a select-on-focus jc-cart-value"
+                                    type="text"
+                                    size="2" data-price = "{{ item.price }}"
+                                    id="updates_{{ item.id }}"
+                                    data-properties='{{ item.properties | json }}'
+                                    name="updates[]"
+                                    value="{{ item.quantity }}"
+                                    aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                  >
+                                  <a
+                                    class="plus"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                    aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                    ><span>&plus;</span></a
+                                  >
+                                </div>
+                              </div>
+                            {% endunless %} 
+
+                            <div class="item-quantity">
+                              {% comment %} input for Stycken {% endcomment %}
+                              <label class="pc calculated-input-label" for="quantity"><span>SÄCKAR</span>
+                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                  <a href="#" data-quantity="down">&minus;</a>
+                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
+                                  <a href="#" data-quantity="up">&plus;</a>
+                                  </div> {% endcomment %}
+                              </label>
+                              <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                <a
+                                  class="minus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                  aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                  ><span>&minus;</span></a
+                                >
+                                <input
+                                  class="a select-on-focus jc-cart-value"
+                                  type="text"
+                                  size="2" data-price = "{{ item.price }}"
+                                  id="updates_{{ item.id }}"
+                                  data-properties='{{ item.properties | json }}'
+                                  name="updates[]"
+                                  value="{{ item.quantity }}"
+                                  aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                >
+                                <a
+                                  class="plus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                  aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                  ><span>&plus;</span></a
+                                >
+                              </div>
+                            </div>
+                          {% else %}
+                            <div class="item-quantity">
+                              {% comment %} input for Stycken {% endcomment %}
+                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span>
+                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
+                                  <a href="#" data-quantity="down">&minus;</a>
+                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
+                                  <a href="#" data-quantity="up">&plus;</a>
+                                  </div> {% endcomment %}
+                              </label>
+                              <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                                <a
+                                  class="minus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                  aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                  ><span>&minus;</span></a
+                                >
+                                <input
+                                  class="a select-on-focus jc-cart-value"
+                                  type="text"
+                                  size="2" data-price = "{{ item.price }}"
+                                  id="updates_{{ item.id }}"
+                                  data-properties='{{ item.properties | json }}'
+                                  name="updates[]"
+                                  value="{{ item.quantity }}"
+                                  aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                                >
+                                <a
+                                  class="plus"
+                                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                  aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                  ><span>&plus;</span></a
+                                >
+                              </div>
+                            </div>  
+                          {% endif %}
+
+                          {% comment %} <label class="jc-cart quantity pallet calculated-input-label" for="quantity"><span>PALL</span></label>
+                            <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+                              <a
+                                class="minus"
+                                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                aria-label="{{ 'cart.general.decrease' | t | escape }}"
+                                ><span>&minus;</span></a
+                              >
+                              <input
+                                class="a select-on-focus jc-cart-value"
+                                type="text"
+                                size="2" data-price = "{{ item.price }}"
+                                id="updates_{{ item.id }}"
+                                data-properties='{{ item.properties | json }}'
+                                name="updates[]"
+                                value="{{ item.quantity }}"
+                                aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                              >
+                              <a
+                                class="plus"
+                                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                aria-label="{{ 'cart.general.increase' | t | escape }}"
+                                ><span>&plus;</span></a
+                              >
+                            </div> {% endcomment %}
+  
                         </div>
-                      {% else %}
-                        {% if item.original_line_price > item.final_line_price %}
-                          <div class="original-price theme-money">
-                            {%- render 'price',
-                              product: item.product,
-                              price: item.original_price,
-                              disable_currency_code: true,
-                              disable_alternative_pricing: true
-                            -%}
-                          </div>
-                          <div class="theme-money">
-                            {%- render 'price',
-                              product: item.product,
-                              price: item.final_price,
-                              disable_currency_code: true,
-                              disable_alternative_pricing: true
-                            -%}
-                          </div>
-                        {% else %}
-                          <div class="theme-money">
-                            {%- render 'price',
-                              product: item.product,
-                              price: item.final_price,
-                              disable_currency_code: true,
-                              disable_alternative_pricing: true
-                            -%}
-                          </div>
-                        {% endif %}
-                        {% if section.settings.show_alternative_pricing
-                          and settings.alternative_pricing_field_list != blank
-                          and section.settings.show_alternative_pricing_over_price == false
-                        %}
-                          <div class="theme-money">
-                            {%- render 'price', product: item.product, price: current_variant.compare_at_price -%}
-                          </div>
-                        {% endif %}
-                      {% endif %}
   
-                      {% render 'unit-price', variant: item %}
-  
-                      {% if item.line_level_discount_allocations.size > 0 %}
-                        <ul class="cart-discount-list">
-                          {% for discount_allocation in item.line_level_discount_allocations %}
-                            <li class="cart-discount">
-                              <div class="cart-discount__label">
-                                {{ discount_allocation.discount_application.title }}
-                              </div>
-                              <div class="cart-discount__amount">
-                                (-<span class="theme-money">
-                                  {%- render 'price',
-                                    price: discount_allocation.amount,
-                                    disable_currency_code: true
-                                  -%}</span
-                                >)
-                              </div>
-                            </li>
-                          {% endfor %}
-                        </ul>
-                      {% endif %}
-                    </div>
-  
-                    <div class="quantity-and-remove">
-                      <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
+    
                         <a
-                          class="minus"
-                          href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
-                          aria-label="{{ 'cart.general.decrease' | t | escape }}"
-                          ><span>&minus;</span></a
-                        >
-                        <input
-                          class="a select-on-focus jc-cart-value"
-                          type="text"
-                          size="2" data-price = "{{ item.price }}"
-                          id="updates_{{ item.id }}"
+                          class="remove jc-cart-remove"
                           data-properties='{{ item.properties | json }}'
-                          name="updates[]"
-                          value="{{ item.quantity }}"
-                          aria-label="{{ 'cart.general.quantity' | t | escape }}"
+                          href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
                         >
-                        <a
-                          class="plus"
-                          href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
-                          aria-label="{{ 'cart.general.increase' | t | escape }}"
-                          ><span>&plus;</span></a
-                        >
+                          {{- 'cart.general.remove' | t | escape -}}
+                        </a>
                       </div>
-  
-                      <a
-                        class="remove jc-cart-remove"
-                        data-properties='{{ item.properties | json }}'
-                        href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
-                      >
-                        {{- 'cart.general.remove' | t | escape -}}
-                      </a>
                     </div>
   
                     <div class="line-total">
@@ -267,25 +503,33 @@
           <span class="amount theme-money" data-total-price = "{{cart.total_price}}">{%- render "price", price: cart.total_price, is_total_price: true -%}</span>
         </div>
       </div>
+      <div class="t subtotal-row weight">
+        <p class="cart-policy">Ink.moms, <a href="/policies/shipping-policy" style="color:#d6591f; font-weight:500;">frakt</a> beräknas i kassan.</p>
+        <p class="total-weight">
+          <span>Totalvikt: </span>
+          <span class="weight-value" style="font-weight:700;"></span>
+        </p>
+        
+      </div>
 
       {% if section.settings.cart_note_show %}
-      <p class="note-area">
-        <label for="note" class="feature-subheader--small">{{ 'cart.label.note' | t }}</label>
-        <textarea id="note" name="note">{{ cart.note }}</textarea>
-      </p>
+        <p class="note-area">
+          <label for="note" class="feature-subheader--small">{{ 'cart.label.note' | t }}</label>
+          <textarea id="note" name="note">{{ cart.note }}</textarea>
+        </p>
       {% endif %}
 
       {% if section.settings.cart_terms_show %}
-      <p class="terms rte">
-        <input type="checkbox" id="terms" />
-        {% assign terms_url = section.settings.cart_terms_page %}
-        {% capture terms_label_html %}<label for="terms">{{ 'cart.terms.agreement_html' | t: terms_url: terms_url }}</label>{% endcapture %}
-        {% if section.settings.cart_terms_page == blank %}
-        {{ terms_label_html | replace: '<a ', '<span ' | replace: '</a>', '</span>' }}
-        {% else %}
-        {{ terms_label_html }}
-        {% endif %}
-      </p>
+        <p class="terms rte">
+          <input type="checkbox" id="terms" />
+          {% assign terms_url = section.settings.cart_terms_page %}
+          {% capture terms_label_html %}<label for="terms">{{ 'cart.terms.agreement_html' | t: terms_url: terms_url }}</label>{% endcapture %}
+          {% if section.settings.cart_terms_page == blank %}
+          {{ terms_label_html | replace: '<a ', '<span ' | replace: '</a>', '</span>' }}
+          {% else %}
+          {{ terms_label_html }}
+          {% endif %}
+        </p>
       {% endif %}
 
       {% if section.settings.show_tax_and_shipping %}
@@ -308,9 +552,9 @@
 
       {% comment %}Paypal and Google checkout buttons{% endcomment %}
       {% if section.settings.show_additional_checkout_buttons and additional_checkout_buttons and section.settings.cart_terms_show == false %}
-      <div class="additional-checkout-buttons">
-        {{ content_for_additional_checkout_buttons }}
-      </div>
+        <div class="additional-checkout-buttons">
+          {{ content_for_additional_checkout_buttons }}
+        </div>
       {% endif %}
     </div>
 
