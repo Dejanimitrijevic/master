@@ -158,9 +158,13 @@ $('.jc-cart .minus').click(function(e){
         let ratioValue = 1/consequent;
         $input.val(Number(qty) - ratioValue);
 
-    }else{
-        $input.val(Number(qty) - 1);
-    }
+        } else if (type == "bags"){
+            let ratio = $input.closest('.quantity-section').find('.ratio input');
+            let consequent_bags = ratio.data('consequent');
+            $input.val(Number(qty) - consequent_bags);
+        } else {
+            $input.val(Number(qty) - 1);
+        }
         changeItem($input);
     }
 });
@@ -171,14 +175,25 @@ $('.jc-cart .plus').click(function(e){
     let qty = $input.val();
     let type = $input.data('type');
     if (type == "ratio") {
+        console.log(type, "ratio");
         let ratio = $input.closest('.quantity-section').find('.ratio input');
         let consequent = ratio.data('consequent');
         let ratioValue = 1/consequent;
+        console.log(ratioValue);
+        console.log(qty);
         $input.val(Number(qty) + ratioValue);
 
-    }else{
+    }else if (type == "bags"){
+        console.log(type, "bags");
+
+        let ratio = $input.closest('.quantity-section').find('.ratio input');
+        let consequent_bags = ratio.data('consequent');
+        $input.val(Number(qty) + consequent_bags);
+    } else {
+        console.log("others");
         $input.val(Number(qty) + 1);
     }
+
     changeItem($input);
 });
 
@@ -191,8 +206,9 @@ function changeItem(_this) {
     let ratio = _this.closest('.quantity-section').find('.ratio input');
     let pall = _this.closest('.quantity-section').find('.pall input');
     let product = _this.closest('.quantity-section').find('.pro input');
+    var bags = _this.closest('.quantity-section').find('.bags input');
 
-    var palletNum = _this.data('properties')[0][1];
+
     var $cartpc = _this.val();
     var consequent = ratio.data('consequent');
     var ratioUnit = 1/consequent;
@@ -200,37 +216,37 @@ function changeItem(_this) {
     var productValue;
     var palletValue;
     var ratioValue;
-
-    if (dataType == "product") {
-        ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2))));
-        pall.val(Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3)));   
-        productValue = $cartpc;   
-        palletValue = Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3));
-        ratioValue = Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2)));
-    }
-    if (dataType == "pallet") {
-        palletValue = Math.ceil(parseInt($cartpc));
-        pall.val(palletValue);
-        productValue = Number(palletValue)*Number(palletNum);
-        product.val(productValue);
-        ratioValue = Number(productValue)/consequent;
-        ratio.val(Number(productValue)/consequent);
-    }
-    if (dataType == "ratio") {
-        ratioValue = Number(_this.val());
-        productValue = Math.ceil(ratioValue / ratioUnit);
-        ratio.val(ratioValue.toFixed(2));
-        if (ratioValue.toFixed(2) == 0) {
-            ratio.val(0);
-        }
-        product.val(productValue);
-        palletValue = Math.max(0, (productValue / palletNum).toFixed(2));
-        pall.val(Math.max(0, (productValue / palletNum).toFixed(2)));
-    }
     
     
-    if (_this.data('properties').length > 2) {        
+    if (_this.data('properties').length > 2) {      
         
+        var palletNum = _this.data('properties')[0][1];
+        if (dataType == "product") {
+            ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2))));
+            pall.val(Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3)));   
+            productValue = $cartpc;   
+            palletValue = Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3));
+            ratioValue = Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2)));
+        }
+        if (dataType == "pallet") {
+            palletValue = Math.ceil(parseInt($cartpc));
+            pall.val(palletValue);
+            productValue = Number(palletValue)*Number(palletNum);
+            product.val(productValue);
+            ratioValue = Number(productValue)/consequent;
+            ratio.val(Number(productValue)/consequent);
+        }
+        if (dataType == "ratio") {
+            ratioValue = Number(_this.val());
+            productValue = Math.ceil(ratioValue / ratioUnit);
+            ratio.val(ratioValue.toFixed(2));
+            if (ratioValue.toFixed(2) == 0) {
+                ratio.val(0);
+            }
+            product.val(productValue);
+            palletValue = Math.max(0, (productValue / palletNum).toFixed(2));
+            pall.val(Math.max(0, (productValue / palletNum).toFixed(2)));
+        }
         let mainProductId = _this.closest('.item').data('item-id');
         let main_Product_Id = _this.data('properties')[1][1];
         let subProductId1 = _this.data('properties')[2][1];
@@ -307,15 +323,36 @@ function changeItem(_this) {
         itemsUpdate(updates, data);        
 
     } else {
+        console.log(_this[0], "here");
         var nomalProductId = _this[0].id.split('_')[1];
         var productNum = _this.val();
         var productPrice = _this[0].getAttribute('data-price');
         var nomalProductKey = _this.closest('.item')[0].getAttribute('data-item-key');
-
+        
         var presentPriceWrapper = _this.closest('.item').find('.line-total .money');
         var presentPrice = presentPriceWrapper.text();
+        var bagsSquare = _this[0].getAttribute('data-consequent');
 
         
+        if (_this[0].getAttribute('data-type') == "bags") {
+            console.log("bags");
+            console.log(bagsSquare, "square");
+            console.log(_this.val(), "Numqweqweqewqe");
+            var bagsValue = productNum / Number(bagsSquare);
+            console.log(bagsValue, "value");
+            bags.val(Math.ceil(bagsValue));
+            productNum = bagsValue;
+            
+        }
+        if (_this[0].getAttribute('data-type') == "bags-quantity") {
+            console.log(productNum, "number");
+            console.log(bagsSquare, "square");
+            ratio.val(Number(productNum)*Number(bagsSquare));
+            
+        }
+        if (productNum == 0) {
+            _this.closest('.item')[0].style.display = 'none';                
+        }
         updates[nomalProductKey] = 0;
 
         data = {
