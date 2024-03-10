@@ -1,21 +1,3 @@
-// total price
-// let price = 0;
-// let item_price = 0;
-// let calculatedPrice = 0;
-// document.querySelectorAll('.cart-list .pallet').forEach(item => {
-//     item.querySelectorAll('.pallet-product').forEach(item => {
-//         calculatedPrice += Number(item.querySelector('.item-price .pallet-price').getAttribute('data-item-price'));
-//     })
-//     // if (item.querySelector('.breaking')) {
-//     //     item_price = item.querySelector('.breaking').getAttribute('data-item-price'); 
-//     // }
-//     console.log(calculatedPrice, 'calculatedPrice');
-// })
-// let main_price = $('.amount').data('total-price');
-// let cart_price = Number(main_price) + Number(calculatedPrice);
-// let price_format = (cart_price/100).toLocaleString("en");
-// $('.under-cart .amount .money').text(price_format + ' kr');
-
 // total weight
 let weight = 0;
 let itemWei = 0;
@@ -30,7 +12,6 @@ document.querySelectorAll('.cart-list .product-list').forEach(item => {
         if (subItemWei) {
             calculatedWei += Number(subItemWei);
         }        
-        console.log(calculatedWei, "item-weight--->");
     })
 })
 document.querySelector('.weight-value').innerHTML = calculatedWei.toFixed(2) + ' kg';
@@ -75,10 +56,8 @@ $(document).on("click", ".jc-cart-remove", function (e) {
             let str_selectedId = item.querySelector('input').getAttribute('data-properties');
             let selectedId = JSON.parse(str_selectedId)[0][1];
             if (selectedId == main_Product_Id ) {
-                console.log(item, "herer");
                 var key = item.getAttribute('data-item-key');
                 updates[key] = 0;
-                console.log(updates[key], "key");
 
                 data = {
                 items: [
@@ -137,7 +116,6 @@ $(document).on("click", ".jc-cart-remove", function (e) {
             }
         })
     } else {
-        console.log($(this)[0].id.split('_'),"here");
         var nomalProductId = $(this)[0].id.split('_')[1];
         var productNum = $(this).val();
         var nomalProductKey = $(this).closest('.item')[0].getAttribute('data-item-key');
@@ -161,7 +139,6 @@ $(document).on("click", ".jc-cart-remove", function (e) {
 // click +, - button
 $(document).on('change', '.jc-cart-value', function(e) {
     e.preventDefault();
-    console.log($(this));
     changeItem($(this));
 })
 $(document).on('keyup', '.jc-cart-value', function(e) {
@@ -173,8 +150,21 @@ $('.jc-cart .minus').click(function(e){
     e.preventDefault();
     var $input = $(this).closest('.jc-cart').find('input');
     let qty = $input.val();
+    let type = $input.data('type');
     if(qty > 0) {
-        $input.val(qty - 1);
+        if (type == "ratio") {
+        let ratio = $input.closest('.quantity-section').find('.ratio input');
+        let consequent = ratio.data('consequent');
+        let ratioValue = 1/consequent;
+        $input.val(Number(qty) - ratioValue);
+
+        } else if (type == "bags"){
+            let ratio = $input.closest('.quantity-section').find('.ratio input');
+            let consequent_bags = ratio.data('consequent');
+            $input.val(Number(qty) - consequent_bags);
+        } else {
+            $input.val(Number(qty) - 1);
+        }
         changeItem($input);
     }
 });
@@ -183,7 +173,27 @@ $('.jc-cart .plus').click(function(e){
     e.preventDefault();
     var $input = $(this).closest('.jc-cart').find('input');
     let qty = $input.val();
-    $input.val(Number(qty) + 1);
+    let type = $input.data('type');
+    if (type == "ratio") {
+        console.log(type, "ratio");
+        let ratio = $input.closest('.quantity-section').find('.ratio input');
+        let consequent = ratio.data('consequent');
+        let ratioValue = 1/consequent;
+        console.log(ratioValue);
+        console.log(qty);
+        $input.val(Number(qty) + ratioValue);
+
+    }else if (type == "bags"){
+        console.log(type, "bags");
+
+        let ratio = $input.closest('.quantity-section').find('.ratio input');
+        let consequent_bags = ratio.data('consequent');
+        $input.val(Number(qty) + consequent_bags);
+    } else {
+        console.log("others");
+        $input.val(Number(qty) + 1);
+    }
+
     changeItem($input);
 });
 
@@ -193,26 +203,60 @@ function changeItem(_this) {
     var updates = {};
     var data ={};
 
-    if (_this.data('properties').length > 2) {        
+    let ratio = _this.closest('.quantity-section').find('.ratio input');
+    let pall = _this.closest('.quantity-section').find('.pall input');
+    let product = _this.closest('.quantity-section').find('.pro input');
+    var bags = _this.closest('.quantity-section').find('.bags input');
 
-        let $cartpc = _this.val();
+
+    var $cartpc = _this.val();
+    var consequent = ratio.data('consequent');
+    var ratioUnit = 1/consequent;
+    var dataType=_this.data('type');
+    var productValue;
+    var palletValue;
+    var ratioValue;
+    
+    
+    if (_this.data('properties').length > 2) {      
+        
+        var palletNum = _this.data('properties')[0][1];
+        if (dataType == "product") {
+            ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2))));
+            pall.val(Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3)));   
+            productValue = $cartpc;   
+            palletValue = Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3));
+            ratioValue = Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2)));
+        }
+        if (dataType == "pallet") {
+            palletValue = Math.ceil(parseInt($cartpc));
+            pall.val(palletValue);
+            productValue = Number(palletValue)*Number(palletNum);
+            product.val(productValue);
+            ratioValue = Number(productValue)/consequent;
+            ratio.val(Number(productValue)/consequent);
+        }
+        if (dataType == "ratio") {
+            ratioValue = Number(_this.val());
+            productValue = Math.ceil(ratioValue / ratioUnit);
+            ratio.val(ratioValue.toFixed(2));
+            if (ratioValue.toFixed(2) == 0) {
+                ratio.val(0);
+            }
+            product.val(productValue);
+            palletValue = Math.max(0, (productValue / palletNum).toFixed(2));
+            pall.val(Math.max(0, (productValue / palletNum).toFixed(2)));
+        }
         let mainProductId = _this.closest('.item').data('item-id');
-        let palletNum = _this.data('properties')[0][1];
         let main_Product_Id = _this.data('properties')[1][1];
         let subProductId1 = _this.data('properties')[2][1];
         let subProductId2 = _this.data('properties')[3][1];
-        let $pallet_val = Math.ceil($cartpc / palletNum);
-        console.log($pallet_val, "herer------>");
-        let $breaking_val = $cartpc % palletNum;   
+        let $breaking_val = productValue % palletNum;   
         
         _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
             let str_selectedId = item.querySelector('input').getAttribute('data-properties');
             let selectedId = JSON.parse(str_selectedId)[0][1];
             if (selectedId == main_Product_Id ) {
-
-                console.log($breaking_val, "breaking");
-                console.log($cartpc, "cartpc");
-                console.log(palletNum, "palletNum");
 
                 let key = item.getAttribute('data-item-key');
                 updates[key] = 0;
@@ -221,17 +265,17 @@ function changeItem(_this) {
                     items: [
                         {
                             id: mainProductId,
-                            quantity: $cartpc,
+                            quantity: productValue,
                             properties: {
                                 '_pallet_num': palletNum,
                                 '_mainproduct_id': main_Product_Id,
                                 '_subproduct_id_0': subProductId1,
-                                '_subproduct_id_1': subProductId2
+                                '_subproduct_id_1': subProductId2                                
                             }
                         },
                         {
                             id: subProductId1,
-                            quantity: $pallet_val,
+                            quantity: palletValue,
                             properties: {
                                 '_mainproduct_id': main_Product_Id,
                                 '_ismain': "false"
@@ -245,17 +289,17 @@ function changeItem(_this) {
                         items: [
                             {
                                 id: mainProductId,
-                                quantity: $cartpc,
+                                quantity: productValue,
                                 properties: {
                                     '_pallet_num': palletNum,
                                     '_mainproduct_id': main_Product_Id,
                                     '_subproduct_id_0': subProductId1,
-                                    '_subproduct_id_1': subProductId2
+                                    '_subproduct_id_1': subProductId2                                    
                                 }
                             },
                             {
                                 id: subProductId1,
-                                quantity: $pallet_val,
+                                quantity: Math.ceil(palletValue),
                                 properties: {
                                     '_mainproduct_id': main_Product_Id,
                                     '_ismain': "false"
@@ -267,30 +311,48 @@ function changeItem(_this) {
                                 properties: {
                                     '_mainproduct_id': main_Product_Id,
                                     '_ismain': "false"
-
                                 }
                             }
                         ]
                     }
                 }    
                 updates[_this.closest('.item').data('item-key')] = 0;
-                console.log(data, "data");
             }
         })
          
         itemsUpdate(updates, data);        
 
     } else {
-        console.log(_this[0].id.split('_'),"here");
+        console.log(_this[0], "here");
         var nomalProductId = _this[0].id.split('_')[1];
         var productNum = _this.val();
         var productPrice = _this[0].getAttribute('data-price');
         var nomalProductKey = _this.closest('.item')[0].getAttribute('data-item-key');
-
+        
         var presentPriceWrapper = _this.closest('.item').find('.line-total .money');
         var presentPrice = presentPriceWrapper.text();
+        var bagsSquare = _this[0].getAttribute('data-consequent');
 
         
+        if (_this[0].getAttribute('data-type') == "bags") {
+            console.log("bags");
+            console.log(bagsSquare, "square");
+            console.log(_this.val(), "Numqweqweqewqe");
+            var bagsValue = productNum / Number(bagsSquare);
+            console.log(bagsValue, "value");
+            bags.val(Math.ceil(bagsValue));
+            productNum = bagsValue;
+            
+        }
+        if (_this[0].getAttribute('data-type') == "bags-quantity") {
+            console.log(productNum, "number");
+            console.log(bagsSquare, "square");
+            ratio.val(Number(productNum)*Number(bagsSquare));
+            
+        }
+        if (productNum == 0) {
+            _this.closest('.item')[0].style.display = 'none';                
+        }
         updates[nomalProductKey] = 0;
 
         data = {
@@ -325,24 +387,18 @@ function changeItem(_this) {
                     let originalString = presentPrice.slice(0, -3);
                     let cleanedString = originalString.replace(/[,\.]/g, "");
                     let numberValue = parseInt(cleanedString);
-                    console.log(numberValue, "PresentPrice");               
                     
                             var updatePrice = Number(productPrice)/100 * productNum;
                             _this.closest('.item').find('.line-total .money').text(Math.round(updatePrice).toLocaleString("en") + '.00' + ' kr');
-                            console.log(updatePrice, "updatePrice");
                             var distance = updatePrice - numberValue/100;
-                            console.log(distance, "distance");
 
                             var presentTotal = document.querySelector('.under-cart .money').innerHTML;
-                            console.log(presentTotal, "presenttotal");
 
                             let original = presentTotal.slice(0, -3);
                             let cleaned = original.replace(/[,\.]/g, "");
                             let numberT = parseInt(cleaned);
-                            console.log(numberT, "beforeTotal");
 
                             let updateTotal = numberT/100 + distance ;
-                            console.log(updateTotal, "updateT");
                             document.querySelector('.under-cart .money').innerHTML = Math.round(updateTotal).toLocaleString("en") + '.00' + ' kr';
 
 
@@ -382,7 +438,7 @@ function itemsUpdate(updates, data) {
     })
 }
 
-// remove
+// delete
 function itemDelete(updates, data) {
     $.ajax({
     type: "POST", 
@@ -397,4 +453,7 @@ function itemDelete(updates, data) {
     },
 });
 }
+
+
+
 

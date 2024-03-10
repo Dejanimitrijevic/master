@@ -71,7 +71,7 @@
                   {% comment %} quantity {% endcomment %}
                   {% assign length = item.properties | size %}
                   <div class="col-notimage">
-                    <div class="desc {{ length }}">
+                    <div class="desc">
                       {% if settings.show_preorder_label and item.product.template_suffix == 'preorder' %}
                         <div class="feature-subheader feature-subheader--small">
                           {{ 'products.product.preorder' | t }}
@@ -203,34 +203,29 @@
                         <div class="quantity-section" style="display: flex; gap: 10px; ">
                           {% if item.product.metafields.my_fields.antal_plattor_per_kvm %}
                             {% unless item.product.tags contains 'Kantsten' or item.product.tags contains 'Stolpar' or item.product.tags contains 'Trappor' %}
-                              <div class="item-quantity">  
-                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span>
-                                    {% comment %} <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                        <a href="#" data-quantity="down">&minus;</a>
-                                        <input aria-label="{{ block.settings.antecedent_label | default: 'ratio' }}"  class="select-on-focus" name="ratio" data-consequent="{{ item.metafields.my_fields.antal_per_pall }}"  value="0" type="number" min="0" step="0.01"/>
-                                        <a href="#" data-quantity="up">&plus;</a>
-                                    </div> {% endcomment %}
-                                </label>
+                              <div class="item-quantity ratio">  
+                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span></label>
                                 <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                   <a
-                                    class="minus"
-                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                                    class="minus" data-quantity="down"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2  }}"
                                     aria-label="{{ 'cart.general.decrease' | t | escape }}"
                                     ><span>&minus;</span></a
                                   >
+                                    
                                   <input
                                     class="a select-on-focus jc-cart-value"
                                     type="text"
-                                    size="2" data-price = "{{ item.price }}"
+                                    size="2" data-price = "{{ item.price }}" data-type="ratio" data-consequent = "{{ item.product.metafields.my_fields.antal_plattor_per_kvm }}"
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ item.quantity }}"
+                                    value="{{ 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2 }}" min="0" step="0.01"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
-                                    class="plus"
-                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                                    class="plus" data-quantity="up"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2  }}"
                                     aria-label="{{ 'cart.general.increase' | t | escape }}"
                                     ><span>&plus;</span></a
                                   >
@@ -239,15 +234,9 @@
                             {% endunless %}                     
     
                             {% comment %} input for small stons {% endcomment %}
-                            <div class="item-quantity">
+                            <div class="item-quantity pro">
                               {% comment %} input for Stycken {% endcomment %}
-                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span>
-                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                  <a href="#" data-quantity="down">&minus;</a>
-                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
-                                  <a href="#" data-quantity="up">&plus;</a>
-                                  </div> {% endcomment %}
-                              </label>
+                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                 <a
                                   class="minus"
@@ -258,7 +247,7 @@
                                 <input
                                   class="a select-on-focus jc-cart-value"
                                   type="text"
-                                  size="2" data-price = "{{ item.price }}"
+                                  size="2" data-price = "{{ item.price }}" data-type="product"
                                   id="updates_{{ item.id }}"
                                   data-properties='{{ item.properties | json }}'
                                   name="updates[]"
@@ -275,14 +264,7 @@
                             </div>
     
                             {% if item.product.metafields.custom.lastpall == true %}
-                              <div class="item-quantity">
-                                  {% comment %} <label class="jc-cart quantity pallet calculated-input-label" for="quantity"><span>PALL</span>
-                                  <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                  <a href="#" data-quantity="down">&minus;</a>
-                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus"  name="pallet" value="0" data-limit="{{product.metafields.custom.pallet_num}}" />
-                                  <a href="#" data-quantity="up">&plus;</a>
-                                  </div>
-                                  </label> {% endcomment %}
+                              <div class="item-quantity pall">                                  
                                 <label class="pall calculated-input-label" for="quantity"><span>PALL</span></label>
                                 <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                   <a
@@ -291,14 +273,16 @@
                                     aria-label="{{ 'cart.general.decrease' | t | escape }}"
                                     ><span>&minus;</span></a
                                   >
+                                  {% assign pallet = item.properties._pallet_num %}
+                                  {% assign quantity = item.quantity %}
                                   <input
                                     class="a select-on-focus jc-cart-value"
                                     type="text"
-                                    size="2" data-price = "{{ item.price }}"
+                                    size="2" data-price = "{{ item.price }}" data-type="pallet"
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ item.quantity }}"
+                                    value="{{ quantity | times: 1.0 | divided_by: pallet | round: 2}}"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
@@ -312,14 +296,8 @@
                             {% endif %}     
                           {% elsif item.product.metafields.custom.antal_kvm_per_sack %}
                             {% unless item.product.tags contains 'Kantsten' or item.product.tags contains 'Stolpar' or item.product.tags contains 'Trappor' %}
-                              <div class="item-quantity">  
-                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span>
-                                    {% comment %} <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                        <a href="#" data-quantity="down">&minus;</a>
-                                        <input aria-label="{{ block.settings.antecedent_label | default: 'ratio' }}"  class="select-on-focus" name="ratio" data-consequent="{{ item.metafields.my_fields.antal_per_pall }}"  value="0" type="number" min="0" step="0.01"/>
-                                        <a href="#" data-quantity="up">&plus;</a>
-                                    </div> {% endcomment %}
-                                </label>
+                              <div class="item-quantity ratio">  
+                                <label class="kvm calculated-input-label" for="ratio"><span>KVM</span></label>
                                 <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                   <a
                                     class="minus"
@@ -330,11 +308,11 @@
                                   <input
                                     class="a select-on-focus jc-cart-value"
                                     type="text"
-                                    size="2" data-price = "{{ item.price }}"
+                                    size="2" data-price = "{{ item.price }}" data-type="bags" data-consequent = "{{ item.product.metafields.custom.antal_kvm_per_sack }}"
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ item.quantity }}"
+                                    value="{{ item.quantity | times: item.product.metafields.custom.antal_kvm_per_sack | round:2 }} " min="0" step="0.01"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
@@ -347,15 +325,9 @@
                               </div>
                             {% endunless %} 
 
-                            <div class="item-quantity">
+                            <div class="item-quantity bags">
                               {% comment %} input for Stycken {% endcomment %}
-                              <label class="pc calculated-input-label" for="quantity"><span>SÄCKAR</span>
-                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                  <a href="#" data-quantity="down">&minus;</a>
-                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
-                                  <a href="#" data-quantity="up">&plus;</a>
-                                  </div> {% endcomment %}
-                              </label>
+                              <label class="calculated-input-label" for="quantity"><span>SÄCKAR</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                 <a
                                   class="minus"
@@ -366,7 +338,7 @@
                                 <input
                                   class="a select-on-focus jc-cart-value"
                                   type="text"
-                                  size="2" data-price = "{{ item.price }}"
+                                  size="2" data-price = "{{ item.price }}" data-type="bags-quantity" data-consequent = "{{ item.product.metafields.custom.antal_kvm_per_sack }}"
                                   id="updates_{{ item.id }}"
                                   data-properties='{{ item.properties | json }}'
                                   name="updates[]"
@@ -384,13 +356,7 @@
                           {% else %}
                             <div class="item-quantity">
                               {% comment %} input for Stycken {% endcomment %}
-                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span>
-                                  {% comment %} <div class="quantity-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">
-                                  <a href="#" data-quantity="down">&minus;</a>
-                                  <input {% unless block.settings.show_labels %}aria-label="{{ quantity_label }}"{% endunless %} class="select-on-focus" data-type="pallet" name="quantity" value="0" />
-                                  <a href="#" data-quantity="up">&plus;</a>
-                                  </div> {% endcomment %}
-                              </label>
+                              <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                 <a
                                   class="minus"
