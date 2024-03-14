@@ -7163,7 +7163,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         inputElement.value= $pallet_val;
         console.log(inputElement, "input"); 
         let input_breaking = document.querySelector('input[name="items[1]quantity"]')
-        input_breaking.value = 0;
+        input_breaking.value = 1;
   
     })
     // pallet
@@ -7220,7 +7220,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         inputElement.value= $pallet_val;
         console.log(inputElement, "input"); 
         let input_breaking = document.querySelector('input[name="items[1]quantity"]')
-        input_breaking.value = 0;
+        input_breaking.value = 1;
         
     })
 
@@ -7274,7 +7274,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 0;
+          input_breaking.value = 1;
         } else {
           breaking.removeClass('remove');
           $breaking_price = $('.price-pallet').find('.pallet-value:last').data('pallet-2'); 
@@ -7342,7 +7342,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 0;
+          input_breaking.value = 1;
         } else {
           breaking.removeClass('remove');
           $breaking_price = $('.price-pallet').find('.pallet-value:last').data('pallet-2'); 
@@ -7433,7 +7433,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 0;
+          input_breaking.value = 1;
         } else {
           breaking.removeClass('remove');
           $('.pallet-price').css('display', 'flex');
@@ -7505,7 +7505,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         breaking.addClass('remove');
         $('.pallet-price.remove').css('display', 'none');
         $breaking_price = 0;
-        input_breaking.value = 0;
+        input_breaking.value = 1;
       } else {
         breaking.removeClass('remove');
         $('.pallet-price').css('display', 'flex');
