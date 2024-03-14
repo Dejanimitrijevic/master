@@ -42,23 +42,23 @@
         </div>
       </li>
       <li class="item cart-list-header">
-        <div class="col-image">{{ 'cart.general.product' | t }}</div>
+        {% comment %} <div class="col-image">{{ 'cart.general.product' | t }}</div>
         <div class="col-notimage">
-            <div class="desc"></div>
-            <div class="item-price">{{ 'cart.general.price' | t }}</div>
-            <div class="quantity-and-remove">{{ 'cart.general.quantity' | t }}</div>
-            <div class="line-total">{{ 'cart.general.total' | t }}</div>
-        </div>
+          <div class="desc"></div>
+          <div class="item-price">{{ 'cart.general.price' | t }}</div>
+          <div class="quantity-and-remove">{{ 'cart.general.quantity' | t }}</div>
+        </div> {% endcomment %}
+        <div class="line-total">{{ 'cart.general.total' | t }}</div>
       </li> 
-      
+       
       <div class="product-list">
         
           {% for item in cart.items %}
 
               <li
-                  class="item clearfix"
+                  class="item clearfix {% if item.product.metafields.custom.lastpall == true %} pallet__product {% endif %}"
                   data-item-id="{{ item.id }}"
-                  data-item-key="{{ item.key }}"
+                  data-item-key="{{ item.key }}" 
                   data-item-line="{{ forloop.index }}"
                   data-properties='{{ item.properties | json }}'
                 >
@@ -208,7 +208,7 @@
                                 <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
                                   <a
                                     class="minus" data-quantity="down"
-                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2  }}"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 3  }}"
                                     aria-label="{{ 'cart.general.decrease' | t | escape }}"
                                     ><span>&minus;</span></a
                                   >
@@ -220,12 +220,12 @@
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2 }}" min="0" step="0.01"
+                                    value="{{ 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 3 }}" min="0" step="0.01"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
                                     class="plus" data-quantity="up"
-                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2  }}"
+                                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 3  }}"
                                     aria-label="{{ 'cart.general.increase' | t | escape }}"
                                     ><span>&plus;</span></a
                                   >
@@ -282,7 +282,7 @@
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ quantity | times: 1.0 | divided_by: pallet | round: 2}}"
+                                    value="{{ quantity | times: 1.0 | divided_by: pallet | round: 3}}"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
@@ -312,7 +312,7 @@
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ item.quantity | times: item.product.metafields.custom.antal_kvm_per_sack | round:2 }} " min="0" step="0.01"
+                                    value="{{ item.quantity | times: item.product.metafields.custom.antal_kvm_per_sack | round:3 }} " min="0" step="0.01"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a
@@ -465,8 +465,12 @@
         {%- endif -%}
 
         <div class="subtotal">
-          <span class="label">{{ 'cart.general.subtotal' | t }}</span>         
+          <span class="label">Delsumma (<span class="label-tiny">exkl. frakt</span>):</span>         
           <span class="amount theme-money" data-total-price = "{{cart.total_price}}">{%- render "price", price: cart.total_price, is_total_price: true -%}</span>
+        </div>
+        <div class="subtotal_">
+          <span class="label_"><span class="label-tiny_">varav moms:</span></span>         
+          <span class="amount theme-money_ vat" data-total-price = "{{cart.total_price}}">{%- render "price", price: cart.total_price, is_total_price: true, cost: true -%}</span>
         </div>
       </div>
       <div class="t subtotal-row weight">

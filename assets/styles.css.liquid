@@ -8905,7 +8905,8 @@ html.touch .product-block.product-block--quickbuy .cc-quick-buy-btn, html.touch 
   padding: 6px 0 0;
   font-size: 16px;
   font-weight: 600;
-  color: #b7cb9c;
+  /* color: #b7cb9c; */
+  color: #000;
 }
 
 @media (max-width: 767px) {
@@ -13288,6 +13289,9 @@ shopify-payment-terms {
   width: 100%;
   justify-content: space-between;
 }
+.cart-list .col-notimage .line-total {
+  text-align: right;
+}
 .cart-list .desc {
   text-align: left;
   margin-right: 24px;
@@ -13411,8 +13415,16 @@ shopify-payment-terms {
 }
 
 .cart-list-header {
+  display: flex;
+  justify-content: end;
+  margin-bottom: 0 !important;
   padding-bottom: 0.5em;
   border-bottom: 1px solid {{ col_text | color_modify: "alpha", 0.2 }};
+}
+.cart-list-header .line-total {
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .update-continue {
@@ -13446,9 +13458,13 @@ shopify-payment-terms {
 
 .under-cart .subtotal {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
+  gap: 4px;
 }
-
+.under-cart .subtotal .label-tiny {
+  font-size: 15px;
+  font-weight: 400;
+}
 .under-cart .checkout-btn {
   margin: 1.4em 0;
 }
@@ -14831,7 +14847,7 @@ body {
 
 }
 .product-list .item {
-  /* margin-top: 20px; */
+  margin-top: 20px;
 }
 .product-list .item.custom-product {
   margin-top: 0;
@@ -14869,8 +14885,26 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  align-items: start;
+  align-items: end;
 }
 .subtotal-row.weight p {
   margin: 0;
+}
+.under-cart .subtotal_ {
+  text-align: right;
+}
+
+.under-cart .amount {
+  width: 150px;
+  display: inline-block;
+  text-align: right;
+}
+
+.under-cart .label-tiny_ {
+  font-style: italic;
+}
+
+.under-cart .theme-money_ .money {
+  font-size: 14px;
+  font-style: italic;
 }

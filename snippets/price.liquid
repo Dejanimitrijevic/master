@@ -34,9 +34,11 @@
 {% if alternative_price != blank %}
   {{ alternative_price }}
 {% else %}
-  {%- if show_currency_code -%}
-    {{- price | money_with_currency -}}
+  {% if cost %}
+      {{- price | times: 0.2 | money_with_currency -}}
+  {% elsif show_currency_code %}
+      {{- price | money_with_currency -}}
   {%- else -%}
-    {{- price | money -}}
+      {{- price | money -}}
   {%- endif -%}
 {% endif %}

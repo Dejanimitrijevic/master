@@ -1,20 +1,106 @@
+
+totalWeight();
+totalPrice();
+var hasRan = false;
+console.log(hasRan, "hasRan")
+
+window.addEventListener('load', function() {
+    // Get the current URL after the page has loaded
+    let currentURL = window.location.href;
+    
+    // Log the current URL to the console
+    console.log("Current URL: " + currentURL);
+});
+
+
+
+jQuery(window).on("load", function () {
+    if (window.location.href === "https://stengrossen.se/cart") {
+        console.log("Page has finished loading");
+        if (!hasRan) {
+            document.querySelectorAll('.cart-list .product-list').forEach(item => {
+                item.querySelectorAll('.pallet__product').forEach(Item=> {
+                    let clickPlus = Item.querySelector('.item-quantity.pro .plus');
+                    let clickMinus = Item.querySelector('.item-quantity.pro .minus');
+                    let pallet_array = Item.getAttribute('data-properties');
+                    let palletNum = JSON.parse(pallet_array)[0][1];
+                    let pc = Item.querySelector('.item-quantity.pro input').value;
+                    pc = Math.ceil(pc);
+                    let $breaking_val = Number(pc) % Number(palletNum);
+                    let semi_val = Number(palletNum) - 1;
+                    // if ($breaking_val != 0 || $breaking_val != semi_val || $breaking_val != palletNum) {
+                        setTimeout(()=> {
+                            clickPlus.click( function(e) {
+                                e.preventDefault;
+                                var $input = $(this).closest('.jc-cart').find('input');
+                                let qty = $input.val();
+                                $input.val(Number(qty) + 1);
+                                changeItem($input);
+                            });
+                    
+                            clickMinus.click( function(e) {
+                                e.preventDefault;
+                                var $input = $(this).closest('.jc-cart').find('input');
+                                let qty = $input.val();
+                                $input.val(Number(qty) - 1);
+                                changeItem($input);
+                            });
+                
+                        }, 1000);                    
+                    // }
+    
+                    hasRan = true;
+                })
+            })
+        }
+    }  
+});
+
+
 // total weight
-let weight = 0;
-let itemWei = 0;
-let itemPcs = 0;
-let calculatedWei = 0;
-document.querySelectorAll('.cart-list .product-list').forEach(item => {
-    item.querySelectorAll('.title').forEach(item => {
-        itemWei = item.getAttribute('data-product-weight');
-        itemPcs = item.getAttribute('data-quantity');
-        var numWei = parseFloat(itemWei.replace(',', '.'));
-        var subItemWei = numWei*Number(itemPcs);
-        if (subItemWei) {
+function totalWeight() {
+    let itemWei = 0;
+    let itemPcs = 0;
+    let calculatedWei = 0;
+    var subItemWei = 0;
+    var repeat = 0;
+    document.querySelectorAll('.cart-list .product-list').forEach(item => {
+        item.querySelectorAll('.col-notimage').forEach((item, index) => {
+            itemWei = item.querySelector('.title').getAttribute('data-product-weight');
+            if (item.querySelector('.pro')) {
+                itemPcs = item.querySelector('.pro input').value;   
+                repeat++;             
+            }
+            var numWei = parseFloat(itemWei.replace(',', '.').replace(' kg', ''));
+            if (numWei) {
+                subItemWei = numWei*Number(itemPcs); 
+            }     
             calculatedWei += Number(subItemWei);
-        }        
+        })
     })
-})
-document.querySelector('.weight-value').innerHTML = calculatedWei.toFixed(2) + ' kg';
+    document.querySelector('.weight-value').innerHTML = (calculatedWei / repeat).toFixed(2) + ' kg';
+}
+
+//total price
+function totalPrice() {
+    let totalPrice = 0;
+    let itemPrice;
+    let calculatedPrice = 0;
+    document.querySelectorAll('.cart-list .product-list').forEach(item => {
+        item.querySelectorAll('.line-total').forEach(item => {
+            itemPrice = item.querySelector('.money').innerHTML;
+            totalPrice = parseFloat(itemPrice.replace(/,/g, '').replace(' kr', ''));
+            calculatedPrice += Number(totalPrice);
+        })
+    })
+    console.log(Number(calculatedPrice), "fffff");
+    result = Number(calculatedPrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    resultFee = Number((Number(calculatedPrice) * 0.2).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    console.log(resultFee, "ppppp");
+    
+    document.querySelector('.subtotal .money').innerHTML =result + " kr";;
+    document.querySelector('.subtotal_ .money').innerHTML = resultFee + ' kr';
+}
 
 
 // remove all
@@ -140,10 +226,12 @@ $(document).on("click", ".jc-cart-remove", function (e) {
 $(document).on('change', '.jc-cart-value', function(e) {
     e.preventDefault();
     changeItem($(this));
+    
 })
 $(document).on('keyup', '.jc-cart-value', function(e) {
     e.preventDefault();
     changeItem($(this));
+    
 })
 
 $('.jc-cart .minus').click(function(e){
@@ -167,6 +255,7 @@ $('.jc-cart .minus').click(function(e){
         }
         changeItem($input);
     }
+    
 });
 
 $('.jc-cart .plus').click(function(e){
@@ -175,29 +264,26 @@ $('.jc-cart .plus').click(function(e){
     let qty = $input.val();
     let type = $input.data('type');
     if (type == "ratio") {
-        console.log(type, "ratio");
         let ratio = $input.closest('.quantity-section').find('.ratio input');
         let consequent = ratio.data('consequent');
         let ratioValue = 1/consequent;
-        console.log(ratioValue);
-        console.log(qty);
         $input.val(Number(qty) + ratioValue);
 
     }else if (type == "bags"){
-        console.log(type, "bags");
 
         let ratio = $input.closest('.quantity-section').find('.ratio input');
         let consequent_bags = ratio.data('consequent');
         $input.val(Number(qty) + consequent_bags);
     } else {
-        console.log("others");
         $input.val(Number(qty) + 1);
     }
 
     changeItem($input);
+    
 });
 
 // +, - product
+
 
 function changeItem(_this) {
     var updates = {};
@@ -221,6 +307,7 @@ function changeItem(_this) {
     if (_this.data('properties').length > 2) {      
         
         var palletNum = _this.data('properties')[0][1];
+        let semiBreaking_val = Number(palletNum)-1;
         if (dataType == "product") {
             ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2))));
             pall.val(Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3)));   
@@ -251,16 +338,15 @@ function changeItem(_this) {
         let main_Product_Id = _this.data('properties')[1][1];
         let subProductId1 = _this.data('properties')[2][1];
         let subProductId2 = _this.data('properties')[3][1];
-        let $breaking_val = productValue % palletNum;   
+        let $breaking_val = productValue % palletNum;
         
         _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
             let str_selectedId = item.querySelector('input').getAttribute('data-properties');
             let selectedId = JSON.parse(str_selectedId)[0][1];
+            console.log($breaking_val, "test");
             if (selectedId == main_Product_Id ) {
-
                 let key = item.getAttribute('data-item-key');
                 updates[key] = 0;
-
                 data = {
                     items: [
                         {
@@ -277,13 +363,11 @@ function changeItem(_this) {
                             id: subProductId1,
                             quantity: palletValue,
                             properties: {
-                                '_mainproduct_id': main_Product_Id,
-                                '_ismain': "false"
+                                '_mainproduct_id': main_Product_Id
                             }
                         }
                     ]
                 }
-
                 if ($breaking_val != 0) {
                     data = {
                         items: [
@@ -302,7 +386,6 @@ function changeItem(_this) {
                                 quantity: Math.ceil(palletValue),
                                 properties: {
                                     '_mainproduct_id': main_Product_Id,
-                                    '_ismain': "false"
                                 }
                             },
                             {
@@ -310,7 +393,6 @@ function changeItem(_this) {
                                 quantity: 1,
                                 properties: {
                                     '_mainproduct_id': main_Product_Id,
-                                    '_ismain': "false"
                                 }
                             }
                         ]
@@ -319,36 +401,100 @@ function changeItem(_this) {
                 updates[_this.closest('.item').data('item-key')] = 0;
             }
         })
-         
-        itemsUpdate(updates, data);        
+        console.log(data, "data---->");
+        // if ($breaking_val == 1 || $breaking_val == semiBreaking_val) {
+        //     hasRan = true;
+        //     // itemsUpdate(updates, data); 
+        // } else {
+            $.ajax({
+                type: 'POST',
+                url: '/cart/update.js',
+                data: {
+                     updates:updates
+                },
+                dataType: 'json',
+                async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+                success: function(){
+                     $.ajax({
+                        type: 'POST',
+                        url: '/cart/add.js',
+                        data: data,
+                        dataType: 'json',
+                        async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+                        success: function(){
+                            $.ajax({
+                                type: 'GET',
+                                url: '/cart.js',
+                                dataType: 'json',
+                                success: function(cartdata){
+                                    
+                                    let productPrice = _this[0].getAttribute('data-price');
+                                    let $breaking_val = productValue % palletNum; 
+                                    
+                                    _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
+    
+                                        var palletPrice = item.querySelector('input').getAttribute('data-price');
+                                        let str_selectedId = item.querySelector('input').getAttribute('data-properties');
+                                        let selectedId = JSON.parse(str_selectedId)[0][1];
+    
+                                        if (selectedId == main_Product_Id) {
+    
+                                            let palletId = item.closest('.custom-product').getAttribute('data-item-id');
+                                            let priceEelement = _this.closest('.item')[0].querySelector('.line-total .money');                                        
+                                            priceEelement.innerHTML = (productValue * Number(productPrice) /100).toFixed(2) + ' kr';                                        
+                                            let palletElement = item.closest('.custom-product').querySelector('.line-total .money');
+                                            var breakingPriceElement = item.closest('.custom-product').querySelector('.line-total .money');
+    
+                                            if ($breaking_val == 0) {
+                                                if ( palletId == subProductId2 ) {
+                                                    item.closest('.custom-product').style.display = "none";   
+                                                    breakingPriceElement.innerHTML = 0;
+    
+                                                }
+                                            } else {
+                                                if ( palletId == subProductId2 ) {
+                                                    item.closest('.custom-product').style.display = "flex"; 
+                                                    item.querySelector('.custom-product .product-quantity .product-price').innerHTML = "Antal: 1";
+                                                    let breakingPrice = item.closest('.custom-product').querySelector('input').getAttribute('data-price');
+                                                    breakingPriceElement.innerHTML = (Number(breakingPrice) /100).toFixed(2) + ' kr';
+                                                }
+                                            }
+                                            if ( palletId == subProductId1 ) {
+                                                palletElement.innerHTML = (palletPrice * Number(Math.ceil(palletValue) /100)).toFixed(2) + ' kr';
+                                                let palletNumElement = item.closest('.custom-product').querySelector('.product-quantity .product-price');
+                                                palletNumElement.innerHTML = 'Antal: ' + Math.ceil(palletValue);
+                                            }
+    
+                                            totalPrice();
+                                            totalWeight();
+                                            
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    });
+                }
+             })       
+        //  }
+
 
     } else {
-        console.log(_this[0], "here");
         var nomalProductId = _this[0].id.split('_')[1];
         var productNum = _this.val();
         var productPrice = _this[0].getAttribute('data-price');
-        var nomalProductKey = _this.closest('.item')[0].getAttribute('data-item-key');
-        
+        var nomalProductKey = _this.closest('.item')[0].getAttribute('data-item-key');        
         var presentPriceWrapper = _this.closest('.item').find('.line-total .money');
         var presentPrice = presentPriceWrapper.text();
         var bagsSquare = _this[0].getAttribute('data-consequent');
-
         
         if (_this[0].getAttribute('data-type') == "bags") {
-            console.log("bags");
-            console.log(bagsSquare, "square");
-            console.log(_this.val(), "Numqweqweqewqe");
             var bagsValue = productNum / Number(bagsSquare);
-            console.log(bagsValue, "value");
             bags.val(Math.ceil(bagsValue));
-            productNum = bagsValue;
-            
+            productNum = bagsValue;            
         }
         if (_this[0].getAttribute('data-type') == "bags-quantity") {
-            console.log(productNum, "number");
-            console.log(bagsSquare, "square");
-            ratio.val(Number(productNum)*Number(bagsSquare));
-            
+            ratio.val(Number(productNum)*Number(bagsSquare));            
         }
         if (productNum == 0) {
             _this.closest('.item')[0].style.display = 'none';                
@@ -367,46 +513,45 @@ function changeItem(_this) {
         }
 
         $.ajax({
-        type: 'POST',
-        url: '/cart/update.js',
-        data: {
-            updates:updates
-        },
-        dataType: 'json',
-        async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
-        success: function(){
-            $.ajax({
-                type: 'POST',
-                url: '/cart/add.js',
-                data: data,
-                dataType: 'json',
-                async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
-                success: function(){
-                    // window.location.href= '/cart';
-                    
-                    let originalString = presentPrice.slice(0, -3);
-                    let cleanedString = originalString.replace(/[,\.]/g, "");
-                    let numberValue = parseInt(cleanedString);
-                    
-                            var updatePrice = Number(productPrice)/100 * productNum;
-                            _this.closest('.item').find('.line-total .money').text(Math.round(updatePrice).toLocaleString("en") + '.00' + ' kr');
-                            var distance = updatePrice - numberValue/100;
+            type: 'POST',
+            url: '/cart/update.js',
+            data: {
+                updates:updates
+            },
+            dataType: 'json',
+            async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+            success: function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/cart/add.js',
+                    data: data,
+                    dataType: 'json',
+                    async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+                    success: function(){
+                        // window.location.href= '/cart';
+                        
+                        let originalString = presentPrice.slice(0, -3);
+                        let cleanedString = originalString.replace(/[,\.]/g, "");
+                        let numberValue = parseInt(cleanedString);
+                        
+                        var updatePrice = Number(productPrice)/100 * productNum;
+                        _this.closest('.item').find('.line-total .money').text(Math.round(updatePrice).toLocaleString("en") + '.00' + ' kr');
+                        var distance = updatePrice - numberValue/100;
 
-                            var presentTotal = document.querySelector('.under-cart .money').innerHTML;
+                        var presentTotal = document.querySelector('.under-cart .money').innerHTML;
 
-                            let original = presentTotal.slice(0, -3);
-                            let cleaned = original.replace(/[,\.]/g, "");
-                            let numberT = parseInt(cleaned);
+                        let original = presentTotal.slice(0, -3);
+                        let cleaned = original.replace(/[,\.]/g, "");
+                        let numberT = parseInt(cleaned);
 
-                            let updateTotal = numberT/100 + distance ;
-                            document.querySelector('.under-cart .money').innerHTML = Math.round(updateTotal).toLocaleString("en") + '.00' + ' kr';
-
-
-
-                }
-            });
-        }
-    })
+                        let updateTotal = numberT/100 + distance ;
+                        document.querySelector('.under-cart .money').innerHTML = Math.round(updateTotal).toLocaleString("en") + '.00' + ' kr';
+                        totalPrice();
+                        totalWeight();
+                    }
+                });
+            }
+        })
 
     }
 
@@ -453,6 +598,7 @@ function itemDelete(updates, data) {
     },
 });
 }
+
 
 
 
