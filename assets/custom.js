@@ -2,15 +2,6 @@
 totalWeight();
 totalPrice();
 var hasRan = false;
-console.log(hasRan, "hasRan")
-
-window.addEventListener('load', function() {
-    // Get the current URL after the page has loaded
-    let currentURL = window.location.href;
-    
-    // Log the current URL to the console
-    console.log("Current URL: " + currentURL);
-});
 
 
 
@@ -67,18 +58,20 @@ function totalWeight() {
     document.querySelectorAll('.cart-list .product-list').forEach(item => {
         item.querySelectorAll('.col-notimage').forEach((item, index) => {
             itemWei = item.querySelector('.title').getAttribute('data-product-weight');
-            if (item.querySelector('.pro')) {
-                itemPcs = item.querySelector('.pro input').value;   
+            if (itemWei) {                
+                if (item.querySelector('.pro')) {
+                    itemPcs = item.querySelector('.pro input').value;   
+                }
+                var numWei = parseFloat(itemWei.replace(',', '.').replace(' kg', ''));
+                if (numWei) {
+                    subItemWei = numWei*Number(itemPcs); 
+                }  
                 repeat++;             
+                calculatedWei += Number(subItemWei);                
             }
-            var numWei = parseFloat(itemWei.replace(',', '.').replace(' kg', ''));
-            if (numWei) {
-                subItemWei = numWei*Number(itemPcs); 
-            }     
-            calculatedWei += Number(subItemWei);
-        })
+        })       
     })
-    document.querySelector('.weight-value').innerHTML = (calculatedWei / repeat).toFixed(2) + ' kg';
+    document.querySelector('.weight-value').innerHTML = (calculatedWei).toFixed(2) + ' kg';
 }
 
 //total price
@@ -93,10 +86,8 @@ function totalPrice() {
             calculatedPrice += Number(totalPrice);
         })
     })
-    console.log(Number(calculatedPrice), "fffff");
     result = Number(calculatedPrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     resultFee = Number((Number(calculatedPrice) * 0.2).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    console.log(resultFee, "ppppp");
     
     document.querySelector('.subtotal .money').innerHTML =result + " kr";;
     document.querySelector('.subtotal_ .money').innerHTML = resultFee + ' kr';
