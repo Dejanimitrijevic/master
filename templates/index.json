@@ -6,29 +6,12 @@
         "1482141870755-0": {
           "type": "image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/joey-genovese-ktd2fT6R-QM-unspla.jpg",
-            "desktop_image_position": "center center",
-            "mobile_image_position": "center center",
-            "slide_link": "shopify:\/\/collections\/dekorsten",
-            "subheading": "Kampanj",
-            "title": "25% på all dekorsten!",
-            "title_size": 100,
-            "heading_h1": false,
-            "text": "",
-            "enlarge_text": true,
-            "button_label": "Handla nu",
-            "overlay_position": "position--hcenter position--vcenter"
-          }
-        },
-        "1482141870755-1": {
-          "type": "image",
-          "settings": {
             "image": "shopify:\/\/shop_images\/custom_resized_5e6fdb3a-ca36-42ec-b14d-95c262836495.jpg",
             "desktop_image_position": "center center",
             "mobile_image_position": "center center",
             "slide_link": "shopify:\/\/collections\/marksten-plattor",
             "subheading": "Stilrent och modernt",
-            "title": "Marksten & plattor",
+            "title": "Marksten & Plattor",
             "title_size": 100,
             "heading_h1": false,
             "text": "",
@@ -40,15 +23,100 @@
         "1499426736627": {
           "type": "image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/stentrappaa.png",
+            "image": "shopify:\/\/shop_images\/Granithallar-MB01.jpg",
+            "desktop_image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "https:\/\/stengrossen.se\/collections\/granithallar",
+            "subheading": "Vackert, estetiskt & prisvärt",
+            "title": "Granithällar",
+            "title_size": 100,
+            "heading_h1": false,
+            "text": "<p>Granithällar från 649 kr\/kvm<\/p>",
+            "enlarge_text": true,
+            "button_label": "Handla nu",
+            "overlay_position": "position--hcenter position--vcenter"
+          }
+        },
+        "image_HVaUyX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Blocksteg-Granit-Miljobild-05-forminskad-2-2-50.jpg",
             "desktop_image_position": "center center",
             "mobile_image_position": "center center",
             "slide_link": "shopify:\/\/collections\/trappor",
-            "subheading": "Mest populära",
-            "title": "Granittrappor",
+            "subheading": "Hållbart & Ekonomiskt",
+            "title": "Trappor",
             "title_size": 100,
             "heading_h1": false,
             "text": "",
+            "enlarge_text": true,
+            "button_label": "Handla nu",
+            "overlay_position": "position--hcenter position--vcenter"
+          }
+        },
+        "image_WzrhXG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Dekorsten-Sjosten-SvartVit-MB13-forminskad.jpg",
+            "desktop_image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "https:\/\/stengrossen.se\/collections\/dekorsten",
+            "subheading": "Smycka din trädgård",
+            "title": "Dekorsten",
+            "title_size": 60,
+            "heading_h1": false,
+            "text": "",
+            "enlarge_text": true,
+            "button_label": "Handla nu",
+            "overlay_position": "position--hcenter position--vcenter"
+          }
+        },
+        "image_mADgeH": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/No_401.png",
+            "desktop_image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "https:\/\/stengrossen.se\/collections\/stolpar",
+            "subheading": "Rama in din trädgård med granitstolpar",
+            "title": "Stolpar",
+            "title_size": 60,
+            "heading_h1": false,
+            "text": "",
+            "enlarge_text": true,
+            "button_label": "Handla nu",
+            "overlay_position": "position--hcenter position--vcenter"
+          }
+        },
+        "image_CcF68Q": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Brilliant-Naturgra-MB-37.jpg",
+            "desktop_image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "https:\/\/stengrossen.se\/collections\/murar",
+            "subheading": "Terrassera i din trädgård",
+            "title": "Murar",
+            "title_size": 60,
+            "heading_h1": false,
+            "text": "<p>Granit- & Betongmurar<\/p>",
+            "enlarge_text": true,
+            "button_label": "Handla nu",
+            "overlay_position": "position--hcenter position--vcenter"
+          }
+        },
+        "image_RNGRMC": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/70436327992__13319110-99BF-4BE3-8C23-FC2E4CF97E0F_002_-forminskad_-_2.jpg",
+            "desktop_image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "https:\/\/stengrossen.se\/collections\/gatsten",
+            "subheading": "Klassiskt",
+            "title": "Gatsten",
+            "title_size": 60,
+            "heading_h1": false,
+            "text": "<p>Små- och Storgatsten<\/p>",
             "enlarge_text": true,
             "button_label": "Handla nu",
             "overlay_position": "position--hcenter position--vcenter"
@@ -57,8 +125,12 @@
       },
       "block_order": [
         "1482141870755-0",
-        "1482141870755-1",
-        "1499426736627"
+        "1499426736627",
+        "image_HVaUyX",
+        "image_WzrhXG",
+        "image_mADgeH",
+        "image_CcF68Q",
+        "image_RNGRMC"
       ],
       "settings": {
         "height": "full",
@@ -77,7 +149,7 @@
       "type": "rich-text",
       "settings": {
         "subheading": "",
-        "title": "Kampanj!",
+        "title": "Smycka din trädgård med sten",
         "title_size": 48,
         "heading_h1": false,
         "text": "<p>Få din trädgård att blomstra med vårt fantastiska vårerbjudande! Skapa en unik och vacker utomhusmiljö med vårt stora utbud av högkvalitativa stenar till oslagbara priser. Beställ nu och njut av en vacker trädgård hela säsongen!<\/p>",
@@ -204,7 +276,6 @@
     },
     "collection-list": {
       "type": "collection-list",
-      "disabled": true,
       "blocks": {
         "1648220659c91ed362-0": {
           "type": "collection",
@@ -287,6 +358,7 @@
         "bc053658-4828-4d80-8f62-055e862f9cca",
         "9f20ca81-1d38-41df-a325-35e528cabc9f"
       ],
+      "disabled": true,
       "settings": {
         "title": "Våra kategorier",
         "layout": "carousel",
@@ -319,7 +391,6 @@
     },
     "text-columns-with-images": {
       "type": "text-columns-with-images",
-      "disabled": true,
       "blocks": {
         "1601557215944-2": {
           "type": "text_block",
@@ -366,6 +437,7 @@
         "1601557215944-0",
         "1601557215944-1"
       ],
+      "disabled": true,
       "settings": {
         "title": "Tre av våra favoriter",
         "text_alignment": "center",
@@ -377,7 +449,6 @@
     },
     "featured-product": {
       "type": "featured-product",
-      "disabled": true,
       "blocks": {
         "1648223128d36c17cb-0": {
           "type": "vendor_and_type",
@@ -425,6 +496,7 @@
         "1648223128d36c17cb-4",
         "1648223128d36c17cb-5"
       ],
+      "disabled": true,
       "settings": {
         "product": "test-produkt-2",
         "show_backorder_text": true,

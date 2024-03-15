@@ -2,11 +2,11 @@
   "store": {
     "id": 57989890187,
     "plan": "basic",
-    "theme": "Copy of Marko_dev1",
+    "theme": "Marko_dev for Cart",
     "primaryLocale": "sv",
     "adminMode": false
   },
-  "tsPublished": 1709011712,
+  "tsPublished": 1710427989,
   "declaration": {
     "showPurpose": false,
     "showProvider": false,
@@ -315,7 +315,7 @@
       "imprintHref": "\/",
       "close": "&#10005;",
       "target": "",
-      "logo": "<img class=\"cc-banner-logo\" height=\"40\" width=\"40\" src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/17\/assets\/pandectes-logo.png?v=1709010424\" alt=\"Stengrossen\" \/>"
+      "logo": "<img class=\"cc-banner-logo\" height=\"40\" width=\"40\" src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/18\/assets\/pandectes-logo.png?v=1709656295\" alt=\"Stengrossen\" \/>"
     },
     "window": "<div role=\"dialog\" aria-live=\"polite\" aria-label=\"cookieconsent\" aria-describedby=\"cookieconsent:desc\" id=\"pandectes-banner\" class=\"cc-window-wrapper cc-bottom-wrapper\"><div class=\"pd-cookie-banner-window cc-window {{classes}}\"><!--googleoff: all-->{{children}}<!--googleon: all--><\/div><\/div>",
     "compliance": {
@@ -330,7 +330,7 @@
     "revokable": true,
     "animateRevokable": false,
     "revokableReset": false,
-    "revokableLogoUrl": "https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/17\/assets\/pandectes-reopen-logo.png?v=1709010424",
+    "revokableLogoUrl": "https:\/\/cdn.shopify.com\/s\/files\/1\/0579\/8989\/0187\/t\/18\/assets\/pandectes-reopen-logo.png?v=1709656295",
     "revokablePlacement": "bottom-left",
     "revokableMarginHorizontal": 15,
     "revokableMarginVertical": 15,
@@ -353,7 +353,7 @@
   },
   "banner": {
     "resetTs": 1664193485,
-    "extraCss": "        .cc-banner-logo {max-width: 24em!important;}    @media(min-width: 768px) {.cc-window.cc-floating{max-width: 24em!important;width: 24em!important;}}    .cc-message, .cc-header, .cc-logo {text-align: left}    .cc-window-wrapper{z-index: 2147483647;}    .cc-window{z-index: 2147483647;font-family: inherit;}    .cc-header{font-family: inherit;}    .pd-cp-ui{font-family: inherit; background-color: #FFFFFF;color:#000000;}    button.pd-cp-btn, a.pd-cp-btn{}    input + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 0.3)}    .pd-cp-scrolling-section::-webkit-scrollbar{background-color: rgba(0, 0, 0, 0.3)}    input:checked + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 1)}    .pd-cp-scrolling-section::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 1)}    .pd-cp-ui-close{color:#000000;}    .pd-cp-preferences-slider:before{background-color: #FFFFFF}    .pd-cp-title:before {border-color: #000000!important}    .pd-cp-preferences-slider{background-color:#000000}    .pd-cp-toggle{color:#000000!important}    @media(max-width:699px) {.pd-cp-ui-close-top svg {fill: #000000}}    .pd-cp-toggle:hover,.pd-cp-toggle:visited,.pd-cp-toggle:active{color:#000000!important}    .pd-cookie-banner-window {box-shadow: 0 0 18px rgb(0 0 0 \/ 20%);}  ",
+    "extraCss": "        .cc-banner-logo {max-width: 24em!important;}    @media(min-width: 768px) {.cc-window.cc-floating{max-width: 24em!important;width: 24em!important;}}    .cc-message, .pd-cookie-banner-window .cc-header, .cc-logo {text-align: left}    .cc-window-wrapper{z-index: 2147483647;}    .cc-window{z-index: 2147483647;font-family: inherit;}    .pd-cookie-banner-window .cc-header{font-family: inherit;}    .pd-cp-ui{font-family: inherit; background-color: #FFFFFF;color:#000000;}    button.pd-cp-btn, a.pd-cp-btn{}    input + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 0.3)}    .pd-cp-scrolling-section::-webkit-scrollbar{background-color: rgba(0, 0, 0, 0.3)}    input:checked + .pd-cp-preferences-slider{background-color: rgba(0, 0, 0, 1)}    .pd-cp-scrolling-section::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 1)}    .pd-cp-ui-close{color:#000000;}    .pd-cp-preferences-slider:before{background-color: #FFFFFF}    .pd-cp-title:before {border-color: #000000!important}    .pd-cp-preferences-slider{background-color:#000000}    .pd-cp-toggle{color:#000000!important}    @media(max-width:699px) {.pd-cp-ui-close-top svg {fill: #000000}}    .pd-cp-toggle:hover,.pd-cp-toggle:visited,.pd-cp-toggle:active{color:#000000!important}    .pd-cookie-banner-window {box-shadow: 0 0 18px rgb(0 0 0 \/ 20%);}  ",
     "customJavascript": null,
     "showPoweredBy": false,
     "hybridStrict": false,

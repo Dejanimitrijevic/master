@@ -1,0 +1,40 @@
+<script>
+function feedback() {
+  const p = window.Shopify.customerPrivacy;
+  console.log(`Tracking ${p.userCanBeTracked() ? "en" : "dis"}abled`);
+}
+window.Shopify.loadFeatures(
+  [
+    {
+      name: "consent-tracking-api",
+      version: "0.1",
+    },
+  ],
+  function (error) {
+    if (error) throw error;
+    if ("Cookiebot" in window)
+      window.Shopify.customerPrivacy.setTrackingConsent({
+        "analytics": false,
+        "marketing": false,
+        "preferences": false,
+        "sale_of_data": false,
+      }, () => console.log("Awaiting consent")
+    );
+  }
+);
+
+window.addEventListener("CookiebotOnConsentReady", function () {
+  const C = Cookiebot.consent,
+      existConsentShopify = setInterval(function () {
+        if (window.Shopify.customerPrivacy) {
+          clearInterval(existConsentShopify);
+          window.Shopify.customerPrivacy.setTrackingConsent({
+            "analytics": C["statistics"],
+            "marketing": C["marketing"],
+            "preferences": C["preferences"],
+            "sale_of_data": C["marketing"],
+          }, () => console.log("Consent captured"))
+        }
+      }, 100);
+});
+</script>
