@@ -45,7 +45,13 @@
                   {%- capture double_image_width -%}{{ block.settings.image_width | times: 2 }}x{%- endcapture -%}
                   <div class="rimage-outer-wrapper" style="width: {{ block.settings.image_width }}px">
                     <div class="rimage-wrapper lazyload--placeholder" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%">
-                      <img class="rimage__image lazyload fade-in" data-src="{{ block.settings.image | img_url: double_image_width }}" alt="{{ shop.name | escape }}" />
+                      <img 
+                        srcset="
+                                  {%- if block.settings.image.width >= 375 -%}{{ block.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+                                  {%- if block.settings.image.width >= 750 -%}{{ block.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+                                  {{ block.settings.image | image_url }} {{block.settings.image.width }}w
+                                "
+                        class="rimage__image lazyload fade-in lazyload" loading="lazy" data-src="{{ block.settings.image | img_url: double_image_width }}" alt="{{ shop.name | escape }}" />
                     </div>
                   </div>
                 </div>
@@ -129,10 +135,15 @@
             {% endfor %}
 
             {% if section.settings.custom_payment_icon %}
-              <img class="section-footer__payment-icon payment-icon--custom"
+              <img srcset="
+                            {%- if section.settings.custom_payment_icon.width >= 375 -%}{{ section.settings.custom_payment_icon | image_url: width: 375 }} 375w,{%- endif -%}
+                            {%- if section.settings.custom_payment_icon.width >= 750 -%}{{ section.settings.custom_payment_icon | image_url: width: 750 }} 750w,{%- endif -%}
+                            {{ section.settings.custom_payment_icon | image_url }} {{section.settings.custom_payment_icon.width }}w
+                          "
+                class="section-footer__payment-icon payment-icon--custom lazyload"
                    src="{{ section.settings.custom_payment_icon | img_url: '120x' }}"
                    alt="{{ section.settings.custom_payment_icon.alt }}"
-                   width="{{ section.settings.custom_payment_icon.width }}"
+                   width="{{ section.settings.custom_payment_icon.width }}" loading="lazy"
                    height="{{ section.settings.custom_payment_icon.height }}"
               />
             {% endif %}

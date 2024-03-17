@@ -800,7 +800,18 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image1 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image1 | img_url: image_width }}" alt="{{ block.settings.image1.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img srcset="
+                                      {%- if block.settings.image1.width >= 375 -%}{{ block.settings.image1 | image_url: width: 375 }} 375w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 750 -%}{{ block.settings.image1 | image_url: width: 750 }} 750w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 1100 -%}{{ block.settings.image1 | image_url: width: 1100 }} 1100w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 1500 -%}{{ block.settings.image1 | image_url: width: 1500 }} 1500w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 1780 -%}{{ block.settings.image1 | image_url: width: 1780 }} 1780w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 2000 -%}{{ block.settings.image1 | image_url: width: 2000 }} 2000w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 3000 -%}{{ block.settings.image1 | image_url: width: 3000 }} 3000w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 3840 -%}{{ block.settings.image1 | image_url: width: 3840 }} 3840w,{%- endif -%}
+                                      {{ block.settings.image1 | image_url }} {{ block.settings.image1.width }}w
+                                    "
+                              class="cc-icon lazyload" loading="lazy" src="{{ block.settings.image1 | img_url: image_width }}" alt="{{ block.settings.image1.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon1, width: block.settings.icon_size %}
                           {% endif %}
@@ -819,7 +830,18 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image2 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image2 | img_url: image_width }}" alt="{{ block.settings.image2.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img srcset="
+                                      {%- if block.settings.image2.width >= 375 -%}{{ block.settings.image2 | image_url: width: 375 }} 375w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 750 -%}{{ block.settings.image2 | image_url: width: 750 }} 750w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 1100 -%}{{ block.settings.image2 | image_url: width: 1100 }} 1100w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 1500 -%}{{ block.settings.image2 | image_url: width: 1500 }} 1500w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 1780 -%}{{ block.settings.image2 | image_url: width: 1780 }} 1780w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 2000 -%}{{ block.settings.image2 | image_url: width: 2000 }} 2000w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 3000 -%}{{ block.settings.image2 | image_url: width: 3000 }} 3000w,{%- endif -%}
+                                      {%- if block.settings.image2.width >= 3840 -%}{{ block.settings.image2 | image_url: width: 3840 }} 3840w,{%- endif -%}
+                                      {{ block.settings.image2 | image_url }} {{ block.settings.image2.width }}w
+                                    "
+                              class="cc-icon lazyload" loading="lazy" src="{{ block.settings.image2 | img_url: image_width }}" alt="{{ block.settings.image2.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon2, width: block.settings.icon_size %}
                           {% endif %}
@@ -838,7 +860,18 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image3 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image3 | img_url: image_width }}" alt="{{ block.settings.image3.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img srcset="
+                                      {%- if block.settings.image3.width >= 375 -%}{{ block.settings.image3 | image_url: width: 375 }} 375w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 750 -%}{{ block.settings.image3 | image_url: width: 750 }} 750w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 1100 -%}{{ block.settings.image3 | image_url: width: 1100 }} 1100w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 1500 -%}{{ block.settings.image3 | image_url: width: 1500 }} 1500w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 1780 -%}{{ block.settings.image3 | image_url: width: 1780 }} 1780w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 2000 -%}{{ block.settings.image3 | image_url: width: 2000 }} 2000w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 3000 -%}{{ block.settings.image3 | image_url: width: 3000 }} 3000w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 3840 -%}{{ block.settings.image3 | image_url: width: 3840 }} 3840w,{%- endif -%}
+                                      {{ block.settings.image3 | image_url }} {{ block.settings.image3.width }}w
+                                    "
+                              class="cc-icon lazyload" loading="lazy" src="{{ block.settings.image3 | img_url: image_width }}" alt="{{ block.settings.image3.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon3, width: block.settings.icon_size %}
                           {% endif %}
@@ -857,7 +890,23 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image4 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image4 | img_url: image_width }}" alt="{{ block.settings.image4.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img 
+                              srcset="
+                                      {%- if block.settings.image4.width >= 375 -%}{{ block.settings.image4 | image_url: width: 375 }} 375w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 750 -%}{{ block.settings.image4 | image_url: width: 750 }} 750w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 1100 -%}{{ block.settings.image4 | image_url: width: 1100 }} 1100w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 1500 -%}{{ block.settings.image4 | image_url: width: 1500 }} 1500w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 1780 -%}{{ block.settings.image4 | image_url: width: 1780 }} 1780w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 2000 -%}{{ block.settings.image4 | image_url: width: 2000 }} 2000w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 3000 -%}{{ block.settings.image4 | image_url: width: 3000 }} 3000w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 3840 -%}{{ block.settings.image4 | image_url: width: 3840 }} 3840w,{%- endif -%}
+                                      {{ block.settings.image4 | image_url }} {{ block.settings.image4.width }}w
+                                    "
+                              class="cc-icon lazyload" 
+                              src="{{ block.settings.image4 | img_url: image_width }}" 
+                              alt="{{ block.settings.image4.alt }}" 
+                              width="{{ block.settings.icon_size }}" loading="lazy"
+                            >
                           {% else %}
                             {% render 'icon', icon: block.settings.icon4, width: block.settings.icon_size %}
                           {% endif %}

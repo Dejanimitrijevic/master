@@ -20,12 +20,12 @@
       data-sizes="auto"
       alt="{{ image.alt | escape }}"
       width="{{ image.width }}"
-      height="{{ image.height }}"
+      height="{{ image.height }}" loading="lazy"
       {% if cover %}data-parent-fit="cover"{% endif %}>
 
     <noscript>
       {% assign img_url = image | img_url: '1024x1024' %}
-      <img src="{{ img_url }}" alt="{{ image.alt | escape }}" class="rimage__image">
+      <img src="{{ img_url }}" alt="{{ image.alt | escape }}" class="rimage__image lazyload">
     </noscript>
   </div>
 </div>

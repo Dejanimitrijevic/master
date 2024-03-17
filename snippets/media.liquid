@@ -10,11 +10,11 @@
       <div class="rimage-wrapper lazyload--placeholder"
            style="padding-top:{{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 | minus: 0.1 | round: 1 }}%">
         {% assign img_url = media.preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
-        <img class="rimage__image lazyload--manual {% unless prevent_lazyload %}fade-in{% endunless %}"
+        <img class="lazyload rimage__image lazyload--manual {% unless prevent_lazyload %}fade-in{% endunless %}"
              {% if prevent_lazyload %}
                src="{{ media.preview_image | img_url: '360x' }}"
              {% endif %}
-             data-src="{{ img_url }}"
+             data-src="{{ img_url }}" loading="lazy"
              data-widths="[460, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
              data-aspectratio="{{ media.preview_image.aspect_ratio }}"
              data-sizes="auto"
@@ -27,7 +27,7 @@
              {% endif %}
         >
         <noscript>
-          <img data-src="{{ media.preview_image | img_url: '1024x1024' }}" alt="{{ media.preview_image.alt | escape }}">
+          <img data-src="{{ media.preview_image | img_url: '1024x1024' }}" loading="lazy" alt="{{ media.preview_image.alt | escape }}" class="lazyload">
         </noscript>
       </div>
 

@@ -72,7 +72,13 @@
 
                   <noscript>
                     <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%">
-                      <img src="{{ article.image | img_url: '1024x1024' }}" alt="{{ article.image.alt | escape }}" class="rimage__image"/>
+                      <img 
+                        srcset="
+                                {%- if article.image.width >= 375 -%}{{ article.image | image_url: width: 375 }} 375w,{%- endif -%}
+                                {%- if article.image.width >= 750 -%}{{ article.image | image_url: width: 750 }} 750w,{%- endif -%}
+                                {{ article.image | image_url }} {{article.image.width }}w
+                              "
+                        src="{{ article.image | img_url: '1024x1024' }}" alt="{{ article.image.alt | escape }}" loading="lazy" class="rimage__image lazyload"/>
                     </div>
                   </noscript>
                 </div>

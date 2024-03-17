@@ -54,7 +54,19 @@
       {% if section.settings.logo != blank %}
         {% assign double_logo_width = section.settings.logo_width | default: 250 | times: 2 %}
         {% capture img_size %}{% if double_logo_width > 2048 %}2048{% else %}{{ double_logo_width }}{% endif %}x{% endcapture %}
-        <img src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo" />
+        <img 
+          srcset="
+            {%- if section.settings.logo.width >= 375 -%}{{ section.settings.logo | image_url: width: 375 }} 375w,{%- endif -%}
+            {%- if section.settings.logo.width >= 750 -%}{{ section.settings.logo | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if section.settings.logo.width >= 1100 -%}{{ section.settings.logo | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {%- if section.settings.logo.width >= 1500 -%}{{ section.settings.logo | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {%- if section.settings.logo.width >= 1780 -%}{{ section.settings.logo | image_url: width: 1780 }} 1780w,{%- endif -%}
+            {%- if section.settings.logo.width >= 2000 -%}{{ section.settings.logo | image_url: width: 2000 }} 2000w,{%- endif -%}
+            {%- if section.settings.logo.width >= 3000 -%}{{ section.settings.logo | image_url: width: 3000 }} 3000w,{%- endif -%}
+            {%- if section.settings.logo.width >= 3840 -%}{{ section.settings.logo | image_url: width: 3840 }} 3840w,{%- endif -%}
+            {{ section.settings.logo | image_url }} {{ section.settings.logo.width }}w"
+
+          src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo" />
       {% else %}
         {{ shop.name | escape }}
       {% endif %}
@@ -76,12 +88,22 @@
     {% if section.settings.logo != blank %}
       {% assign double_logo_width = section.settings.logo_width | default: 250 | times: 2 %}
       {% capture img_size %}{% if double_logo_width > 2048 %}2048{% else %}{{ double_logo_width }}{% endif %}x{% endcapture %}
-      <img src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
+      <img srcset="
+                {%- if section.settings.logo.width >= 375 -%}{{ section.settings.logo | image_url: width: 375 }} 375w,{%- endif -%}
+                {%- if section.settings.logo.width >= 750 -%}{{ section.settings.logo | image_url: width: 750 }} 750w,{%- endif -%}
+                {{ section.settings.logo | image_url }} {{section.settings.logo.width }}w
+              "
+          src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
            width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}"/>
 
       {% if section.settings.alt_logo != blank %}
       <span class="alt-logo">
-        <img src="{{ section.settings.alt_logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
+        <img srcset="
+                {%- if section.settings.logo.width >= 375 -%}{{ section.settings.logo | image_url: width: 375 }} 375w,{%- endif -%}
+                {%- if section.settings.logo.width >= 750 -%}{{ section.settings.logo | image_url: width: 750 }} 750w,{%- endif -%}
+                {{ section.settings.logo | image_url }} {{section.settings.logo.width }}w
+              " 
+            src="{{ section.settings.alt_logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
              width="{{ section.settings.alt_logo.width }}" height="{{ section.settings.alt_logo.height }}"/>
       </span>
       {% endif %}

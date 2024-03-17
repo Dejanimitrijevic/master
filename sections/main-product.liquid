@@ -813,7 +813,17 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image1 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image1 | img_url: image_width }}" alt="{{ block.settings.image1.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img 
+                              srcset="
+                                      {%- if block.settings.image1.width >= 165 -%}{{ block.settings.image1 | image_url: width: 165 }} 165w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 360 -%}{{ block.settings.image1 | image_url: width: 360 }} 360w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 533 -%}{{ block.settings.image1 | image_url: width: 533 }} 533w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 720 -%}{{ block.settings.image1 | image_url: width: 720 }} 720w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 940 -%}{{ block.settings.image1 | image_url: width: 940 }} 940w,{%- endif -%}
+                                      {%- if block.settings.image1.width >= 1066 -%}{{ block.settings.image1 | image_url: width: 1066 }} 1066w,{%- endif -%}
+                                      {{ block.settings.image1 | image_url }} {{ block.settings.image1.width }}w
+                                    " loading="lazy"
+                              class="cc-icon lazyload" src="{{ block.settings.image1 | img_url: image_width }}" alt="{{ block.settings.image1.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon1, width: block.settings.icon_size %}
                           {% endif %}
@@ -832,7 +842,17 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image2 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image2 | img_url: image_width }}" alt="{{ block.settings.image2.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img 
+                              srcset="
+                                        {%- if block.settings.image2.width >= 165 -%}{{ block.settings.image2 | image_url: width: 165 }} 165w,{%- endif -%}
+                                        {%- if block.settings.image2.width >= 360 -%}{{ block.settings.image2 | image_url: width: 360 }} 360w,{%- endif -%}
+                                        {%- if block.settings.image2.width >= 533 -%}{{ block.settings.image2 | image_url: width: 533 }} 533w,{%- endif -%}
+                                        {%- if block.settings.image2.width >= 720 -%}{{ block.settings.image2 | image_url: width: 720 }} 720w,{%- endif -%}
+                                        {%- if block.settings.image2.width >= 940 -%}{{ block.settings.image2 | image_url: width: 940 }} 940w,{%- endif -%}
+                                        {%- if block.settings.image2.width >= 1066 -%}{{ block.settings.image2 | image_url: width: 1066 }} 1066w,{%- endif -%}
+                                        {{ block.settings.image2 | image_url }} {{ block.settings.image2.width }}w
+                                      " loading="lazy"
+                              class="cc-icon lazyload" src="{{ block.settings.image2 | img_url: image_width }}" alt="{{ block.settings.image2.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon2, width: block.settings.icon_size %}
                           {% endif %}
@@ -851,7 +871,16 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image3 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image3 | img_url: image_width }}" alt="{{ block.settings.image3.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img 
+                              srcset="
+                                      {%- if block.settings.image3.width >= 165 -%}{{ block.settings.image3 | image_url: width: 165 }} 165w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 360 -%}{{ block.settings.image3 | image_url: width: 360 }} 360w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 533 -%}{{ block.settings.image3 | image_url: width: 533 }} 533w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 720 -%}{{ block.settings.image3 | image_url: width: 720 }} 720w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 940 -%}{{ block.settings.image3 | image_url: width: 940 }} 940w,{%- endif -%}
+                                      {%- if block.settings.image3.width >= 1066 -%}{{ block.settings.image3 | image_url: width: 1066 }} 1066w,{%- endif -%}
+                                      {{ block.settings.image3 | image_url }} {{ block.settings.image3.width }}w
+                                    " loading="lazy" class="cc-icon lazyload" src="{{ block.settings.image3 | img_url: image_width }}" alt="{{ block.settings.image3.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon3, width: block.settings.icon_size %}
                           {% endif %}
@@ -870,7 +899,17 @@
                         <div class="product-detail__trust-img" style="height: {{ block.settings.icon_size }}px;width: {{ block.settings.icon_size }}px;">
                           {% if block.settings.image4 %}
                             {%- assign image_width = block.settings.icon_size |  times: 2 | append: "x" -%}
-                            <img class="cc-icon" src="{{ block.settings.image4 | img_url: image_width }}" alt="{{ block.settings.image4.alt }}" width="{{ block.settings.icon_size }}"/>
+                            <img 
+                              srcset="
+                                      {%- if block.settings.image4.width >= 165 -%}{{ block.settings.image4 | image_url: width: 165 }} 165w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 360 -%}{{ block.settings.image4 | image_url: width: 360 }} 360w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 533 -%}{{ block.settings.image4 | image_url: width: 533 }} 533w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 720 -%}{{ block.settings.image4 | image_url: width: 720 }} 720w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 940 -%}{{ block.settings.image4 | image_url: width: 940 }} 940w,{%- endif -%}
+                                      {%- if block.settings.image4.width >= 1066 -%}{{ block.settings.image4 | image_url: width: 1066 }} 1066w,{%- endif -%}
+                                      {{ block.settings.image4 | image_url }} {{ block.settings.image4.width }}w
+                                    " loading="lazy"
+                              class="cc-icon lazyload" src="{{ block.settings.image4 | img_url: image_width }}" alt="{{ block.settings.image4.alt }}" width="{{ block.settings.icon_size }}"/>
                           {% else %}
                             {% render 'icon', icon: block.settings.icon4, width: block.settings.icon_size %}
                           {% endif %}

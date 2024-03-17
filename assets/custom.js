@@ -1,49 +1,40 @@
 
 totalWeight();
 totalPrice();
-var hasRan = false;
-
-
 
 jQuery(window).on("load", function () {
     if (window.location.href === "https://stengrossen.se/cart") {
         console.log("Page has finished loading");
-        if (!hasRan) {
-            document.querySelectorAll('.cart-list .product-list').forEach(item => {
-                item.querySelectorAll('.pallet__product').forEach(Item=> {
-                    let clickPlus = Item.querySelector('.item-quantity.pro .plus');
-                    let clickMinus = Item.querySelector('.item-quantity.pro .minus');
-                    let pallet_array = Item.getAttribute('data-properties');
-                    let palletNum = JSON.parse(pallet_array)[0][1];
-                    let pc = Item.querySelector('.item-quantity.pro input').value;
-                    pc = Math.ceil(pc);
-                    let $breaking_val = Number(pc) % Number(palletNum);
-                    let semi_val = Number(palletNum) - 1;
-                    // if ($breaking_val != 0 || $breaking_val != semi_val || $breaking_val != palletNum) {
-                        setTimeout(()=> {
-                            clickPlus.click( function(e) {
-                                e.preventDefault;
-                                var $input = $(this).closest('.jc-cart').find('input');
-                                let qty = $input.val();
-                                $input.val(Number(qty) + 1);
-                                changeItem($input);
-                            });
-                    
-                            clickMinus.click( function(e) {
-                                e.preventDefault;
-                                var $input = $(this).closest('.jc-cart').find('input');
-                                let qty = $input.val();
-                                $input.val(Number(qty) - 1);
-                                changeItem($input);
-                            });
+        document.querySelectorAll('.cart-list .product-list').forEach(item => {
+            item.querySelectorAll('.pallet__product').forEach(Item=> {
+                let clickPlus = Item.querySelector('.item-quantity.pro .plus');
+                let clickMinus = Item.querySelector('.item-quantity.pro .minus');
+                let pallet_array = Item.getAttribute('data-properties');
+                let palletNum = JSON.parse(pallet_array)[0][1];
+                let pc = Item.querySelector('.item-quantity.pro input').value;
+                pc = Math.ceil(pc);
+                    setTimeout(()=> {
+                        clickPlus.click( function(e) {
+                            e.preventDefault;
+                            var $input = $(this).closest('.jc-cart').find('input');
+                            let qty = $input.val();
+                            $input.val(Number(qty) + 1);
+                            changeItem($input);
+                        });
                 
-                        }, 1000);                    
-                    // }
-    
-                    hasRan = true;
-                })
+                        clickMinus.click( function(e) {
+                            e.preventDefault;
+                            var $input = $(this).closest('.jc-cart').find('input');
+                            let qty = $input.val();
+                            $input.val(Number(qty) - 1);
+                            changeItem($input);
+                        });
+            
+                    }, 1000);                    
+                // }
+
             })
-        }
+        })
     }  
 });
 
@@ -330,12 +321,17 @@ function changeItem(_this) {
         let subProductId1 = _this.data('properties')[2][1];
         let subProductId2 = _this.data('properties')[3][1];
         let $breaking_val = productValue % palletNum;
+        console.log(productValue, "productValue");
         
         _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
             let str_selectedId = item.querySelector('input').getAttribute('data-properties');
             let selectedId = JSON.parse(str_selectedId)[0][1];
-            console.log($breaking_val, "test");
             if (selectedId == main_Product_Id ) {
+                if (productValue == 0) {
+                    console.log("00000");
+                    _this.closest('.item')[0].style.display = "none";
+                    item.style.display = "none";
+                }
                 let key = item.getAttribute('data-item-key');
                 updates[key] = 0;
                 data = {
@@ -392,11 +388,6 @@ function changeItem(_this) {
                 updates[_this.closest('.item').data('item-key')] = 0;
             }
         })
-        console.log(data, "data---->");
-        // if ($breaking_val == 1 || $breaking_val == semiBreaking_val) {
-        //     hasRan = true;
-        //     // itemsUpdate(updates, data); 
-        // } else {
             $.ajax({
                 type: 'POST',
                 url: '/cart/update.js',

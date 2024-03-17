@@ -58,7 +58,7 @@
             data-parent-fit="cover">
           <noscript>
             <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.placeholder_image.aspect_ratio | times: 100 }}%">
-              <img src="{{ section.settings.placeholder_image | img_url: '1024x1024' }}" alt="{{ section.settings.placeholder_image.alt | escape }}" class="rimage__image">
+              <img src="{{ section.settings.placeholder_image | img_url: '1024x1024' }}" loading="lazy" alt="{{ section.settings.placeholder_image.alt | escape }}" class="rimage__image lazyload">
             </div>
           </noscript>
         </div>

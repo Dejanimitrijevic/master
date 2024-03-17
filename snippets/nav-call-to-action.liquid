@@ -18,7 +18,7 @@
          data-parent-fit="cover">
       <noscript>
         <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: cta.settings.image1.aspect_ratio | times: 100 }}%">
-          <img src="{{ cta.settings.image1 | img_url: '1024x1024' }}" alt="{{ cta.settings.image1.alt | escape }}" class="rimage__image">
+          <img src="{{ cta.settings.image1 | img_url: '1024x1024' }}" alt="{{ cta.settings.image1.alt | escape }}" class="rimage__image lazyload">
         </div>
       </noscript>
     </div>
@@ -78,7 +78,7 @@
          data-parent-fit="cover">
       <noscript>
         <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: cta.settings.image2.aspect_ratio | times: 100 }}%">
-          <img src="{{ cta.settings.image2 | img_url: '1024x1024' }}" alt="{{ cta.settings.image2.alt | escape }}" class="rimage__image">
+          <img src="{{ cta.settings.image2 | img_url: '1024x1024' }}" alt="{{ cta.settings.image2.alt | escape }}" class="rimage__image lazyload">
         </div>
       </noscript>
     </div>

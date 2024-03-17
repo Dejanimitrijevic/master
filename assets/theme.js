@@ -7369,7 +7369,6 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
 
     // ratio quantity
     $(document).on('click', '.ratio-wrapper [data-quantity]',function () {
-      console.log("here agaain----------->");
       if ($(this).closest('.product-detail__form__options--with-calculated-quantity').find('[name="quantity"]').data('type') == "bags") {
           var $input = $(this);
           let consequent = $(this).closest('.ratio-wrapper').find('[name="ratio"]').data('consequent');
@@ -7751,11 +7750,7 @@ setInterval(() => {
 
   $('.cart-list li[p-handle="pallbrytningskostnad"]').addClass("custom-product");
   $('.cart-list li[p-handle="returpall-eur-pall"]').addClass("custom-product");
-  $('.cart-list li[p-handle="byggpall"]').addClass("custom-product");
-
-
-
-  
+  $('.cart-list li[p-handle="byggpall"]').addClass("custom-product");  
 
 }, 100);
 clearInterval();

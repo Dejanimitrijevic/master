@@ -28,7 +28,17 @@
 
           <noscript>
             <div class="rimage-wrapper" style="padding-top:{{ 1 | divided_by: collection.featured_image.aspect_ratio | times: 100 }}%">
-              <img src="{{ collection.featured_image | img_url: '1024x1024' }}" alt="{{ collection.featured_image.alt | escape }}" class="rimage__image">
+              <img 
+                srcset="
+                  {%- if collection.featured_image.width >= 165 -%}{{ collection.featured_image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if collection.featured_image.width >= 360 -%}{{ collection.featured_image | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if collection.featured_image.width >= 533 -%}{{ collection.featured_image | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if collection.featured_image.width >= 720 -%}{{ collection.featured_image | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if collection.featured_image.width >= 1000 -%}{{ collection.featured_image | image_url: width: 1000 }} 1000w,{%- endif -%}
+                  {%- if collection.featured_image.width >= 1500 -%}{{ collection.featured_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {{ collection.featured_image | image_url }} {{ collection.featured_image.width }}w
+                "
+                src="{{ collection.featured_image | img_url: '1024x1024' }}" alt="{{ collection.featured_image.alt | escape }}" class="rimage__image lazyload">
             </div>
           </noscript>
         </div>

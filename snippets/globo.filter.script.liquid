@@ -7,7 +7,7 @@
 {%- assign files_url  = 'product-1.png' | file_img_url: '50x' | split: 'product-1_50x.png' -%}
 {%- assign primary_locale = 'null' -%}
 {%- for locale in shop.published_locales -%}{%- if locale.primary -%}{%- assign primary_locale = locale.iso_code | json -%}{%- endif -%}{%- endfor -%}
-<style>.spf-filter-loading #gf-products > *:not(.spf-product--skeleton){visibility: hidden; opacity: 0}</style>
+<style type="text/css">.spf-filter-loading #gf-products > *:not(.spf-product--skeleton){visibility: hidden; opacity: 0}</style>
 <script>
   document.getElementsByTagName('html')[0].classList.add('spf-filter-loading');
   window.addEventListener("globoFilterRenderCompleted",function(e){document.getElementsByTagName('html')[0].classList.remove('spf-filter-loading')})
