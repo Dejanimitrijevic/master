@@ -45,7 +45,7 @@
     <div class="product-status-message"></div>
 
     <div class="product-detail__form__action product-detail__gap-lg product-detail__form__options--with-calculated-quantity">
-        <div class="quantity-section" style="display: flex; gap: 10px; width: 100%;">
+        <div class="quantity-section" style="width: 100%;">
             {% unless product.tags contains 'Kantsten' or product.tags contains 'Stolpar' or product.tags contains 'Trappor' %}
                 {% if block.settings.show_labels %}<label class="calculated-input-label" for="ratio"><span>{{ block.settings.antecedent_label | default: 'ratio' }}</span>{% endif %}
                     <div class="ratio-wrapper calculated-input-wrapper border-radius-{{ settings.buttons_shape }}">

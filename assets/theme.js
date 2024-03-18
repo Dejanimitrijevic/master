@@ -7791,7 +7791,8 @@ if (document.querySelector('.search-btn')) {
   }, "1000");
 }
 
-
+// cookie btn remove
+document.querySelector('.cc-revoke.cc-bottom').style.display = "none";
 
 
 

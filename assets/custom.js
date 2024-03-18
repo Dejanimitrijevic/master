@@ -303,7 +303,7 @@ function changeItem(_this) {
             productValue = Number(palletValue)*Number(palletNum);
             product.val(productValue);
             ratioValue = Number(productValue)/consequent;
-            ratio.val(Number(productValue)/consequent).toFixed(2);
+            ratio.val((Number(productValue)/consequent).toFixed(2));
         }
         if (dataType == "ratio") {
             ratioValue = Number(_this.val());
@@ -314,7 +314,7 @@ function changeItem(_this) {
             }
             product.val(productValue);
             palletValue = Math.max(0, (productValue / palletNum).toFixed(2));
-            pall.val(Math.max(0, (productValue / palletNum).toFixed(2)));
+            pall.val(Math.max(0, (productValue / palletNum).toFixed(2))); 
         }
         let mainProductId = _this.closest('.item').data('item-id');
         let main_Product_Id = _this.data('properties')[1][1];
