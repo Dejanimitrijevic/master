@@ -4,7 +4,7 @@
     assign continue_shopping_page = section.settings.continue_shopping_page
   endif
 -%}
-<style type="text/css">
+<style>
   .custom-cart .custom-page {
     width: 90%;
     margin: auto;
@@ -220,7 +220,7 @@
                                     id="updates_{{ item.id }}"
                                     data-properties='{{ item.properties | json }}'
                                     name="updates[]"
-                                    value="{{ 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 3 }}" min="0" step="0.01"
+                                    value="{{ 1 | divided_by: item.product.metafields.my_fields.antal_plattor_per_kvm | times: item.quantity | round: 2 }}" min="0" step="0.01"
                                     aria-label="{{ 'cart.general.quantity' | t | escape }}"
                                   >
                                   <a

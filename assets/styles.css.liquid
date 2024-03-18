@@ -5522,7 +5522,7 @@ body.modal-active {
 }
 @media screen and (max-width: 480px) {
   #page-content .content {
-    padding: 30px {{ mobile_edge_gutter }}px;
+    padding: 30px 10px;
   }
   #page-content .no-side-pad {
     margin-left: -{{ mobile_edge_gutter }}px;
@@ -13387,6 +13387,7 @@ shopify-payment-terms {
   }
   .cart-list .col-notimage {
     display: block;
+    width:70%;
   }
   .cart-list .desc,
 .cart-list .item-price,
@@ -13394,14 +13395,7 @@ shopify-payment-terms {
     width: auto;
     margin: 0;
     text-align: left;
-  }
- 
-  .cart-list .quantity-and-remove {
-    margin-top: 1em;
-  }
-  .cart-list .quantity {
-    vertical-align: middle;
-  }
+  } 
   .cart-list .remove {
     margin-left: 1em;
     vertical-align: middle;
@@ -14687,42 +14681,14 @@ body {
   padding-bottom: 0;
 }
 
-@media(max-width:768px) { 
-  .product-list .pallet {
-    padding-top: 20px;
-    margin-left: unset !important;
-  }
-  .pallet-product .col-notimage {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;    
-  }
-  .pllet-product .item-price {
-    margin: 0;
-  }
-  .pllet-product .unit-price__price {
-    margin: 0;
-    padding: 0;
-  }
-  .cart-list {
-    margin-top: 20px;
-  }
-  .product-list .pallet .pallet-product {
-    padding-bottom: 20px;
-  }
-  
-}
+
 
 #page-content .custom-cart .content {
   background-color: #f5f5f5;
   width: 90%;
   margin: auto;
 }
-@media (max-width:768px) {
-  #page-content .custom-cart .content {
-    width: 100%;
-  }
-}
+
 .cart-delete {
   justify-content: end;
 }
@@ -14908,4 +14874,159 @@ body {
 .under-cart .theme-money_ .money {
   font-size: 14px;
   font-style: italic;
+}
+
+
+/* mobile */
+@media(max-width:768px) {
+  .product-list .pallet {
+    padding-top: 20px;
+    margin-left: unset !important;
+  }
+
+  .pallet-product .col-notimage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pllet-product .item-price {
+    margin: 0;
+  }
+
+  .pllet-product .unit-price__price {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cart-list {
+    margin-top: 10px;
+  }
+
+  .product-list .pallet .pallet-product {
+    padding-bottom: 20px;
+  }
+  #page-content .custom-cart .content {
+    width: 100%;
+  }
+  .custom-cart .item.cart-delete {
+    margin-bottom: 0;
+  }
+  .cart-list .col-notimage .line-total {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+      font-weight: 600;
+      padding-right: 10px;
+  }
+
+  .cart-list .product-list li {
+    align-items: unset;
+  }
+
+  .product-list .col-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cart-list .col-image {
+    margin-right: 10px;
+    width: 30%;
+  }
+  .product-list .product-quantity {
+    width: 290px;
+    margin-left: -50%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .product-list .custom-product .product-quantity {
+    margin-top: 0;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .product-list .quantity-section {
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .calculated-input-label {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .calculated-input-label span {
+    margin-bottom: 0;
+  }
+  .cart-list .quantity {
+    vertical-align: middle;
+    width: 100%;
+    padding: 0px 20px;
+  }
+
+  .cart-list .quantity .minus {
+    width: 20px;
+  }
+
+  .cart-list .quantity .plus {
+    width: 20px;
+  }
+
+  .cart-list .quantity input {
+    font-size: 12px;
+  }
+  .product-list .quantity-section .item-quantity {
+    flex-direction: column;
+    gap: 5px;
+    align-items: self-end;
+    justify-content: space-between;
+    width: 30%;
+  }
+
+  .cart-list .quantity-and-remove {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .custom-product {
+    width: 100%;
+  }
+  .product-list .item.custom-product {
+    padding-right: 0;
+  }
+  .cart-list .desc {
+    padding-left: 20px;
+  }
+  .under-cart .amount {
+    width: 100px;
+  }
+  .cart-list .desc .product-title {
+    font-size: 14px;
+  }
+  .item .theme-money {
+    font-size: 12px;
+  }
+  .item .product-price {
+    font-size: 12px;
+  }
+  .custom-product .product-quantity .product-price {
+    font-size: 12px;
+  }
+  .rimage-wrapper .rimage__image {
+    height: 70px;
+    width: 100px;
+  }
+  .material-icons { 
+    font-size: 10px;
+    padding: 3px 6px;
+  }
 }

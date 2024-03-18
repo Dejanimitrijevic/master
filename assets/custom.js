@@ -128,7 +128,7 @@ $(document).on("click", ".jc-cart-remove", function (e) {
                 updates[key] = 0;
 
                 data = {
-                items: [
+                    items: [
                     {
                         id: mainProductId,
                         quantity: 0,
@@ -226,7 +226,7 @@ $('.jc-cart .minus').click(function(e){
         let ratio = $input.closest('.quantity-section').find('.ratio input');
         let consequent = ratio.data('consequent');
         let ratioValue = 1/consequent;
-        $input.val(Number(qty) - ratioValue);
+        $input.val((Number(qty) - ratioValue).toFixed(2));
 
         } else if (type == "bags"){
             let ratio = $input.closest('.quantity-section').find('.ratio input');
@@ -249,7 +249,7 @@ $('.jc-cart .plus').click(function(e){
         let ratio = $input.closest('.quantity-section').find('.ratio input');
         let consequent = ratio.data('consequent');
         let ratioValue = 1/consequent;
-        $input.val(Number(qty) + ratioValue);
+        $input.val((Number(qty) + ratioValue).toFixed(2));
 
     }else if (type == "bags"){
 
@@ -289,13 +289,13 @@ function changeItem(_this) {
     if (_this.data('properties').length > 2) {      
         
         var palletNum = _this.data('properties')[0][1];
-        let semiBreaking_val = Number(palletNum)-1;
         if (dataType == "product") {
-            ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2))));
+            ratio.val(Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent)).toFixed(2)));
             pall.val(Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3)));   
             productValue = $cartpc;   
             palletValue = Math.max(0, (parseInt($cartpc) / palletNum).toFixed(3));
-            ratioValue = Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent).toFixed(2)));
+            ratioValue = Math.max(0, parseFloat(parseInt($cartpc) / parseFloat(consequent)).toFixed(2));
+            console.log();
         }
         if (dataType == "pallet") {
             palletValue = Math.ceil(parseInt($cartpc));
@@ -303,7 +303,7 @@ function changeItem(_this) {
             productValue = Number(palletValue)*Number(palletNum);
             product.val(productValue);
             ratioValue = Number(productValue)/consequent;
-            ratio.val(Number(productValue)/consequent);
+            ratio.val(Number(productValue)/consequent).toFixed(2);
         }
         if (dataType == "ratio") {
             ratioValue = Number(_this.val());
@@ -388,77 +388,77 @@ function changeItem(_this) {
                 updates[_this.closest('.item').data('item-key')] = 0;
             }
         })
-            $.ajax({
-                type: 'POST',
-                url: '/cart/update.js',
-                data: {
-                     updates:updates
-                },
-                dataType: 'json',
-                async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
-                success: function(){
-                     $.ajax({
-                        type: 'POST',
-                        url: '/cart/add.js',
-                        data: data,
-                        dataType: 'json',
-                        async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
-                        success: function(){
-                            $.ajax({
-                                type: 'GET',
-                                url: '/cart.js',
-                                dataType: 'json',
-                                success: function(cartdata){
-                                    
-                                    let productPrice = _this[0].getAttribute('data-price');
-                                    let $breaking_val = productValue % palletNum; 
-                                    
-                                    _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
-    
-                                        var palletPrice = item.querySelector('input').getAttribute('data-price');
-                                        let str_selectedId = item.querySelector('input').getAttribute('data-properties');
-                                        let selectedId = JSON.parse(str_selectedId)[0][1];
-    
-                                        if (selectedId == main_Product_Id) {
-    
-                                            let palletId = item.closest('.custom-product').getAttribute('data-item-id');
-                                            let priceEelement = _this.closest('.item')[0].querySelector('.line-total .money');                                        
-                                            priceEelement.innerHTML = (productValue * Number(productPrice) /100).toFixed(2) + ' kr';                                        
-                                            let palletElement = item.closest('.custom-product').querySelector('.line-total .money');
-                                            var breakingPriceElement = item.closest('.custom-product').querySelector('.line-total .money');
-    
-                                            if ($breaking_val == 0) {
-                                                if ( palletId == subProductId2 ) {
-                                                    item.closest('.custom-product').style.display = "none";   
-                                                    breakingPriceElement.innerHTML = 0;
-    
-                                                }
-                                            } else {
-                                                if ( palletId == subProductId2 ) {
-                                                    item.closest('.custom-product').style.display = "flex"; 
-                                                    item.querySelector('.custom-product .product-quantity .product-price').innerHTML = "Antal: 1";
-                                                    let breakingPrice = item.closest('.custom-product').querySelector('input').getAttribute('data-price');
-                                                    breakingPriceElement.innerHTML = (Number(breakingPrice) /100).toFixed(2) + ' kr';
-                                                }
+        $.ajax({
+            type: 'POST',
+            url: '/cart/update.js',
+            data: {
+                    updates:updates
+            },
+            dataType: 'json',
+            async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+            success: function(){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/cart/add.js',
+                    data: data,
+                    dataType: 'json',
+                    async:false,  // Be warned, async:false has been deprecated in jQuery for a long time and is not recommended for use. It's generally recommended to use callbacks or promises instead
+                    success: function(){
+                        $.ajax({
+                            type: 'GET',
+                            url: '/cart.js',
+                            dataType: 'json',
+                            success: function(cartdata){
+                                
+                                let productPrice = _this[0].getAttribute('data-price');
+                                let $breaking_val = productValue % palletNum; 
+                                
+                                _this.closest('.product-list')[0].querySelectorAll('.custom-product').forEach(item=> {
+
+                                    var palletPrice = item.querySelector('input').getAttribute('data-price');
+                                    let str_selectedId = item.querySelector('input').getAttribute('data-properties');
+                                    let selectedId = JSON.parse(str_selectedId)[0][1];
+
+                                    if (selectedId == main_Product_Id) {
+
+                                        let palletId = item.closest('.custom-product').getAttribute('data-item-id');
+                                        let priceEelement = _this.closest('.item')[0].querySelector('.line-total .money');                                        
+                                        priceEelement.innerHTML = (productValue * Number(productPrice) /100).toFixed(2) + ' kr';                                        
+                                        let palletElement = item.closest('.custom-product').querySelector('.line-total .money');
+                                        var breakingPriceElement = item.closest('.custom-product').querySelector('.line-total .money');
+
+                                        if ($breaking_val == 0) {
+                                            if ( palletId == subProductId2 ) {
+                                                item.closest('.custom-product').style.display = "none";   
+                                                breakingPriceElement.innerHTML = 0;
+
                                             }
-                                            if ( palletId == subProductId1 ) {
-                                                palletElement.innerHTML = (palletPrice * Number(Math.ceil(palletValue) /100)).toFixed(2) + ' kr';
-                                                let palletNumElement = item.closest('.custom-product').querySelector('.product-quantity .product-price');
-                                                palletNumElement.innerHTML = 'Antal: ' + Math.ceil(palletValue);
+                                        } else {
+                                            if ( palletId == subProductId2 ) {
+                                                item.closest('.custom-product').style.display = "flex"; 
+                                                item.querySelector('.custom-product .product-quantity .product-price').innerHTML = "Antal: 1";
+                                                let breakingPrice = item.closest('.custom-product').querySelector('input').getAttribute('data-price');
+                                                breakingPriceElement.innerHTML = (Number(breakingPrice) /100).toFixed(2) + ' kr';
                                             }
-    
-                                            totalPrice();
-                                            totalWeight();
-                                            
                                         }
-                                    })
-                                }
-                            });
-                        }
-                    });
-                }
-             })       
-        //  }
+                                        if ( palletId == subProductId1 ) {
+                                            palletElement.innerHTML = (palletPrice * Number(Math.ceil(palletValue) /100)).toFixed(2) + ' kr';
+                                            let palletNumElement = item.closest('.custom-product').querySelector('.product-quantity .product-price');
+                                            palletNumElement.innerHTML = 'Antal: ' + Math.ceil(palletValue);
+                                        }
+
+                                        totalPrice();
+                                        totalWeight();
+                                        
+                                    }
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        })       
+    
 
 
     } else {
