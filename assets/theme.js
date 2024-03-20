@@ -4329,26 +4329,30 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           if (nav.bar.getPositionSetting() !== "inline") {
             offset = nav.bar.height();
           }
-
-          showThemeModal([
-          '<div id="added-to-cart" class="theme-modal theme-modal--small" role="dialog" aria-modal="true" aria-labelledby="added-to-cart-title">', "<div class=\"inner\" style=\"top:".concat(
-          offset, "px\">"),
-          '<a href="#" data-modal-close class="modal-close">&times;</a>',
-          '<h4 id="added-to-cart-title">' + theme.icons.tick + theme.strings.productAddedToCart + '</h4>',
-          '<div class="cart-product">', "<div class=\"cart-product__image\"><img src=\"".concat(
-          thumbUrl, "\" alt=\"").concat(product.featured_image.alt, "\"/></div>"),
-          '<div class="cart-product__content">' +
-          '<p class="cart-product__content__title">', product.product_title, '</p>' + "".concat(
-          variantHtml ? variantHtml : '') +
-          '</div>',
-          '</div>', "<p class=\"links ".concat(
-          noCheckoutButton ? 'links--no-checkout' : '', "\">"),
-          '<a href="' + theme.routes.cart_url + "\" class=\"button ".concat(noCheckoutButton ? '' : 'alt', "\">") + theme.strings.viewCart + '</a>',
-          '<a href="' + theme.routes.checkout + '" class="button button--checkout" [data-cc-checkout-button]>' + theme.strings.popupCheckout + '</a> ',
-          '</p>',
-          '</div>',
-          '</div>'].
-          join(''), "added-to-cart", null);
+          console.log(product, "product");
+          if (Object.keys(product).length === 0) {
+            window.location.href = "https://stengrossen.se/cart";
+          } else {
+            showThemeModal([
+              '<div id="added-to-cart" class="theme-modal theme-modal--small" role="dialog" aria-modal="true" aria-labelledby="added-to-cart-title">', "<div class=\"inner\" style=\"top:".concat(
+              offset, "px\">"),
+              '<a href="#" data-modal-close class="modal-close">&times;</a>',
+              '<h4 id="added-to-cart-title">' + theme.icons.tick + theme.strings.productAddedToCart + '</h4>',
+              '<div class="cart-product">', "<div class=\"cart-product__image\"><img src=\"".concat(
+              thumbUrl, "\" alt=\"").concat("product.featured_image.alt", "\"/></div>"),
+              '<div class="cart-product__content">' +
+              '<p class="cart-product__content__title">', product.product_title, '</p>' + "".concat(
+              variantHtml ? variantHtml : '') +
+              '</div>',
+              '</div>', "<p class=\"links ".concat(
+              noCheckoutButton ? 'links--no-checkout' : '', "\">"),
+              '<a href="' + theme.routes.cart_url + "\" class=\"button ".concat(noCheckoutButton ? '' : 'alt', "\">") + theme.strings.viewCart + '</a>',
+              '<a href="' + theme.routes.checkout + '" class="button button--checkout" [data-cc-checkout-button]>' + theme.strings.popupCheckout + '</a> ',
+              '</p>',
+              '</div>',
+              '</div>'].
+              join(''), "added-to-cart", null);
+          }          
         }
 
         // Update header (& cart if on cart)
@@ -7163,9 +7167,10 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         inputElement.value= $pallet_val;
         console.log(inputElement, "input"); 
         let input_breaking = document.querySelector('input[name="items[1]quantity"]')
-        input_breaking.value = 1;
+        input_breaking.value = 0;
   
     })
+    
     // pallet
     $(document).on('change', '.quantity-wrapper [name=pallet]', function() {  
       console.log("before_paellt");
@@ -7220,7 +7225,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         inputElement.value= $pallet_val;
         console.log(inputElement, "input"); 
         let input_breaking = document.querySelector('input[name="items[1]quantity"]')
-        input_breaking.value = 1;
+        input_breaking.value = 0;
         
     })
 
@@ -7274,7 +7279,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 1;
+          input_breaking.value = 0;
         } else {
           breaking.removeClass('remove');
           $breaking_price = $('.price-pallet').find('.pallet-value:last').data('pallet-2'); 
@@ -7342,7 +7347,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 1;
+          input_breaking.value = 0;
         } else {
           breaking.removeClass('remove');
           $breaking_price = $('.price-pallet').find('.pallet-value:last').data('pallet-2'); 
@@ -7369,6 +7374,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
 
     // ratio quantity
     $(document).on('click', '.ratio-wrapper [data-quantity]',function () {
+      console.log("here agaain----------->");
       if ($(this).closest('.product-detail__form__options--with-calculated-quantity').find('[name="quantity"]').data('type') == "bags") {
           var $input = $(this);
           let consequent = $(this).closest('.ratio-wrapper').find('[name="ratio"]').data('consequent');
@@ -7432,7 +7438,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
           breaking.addClass('remove');
           $('.pallet-price.remove').css('display', 'none');
           $breaking_price = 0;
-          input_breaking.value = 1;
+          input_breaking.value = 0;
         } else {
           breaking.removeClass('remove');
           $('.pallet-price').css('display', 'flex');
@@ -7504,7 +7510,7 @@ function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Obj
         breaking.addClass('remove');
         $('.pallet-price.remove').css('display', 'none');
         $breaking_price = 0;
-        input_breaking.value = 1;
+        input_breaking.value = 0;
       } else {
         breaking.removeClass('remove');
         $('.pallet-price').css('display', 'flex');
@@ -7750,7 +7756,11 @@ setInterval(() => {
 
   $('.cart-list li[p-handle="pallbrytningskostnad"]').addClass("custom-product");
   $('.cart-list li[p-handle="returpall-eur-pall"]').addClass("custom-product");
-  $('.cart-list li[p-handle="byggpall"]').addClass("custom-product");  
+  $('.cart-list li[p-handle="byggpall"]').addClass("custom-product");
+
+
+
+  
 
 }, 100);
 clearInterval();
@@ -7791,8 +7801,7 @@ if (document.querySelector('.search-btn')) {
   }, "1000");
 }
 
-// cookie btn remove
-document.querySelector('.cc-revoke.cc-bottom').style.display = "none";
+
 
 
 

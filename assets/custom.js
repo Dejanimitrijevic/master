@@ -1,89 +1,34 @@
-
-totalWeight();
-totalPrice();
-
-jQuery(window).on("load", function () {
+jQuery(window).on("load", function () {    
     if (window.location.href === "https://stengrossen.se/cart") {
         console.log("Page has finished loading");
         document.querySelectorAll('.cart-list .product-list').forEach(item => {
             item.querySelectorAll('.pallet__product').forEach(Item=> {
                 let clickPlus = Item.querySelector('.item-quantity.pro .plus');
                 let clickMinus = Item.querySelector('.item-quantity.pro .minus');
-                let pallet_array = Item.getAttribute('data-properties');
-                let palletNum = JSON.parse(pallet_array)[0][1];
                 let pc = Item.querySelector('.item-quantity.pro input').value;
                 pc = Math.ceil(pc);
-                    setTimeout(()=> {
-                        clickPlus.click( function(e) {
-                            e.preventDefault;
-                            var $input = $(this).closest('.jc-cart').find('input');
-                            let qty = $input.val();
-                            $input.val(Number(qty) + 1);
-                            changeItem($input);
-                        });
-                
-                        clickMinus.click( function(e) {
-                            e.preventDefault;
-                            var $input = $(this).closest('.jc-cart').find('input');
-                            let qty = $input.val();
-                            $input.val(Number(qty) - 1);
-                            changeItem($input);
-                        });
+                setTimeout(()=> {
+                    clickPlus.click( function(e) {
+                        e.preventDefault;
+                        var $input = $(this).closest('.jc-cart').find('input');
+                        let qty = $input.val();
+                        $input.val(Number(qty) + 1);
+                        changeItem($input);
+                    });
             
-                    }, 1000);                    
-                // }
-
+                    clickMinus.click( function(e) {
+                        e.preventDefault;
+                        var $input = $(this).closest('.jc-cart').find('input');
+                        let qty = $input.val();
+                        $input.val(Number(qty) - 1);
+                        changeItem($input);
+                    });
+        
+                }, 1000);                    
             })
         })
-    }  
+    }      
 });
-
-
-// total weight
-function totalWeight() {
-    let itemWei = 0;
-    let itemPcs = 0;
-    let calculatedWei = 0;
-    var subItemWei = 0;
-    var repeat = 0;
-    document.querySelectorAll('.cart-list .product-list').forEach(item => {
-        item.querySelectorAll('.col-notimage').forEach((item, index) => {
-            itemWei = item.querySelector('.title').getAttribute('data-product-weight');
-            if (itemWei) {                
-                if (item.querySelector('.pro')) {
-                    itemPcs = item.querySelector('.pro input').value;   
-                }
-                var numWei = parseFloat(itemWei.replace(',', '.').replace(' kg', ''));
-                if (numWei) {
-                    subItemWei = numWei*Number(itemPcs); 
-                }  
-                repeat++;             
-                calculatedWei += Number(subItemWei);                
-            }
-        })       
-    })
-    document.querySelector('.weight-value').innerHTML = (calculatedWei).toFixed(2) + ' kg';
-}
-
-//total price
-function totalPrice() {
-    let totalPrice = 0;
-    let itemPrice;
-    let calculatedPrice = 0;
-    document.querySelectorAll('.cart-list .product-list').forEach(item => {
-        item.querySelectorAll('.line-total').forEach(item => {
-            itemPrice = item.querySelector('.money').innerHTML;
-            totalPrice = parseFloat(itemPrice.replace(/,/g, '').replace(' kr', ''));
-            calculatedPrice += Number(totalPrice);
-        })
-    })
-    result = Number(calculatedPrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    resultFee = Number((Number(calculatedPrice) * 0.2).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    
-    document.querySelector('.subtotal .money').innerHTML =result + " kr";;
-    document.querySelector('.subtotal_ .money').innerHTML = resultFee + ' kr';
-}
-
 
 // remove all
 $(document).on('click', '.cart-delete-all', function(e){
@@ -235,6 +180,9 @@ $('.jc-cart .minus').click(function(e){
         } else {
             $input.val(Number(qty) - 1);
         }
+
+        console.log("click - btn");
+
         changeItem($input);
     }
     
@@ -250,7 +198,6 @@ $('.jc-cart .plus').click(function(e){
         let consequent = ratio.data('consequent');
         let ratioValue = 1/consequent;
         $input.val((Number(qty) + ratioValue).toFixed(2));
-
     }else if (type == "bags"){
 
         let ratio = $input.closest('.quantity-section').find('.ratio input');
@@ -259,7 +206,7 @@ $('.jc-cart .plus').click(function(e){
     } else {
         $input.val(Number(qty) + 1);
     }
-
+    console.log("click + btn");
     changeItem($input);
     
 });
@@ -270,13 +217,10 @@ $('.jc-cart .plus').click(function(e){
 function changeItem(_this) {
     var updates = {};
     var data ={};
-
     let ratio = _this.closest('.quantity-section').find('.ratio input');
     let pall = _this.closest('.quantity-section').find('.pall input');
     let product = _this.closest('.quantity-section').find('.pro input');
     var bags = _this.closest('.quantity-section').find('.bags input');
-
-
     var $cartpc = _this.val();
     var consequent = ratio.data('consequent');
     var ratioUnit = 1/consequent;
@@ -441,9 +385,13 @@ function changeItem(_this) {
                                                 breakingPriceElement.innerHTML = (Number(breakingPrice) /100).toFixed(2) + ' kr';
                                             }
                                         }
+
                                         if ( palletId == subProductId1 ) {
                                             palletElement.innerHTML = (palletPrice * Number(Math.ceil(palletValue) /100)).toFixed(2) + ' kr';
                                             let palletNumElement = item.closest('.custom-product').querySelector('.product-quantity .product-price');
+                                            let palletNumValue = item.closest('.custom-product').querySelector('.product-quantity .weight input');
+                                            $(palletNumValue).val(Math.ceil(palletValue));
+                                            console.log(palletNumValue, "item");
                                             palletNumElement.innerHTML = 'Antal: ' + Math.ceil(palletValue);
                                         }
 
@@ -579,6 +527,48 @@ function itemDelete(updates, data) {
     window.location.href = "/cart";
     },
 });
+}
+
+// total weight
+function totalWeight() {
+    console.log('cal-wieght-here');
+    let itemWei = 0;
+    let itemPcs = 0;
+    let calculatedWei = 0;
+    var subItemWei = 0;
+    document.querySelectorAll('.cart-list .product-list').forEach(item => {
+        item.querySelectorAll('.col-notimage').forEach((item, index) => {
+            itemWei = item.querySelector('.title').getAttribute('data-product-weight');                        
+            itemPcs = item.querySelector('.weight input').value;   
+            var numWei = parseFloat(itemWei.replace(',', '.').replace(' kg', ''));
+            subItemWei = Number(numWei)*Number(itemPcs);             
+            calculatedWei += Number(subItemWei);
+            console.log(itemPcs, "pcs");
+            console.log(numWei, "numWei");
+            console.log(subItemWei, "sub");
+            console.log(calculatedWei, "cal");
+        })       
+    })
+    document.querySelector('.weight-value').innerHTML = (calculatedWei).toFixed(2) + ' kg';
+}
+
+//total price
+function totalPrice() {
+    let totalPrice = 0;
+    let itemPrice;
+    let calculatedPrice = 0;
+    document.querySelectorAll('.cart-list .product-list').forEach(item => {
+        item.querySelectorAll('.line-total').forEach(item => {
+            itemPrice = item.querySelector('.money').innerHTML;
+            totalPrice = parseFloat(itemPrice.replace(/,/g, '').replace(' kr', ''));
+            calculatedPrice += Number(totalPrice);
+        })
+    })
+    result = Number(calculatedPrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    resultFee = Number((Number(calculatedPrice) * 0.2).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    
+    document.querySelector('.subtotal .money').innerHTML =result + " kr";;
+    document.querySelector('.subtotal_ .money').innerHTML = resultFee + ' kr';
 }
 
 

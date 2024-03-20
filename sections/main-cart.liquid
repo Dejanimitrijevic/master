@@ -51,15 +51,15 @@
         <div class="line-total">{{ 'cart.general.total' | t }}</div>
       </li> 
        
-      <div class="product-list">
-        
+      <div class="product-list">  
+      {% assign total_weight = 0.00 %}
+      {% assign temp_weight = 0.00 %}      
           {% for item in cart.items %}
-
               <li
                   class="item clearfix {% if item.product.metafields.custom.lastpall == true %} pallet__product {% endif %}"
                   data-item-id="{{ item.id }}"
                   data-item-key="{{ item.key }}" 
-                  data-item-line="{{ forloop.index }}"
+                  data-item-line="{{ forloop.index }}" data-weight = "{{ item.variant.weight }}"
                   data-properties='{{ item.properties | json }}'
                 >
                   <div class="col-image">
@@ -77,8 +77,21 @@
                           {{ 'products.product.preorder' | t }}
                         </div>
                       {% endif %}
+                      {% if item.product.metafields.my_fields.vikt_per_platta.value or item.product.metafields.my_fields.vikt_per_kantsten or item.product.metafields.my_fields.vikt_per_stolpe %}
+                        {% if item.product.metafields.my_fields.vikt_per_platta.value %}
+                          {% assign weight = item.product.metafields.my_fields.vikt_per_platta.value %} 
+                        {% endif %}
+                        {% if item.product.metafields.my_fields.vikt_per_kantsten %}                        
+                          {% assign weight = item.product.metafields.my_fields.vikt_per_kantsten.value %} 
+                        {% endif %}
+                        {% if item.product.metafields.my_fields.vikt_per_stolpe %}
+                          {% assign weight = item.product.metafields.my_fields.vikt_per_stolpe.value %} 
+                        {% endif %}
+                      {% elsif item.product.metafields.my_fields.vikt_per_pall %}
+                        {% assign weight = item.product.metafields.my_fields.vikt_per_pall.value %} 
+                      {% endif %}
                       
-                      <div class="title" data-quantity="{{ item.quantity }}" data-product-weight="{{ item.product.metafields.my_fields.vikt_per_platta.value }}">
+                      <div class="title" data-quantity="{{ item.quantity }}" data-product-weight="{{ weight }}">
                         <a data-cc-animate-click href="{{ item.url }}">
                           <span class="product-title">{{ item.product.title }}</span>
                           {% unless item.product.has_only_default_variant %}{{ item.variant.title }}{% endunless %}
@@ -234,7 +247,7 @@
                             {% endunless %}                     
     
                             {% comment %} input for small stons {% endcomment %}
-                            <div class="item-quantity pro">
+                            <div class="item-quantity pro weight">
                               {% comment %} input for Stycken {% endcomment %}
                               <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
@@ -325,7 +338,7 @@
                               </div>
                             {% endunless %} 
 
-                            <div class="item-quantity bags">
+                            <div class="item-quantity weight bags">
                               {% comment %} input for Stycken {% endcomment %}
                               <label class="calculated-input-label" for="quantity"><span>SÄCKAR</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
@@ -354,7 +367,7 @@
                               </div>
                             </div>
                           {% else %}
-                            <div class="item-quantity">
+                            <div class="item-quantity weight">
                               {% comment %} input for Stycken {% endcomment %}
                               <label class="pc calculated-input-label" for="quantity"><span>STYCKEN</span></label>
                               <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
@@ -383,33 +396,6 @@
                               </div>
                             </div>  
                           {% endif %}
-
-                          {% comment %} <label class="jc-cart quantity pallet calculated-input-label" for="quantity"><span>PALL</span></label>
-                            <div class="jc-cart quantity border-radius-{{ settings.buttons_shape }}">
-                              <a
-                                class="minus"
-                                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
-                                aria-label="{{ 'cart.general.decrease' | t | escape }}"
-                                ><span>&minus;</span></a
-                              >
-                              <input
-                                class="a select-on-focus jc-cart-value"
-                                type="text"
-                                size="2" data-price = "{{ item.price }}"
-                                id="updates_{{ item.id }}"
-                                data-properties='{{ item.properties | json }}'
-                                name="updates[]"
-                                value="{{ item.quantity }}"
-                                aria-label="{{ 'cart.general.quantity' | t | escape }}"
-                              >
-                              <a
-                                class="plus"
-                                href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
-                                aria-label="{{ 'cart.general.increase' | t | escape }}"
-                                ><span>&plus;</span></a
-                              >
-                            </div> {% endcomment %}
-  
                         </div>
   
     
@@ -438,6 +424,9 @@
                       {% endif %}
                     </div>
                   </div>
+                  
+                  {% assign temp_weight = item.variant.weight | times: item.quantity %}
+                  {% assign total_weight = total_weight | plus: temp_weight %}
               </li>                  
           {% endfor %}
 
@@ -477,7 +466,8 @@
         <p class="cart-policy">Ink.moms, <a href="/policies/shipping-policy" style="color:#d6591f; font-weight:500;">frakt</a> beräknas i kassan.</p>
         <p class="total-weight">
           <span>Totalvikt: </span>
-          <span class="weight-value" style="font-weight:700;"></span>
+          <script>{{ total_weight | json }}</script>
+          <span class="weight-value" style="font-weight:700;">{{ total_weight | weight }} kg</span>
         </p>
         
       </div>

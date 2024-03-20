@@ -13386,7 +13386,9 @@ shopify-payment-terms {
     display: none;
   }
   .cart-list .col-notimage {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     width:70%;
   }
   .cart-list .desc,
@@ -14876,7 +14878,9 @@ body {
   font-style: italic;
 }
 
-
+.quantity-section .price-desktop {
+  display: block;
+}
 /* mobile */
 @media(max-width:768px) {
   .product-list .pallet {
@@ -14915,9 +14919,9 @@ body {
   .cart-list .col-notimage .line-total {
     display: flex;
     justify-content: end;
-    width: 100%;
       font-weight: 600;
-      padding-right: 10px;
+      padding-right: 5px;
+      margin-top: 18px;
   }
 
   .cart-list .product-list li {
@@ -14934,15 +14938,15 @@ body {
     width: 30%;
   }
   .product-list .product-quantity {
-    width: 290px;
-    margin-left: -50%;
+    width: 90%;
+    margin-left: -36%;
     text-align: center;
     margin-top: 10px;
   }
 
   .product-list .custom-product .product-quantity {
     margin-top: 0;
-    width: 100%;
+    width: 50px;
     margin-left: 0;
   }
 
@@ -14954,6 +14958,7 @@ body {
     width: 100%;
     flex-wrap: wrap;
     flex-direction: row;
+    gap: 5px !important;
   }
 
   .calculated-input-label {
@@ -14980,13 +14985,15 @@ body {
 
   .cart-list .quantity input {
     font-size: 12px;
+    width: 250px;
+
   }
   .product-list .quantity-section .item-quantity {
     flex-direction: column;
     gap: 5px;
     align-items: self-end;
     justify-content: space-between;
-    width: 30%;
+    width: 28%;
   }
 
   .cart-list .quantity-and-remove {
@@ -15001,14 +15008,17 @@ body {
     width: 100%;
   }
   .product-list .item.custom-product {
-    padding: 0 10px;
-    padding-right: 0;
+    padding: 20px 0 0 10px;
   }
   .cart-list .desc {
-    padding-left: 20px;
+    padding-left: 10px;
+    width: 100%;
+  }
+  .cart-list .custom-product .desc {
+    width: 40%;
   }
   .under-cart .amount {
-    width: 100px;
+    width: 120px;
   }
   .cart-list .desc .product-title {
     font-size: 14px;
@@ -15022,12 +15032,36 @@ body {
   .custom-product .product-quantity .product-price {
     font-size: 12px;
   }
+  
   .rimage-wrapper .rimage__image {
     height: 70px;
     width: 100px;
+  }
+  .custom-product .rimage-wrapper .rimage__image {
+    height: 40px;
+    width: 40px;
   }
   .material-icons { 
     font-size: 10px;
     padding: 3px 6px;
   }
+
+  .cart-list .custom-product .col-notimage {
+    flex-direction: row;
+    flex-wrap: unset;
+    align-items: end;
+  }
+  .under-cart .subtotal-row .subtotal .label {
+    font-size: 16px;
+  }
+  .under-cart .subtotal-row .subtotal .money {
+    font-size: 16px;
+  }
+    .under-cart .subtotal-row .subtotal_ .money {
+      font-size: 14px;
+    }
+  .product-list .item:last-child {
+    padding-bottom: 10px;
+  }
 }
+

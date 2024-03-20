@@ -5,7 +5,7 @@
   {% render 'pandectes-rules' %}
 	
 	
-	<link rel="preload" as="image" href="https://stengrossen.se/cdn/shop/files/custom_resized_5e6fdb3a-ca36-42ec-b14d-95c262836495_1950x.jpg?v=1650454490">
+	
 	
 	
 	
@@ -13,7 +13,6 @@
   <!-- Showcase 5.3.1 -->
 
   <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style">
-  <noscript><link rel="stylesheet" href="styles.css"></noscript>
 
   {% render 'head-tag' %}
   {%- assign base_font = settings.type_base_font -%}
@@ -23,7 +22,7 @@
   {%- if base_font_semibold -%}<link rel="preload" as="font" href="{{ base_font_semibold | font_url }}" type="font/woff2" crossorigin>{%- endif -%}
 
   <meta name="theme-color" content="{{ settings.col_btn_bg }}">
-  <meta name="google-site-verification" content="1FGEfz6WYJPmtjhYXm7yCLvIvC1HCdI3R1OOAaBaV-U" />
+<meta name="google-site-verification" content="1FGEfz6WYJPmtjhYXm7yCLvIvC1HCdI3R1OOAaBaV-U" />
   <title>
     {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
   </title>
@@ -41,7 +40,6 @@
   {{ 'styles.css' | asset_url | stylesheet_tag }}
 
   {% include 'globo.filter.script' %}{{ content_for_header }}
-  {% render 'cookie-consent' %}
 
   <script> 
     window.notAddProperty == true;
@@ -177,26 +175,11 @@
     }]
   });
 </script>
-<style type="text/css">        
-  .cc-revoke {
-    display: none;
-  }
-</style>
-
-
+            
 </head>
 
 <body class="page-{{ page_title | handle }} {% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if template.suffix != blank %} template-suffix-{{ template.suffix }}{% endif %}{% if template contains 'customers' %} template-customer-area{% endif %}{% if logo_html contains 'img' %} has-logo{% endif %} animation-speed-{{ settings.animation_speed }}"
-  {% if settings.animation_speed == "fast" %}data-cc-animate-timeout="0"{% endif %}>
-
-  <img
-    width="99999"
-    alt="image"
-    height="99999"
-    style="pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 99vh; max-width: 99vw; max-height: 99vh;"
-    src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI5OTk5OXB4IiBoZWlnaHQ9Ijk5OTk5cHgiIHZpZXdCb3g9IjAgMCA5OTk5OSA5OTk5OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIGZpbGwtb3BhY2l0eT0iMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9Ijk5OTk5IiBoZWlnaHQ9Ijk5OTk5Ij48L3JlY3Q+IDwvZz4gPC9zdmc+"
-  >
-
+      {% if settings.animation_speed == "fast" %}data-cc-animate-timeout="0"{% endif %}>
   {% if settings.animation_enabled_mobile %}
     <script>
       if(window.innerWidth < 768 && window.localStorage.getItem('is_first_visit') !== null) {
@@ -322,15 +305,10 @@
         {% if settings.animation_loading_message == blank and settings.animation_loading_image == blank %}cc-veil-loader--blank{% endif %}">
 
         {% if settings.animation_loading_image != blank %}
-          <img class="cc-veil-loader__image lazyload"
-                srcset="
-                    {%- if settings.animation_loading_image.width >= 375 -%}{{ settings.animation_loading_image | image_url: width: 375 }} 375w,{%- endif -%}
-                    {%- if settings.animation_loading_image.width >= 750 -%}{{ settings.animation_loading_image | image_url: width: 750 }} 750w,{%- endif -%}
-                    {{ settings.animation_loading_image | image_url }} {{settings.animation_loading_image.width }}w
-                  "
+          <img class="cc-veil-loader__image"
                src="{{ settings.animation_loading_image | img_url: '500x500' }}"
                alt="{{ settings.animation_loading_image.alt | escape }}"
-               width="{{ settings.animation_loading_image.width }}" loading="lazy"
+               width="{{ settings.animation_loading_image.width }}"
                height="{{ settings.animation_loading_image.height }}">
         {% endif %}
 
